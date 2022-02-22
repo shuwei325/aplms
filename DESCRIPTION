@@ -7,7 +7,7 @@ Author: c(
   person("Rodrigo", "Alves de Oliveira", email = "rodrigo.sef@hotmail.com", role = c("aut")),
   person("Gilberto", "Alvarenga Paula", email = "giapaula@ime.usp.br", role = c("aut")))
 Description: Modeling dditive partial linear models with symmetric errors
-License: GPL-3
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.2
