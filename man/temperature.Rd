@@ -5,13 +5,13 @@
 \alias{temperature}
 \title{Global Annual Mean Surface Air Temperature Change}
 \format{
-Time series data
+Time series data.
 }
 \source{
 NASA/GISS/GISTEMP
 }
 \usage{
-temperature
+data(temperature)
 }
 \description{
 Land-ocean temperature index from 1880--2021 (with base period 1951-1980).
@@ -19,5 +19,8 @@ Land-ocean temperature index from 1880--2021 (with base period 1951-1980).
 \examples{
 plot(temperature)
 
+}
+\references{
+Include reference.
 }
 \keyword{datasets}

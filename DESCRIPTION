@@ -6,11 +6,15 @@ Author: c(
   person("Shu Wei", "Chou-Chen", email = "shuwei.chou@ucr.ac.cr", role = c("aut", "cre")),
   person("Rodrigo", "Alves de Oliveira", email = "rodrigo.sef@hotmail.com", role = c("aut")),
   person("Gilberto", "Alvarenga Paula", email = "giapaula@ime.usp.br", role = c("aut")))
-Description: Modeling dditive partial linear models with symmetric errors
+Maintainer: Shu Wei Chou-Chen <shuwei.chou@ucr.ac.cr>
+Description: Modeling additive partial linear models with symmetric autoregressive errors of order p, or APLMS-AR(p).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10), gwer, mgcv
-Imports: gwer, Matrix, mgcv, rlist, stats
+Imports: Matrix, rlist, stats, methods
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
