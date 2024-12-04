@@ -2,6 +2,7 @@
 % Please edit documentation in R/aplms.R
 \name{aplms}
 \alias{aplms}
+\alias{print.aplms}
 \title{Fitting Additive partial linear models with symmetric errors}
 \usage{
 aplms(
@@ -12,10 +13,12 @@ aplms(
   data,
   family = Normal(),
   p = 1,
-  control = list(tol = 0.001, algorithm1 = c("backfitting"), algorithm2 = c("BFGS")),
+  control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS")),
   init,
-  lam = c(100, 10)
+  lam
 )
+
+\method{print}{aplms}(model, ...)
 }
 \arguments{
 \item{formula}{formula}
@@ -39,6 +42,8 @@ aplms(
 \item{lam}{smoothing parameter vector}
 
 \item{...}{other arguments}
+
+\item{mod}{APLMS object.}
 }
 \description{
 Fitting Additive partial linear models with symmetric errors
@@ -49,5 +54,5 @@ In this setup, the natural cubic splines or cubic P-splines.
 }
 \examples{
 a <- 1
-
+a <- 1
 }

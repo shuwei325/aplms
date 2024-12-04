@@ -111,7 +111,7 @@ logLik3.test = function(par,f, y, N_i,family){#par[1]==rho;par[2]==phi
   res = res(y, f, phi, rho,N_i)
   logLik <- -(nn/2)*log(par[1]) + sum(family$g0(res, df = family$df, s = family$s, r = family$r,
                                                 alpha = family$alpha, mp = family$mp, epsi = family$epsi,
-                                                sigmap = family$sigmap, k = family$k))
+                                                sigmap = family$sigmap, k = family$k, nu = family$nu))
   logLik
 }
 
@@ -122,7 +122,7 @@ logLik_fim.test = function(y, f, rho, phi, N_i,family){
   res <- res(y, f, phi, rho, N_i)
   logLik <- -(nn/2)*log(phi) + sum(family$g0(res, df = family$df, s = family$s, r = family$r,
                                                   alpha = family$alpha, mp = family$mp, epsi = family$epsi,
-                                                  sigmap = family$sigmap, k = family$k))
+                                                  sigmap = family$sigmap, k = family$k, nu = family$nu))
   logLik
 }
 

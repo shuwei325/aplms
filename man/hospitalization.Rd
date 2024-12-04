@@ -5,23 +5,33 @@
 \alias{hospitalization}
 \title{Respiratory diseases hospitalization Dataset}
 \format{
-The "data" slot is a data frame with 150 observations on the following 4 variables.
+The "data" slot is a data frame with 932 weekly data on the following 29 variables.
 \describe{
-\item{y}{dependent variable.}
-\item{x1}{Independent variable 1.}
-\item{x2}{Independent variable 2.}
+\item{date, year, epi.week, tdate}{Date, year, epidemiologic weeks, and time index.}
+\item{y}{Respiratory hospitalization count.}
+\item{MP10_max, MP10_min, MP10_avg}{Maximum, minimum and average of \eqn{MP10}.}
+\item{NO_max,NO_min,NO_avg}{Maximum, minimum and average of \eqn{NO}.}
+\item{NO2_max, NO2_min, NO2_avg}{Maximum, minimum and average of \eqn{NO_2}.}
+\item{NOx_max, NOx_min, NOx_avg}{Maximum, minimum and average of \eqn{NO_x}.}
+\item{O3_max, O3_min, O3_avg}{Maximum, minimum and average of \eqn{O_3}.}
+\item{TEMP_max, TEMP_min, TEMP_avg}{Maximum, minimum and average of temperature.}
+\item{RH_max, RH_min, RH_avg}{Maximum, minimum and average of relative humidity.}
+\item{ampl_max, ampl_min, ampl_avg}{Maximum, minimum and average of daily temperature amplitude.}
 }
 }
 \usage{
 data(hospitalization)
 }
 \description{
-This dataset consists of respiratory diseases hospitalization in Sorocaba, S\~ao Paulo, Brazil.
+This dataset consists of respiratory diseases hospitalization in Sorocaba, São Paulo, Brazil.
+The details of the statistical modeling using the APLMS-AR(p) approach can be found in Chou-Chen, et al. (2024). \doi{10.1007/s00362-024-01590-w}.
+The hospitalization data of respiratory diseases in Sorocaba city, São Paulo, Brazil are obtained from the Hospital Information System of Brazil’s Unified National Health System (SIH-SUS, \link{https://datasus.saude.gov.br/}), and the climatic and pollution data are provided by the QUALAR system (\link{https://qualar.cetesb.sp.gov.br/qualar/}).
 }
 \examples{
 data(hospitalization)
+head(hospitalization)
 }
 \references{
-Include reference.
+Chou-Chen, S.W., Oliveira, R.A., Raicher, I. et al. (2024) Additive partial linear models with autoregressive symmetric errors and its application to the hospitalizations for respiratory diseases. Stat Papers 65, 5145–5166. \doi{10.1007/s00362-024-01590-w}
 }
 \keyword{datasets}
