@@ -469,16 +469,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     )
   }
 
-  # Residuals
-
-  # Pearson Residuals
-  res_per <- (y - muhat1) / (sqrt(xi_t * phi))
-  # qqnorm(res_per);qqline(res_per)
-
-  # Quantile Residuals           #ver ver esto para distribuciones diferentes.
-  # res_quant<-c(qnorm(rmutil::ppowexp((y-yhat),m=0,s=phi1,f=1/(1+kk))))
-
-
   # coeficientes
 
   f0 <- f[[1]]
@@ -499,7 +489,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
 
   terms_formula <- stats::terms(formula)
   var_names <- attr(terms_formula, "term.labels")
-
 
   rownames(summary_table) <- c("intercept", var_names)
   colnames(summary_table) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
@@ -525,14 +514,11 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
       p_value_rho_t
     )
 
-
     colnames(summary_table_rho) <- c("rho", "ee", "Wald", "p-value_t")
     rownames(summary_table_rho) <- c(paste0("rho", as.character(1:p)))
   } else {
     summary_table_rho <- NULL
   }
-
-
 
   WALD_phi <- phi / sqrt(VAR_phi)
 
@@ -542,7 +528,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     phi,
     sqrt(VAR_phi),
     WALD_phi,
-    # p_value_phi_normal,
     p_value_phi_t
   )
 
