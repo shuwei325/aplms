@@ -3,7 +3,7 @@
 \name{aplms}
 \alias{aplms}
 \alias{print.aplms}
-\title{Fitting Additive partial linear models with symmetric errors}
+\title{Fitting Additive partial linear models with symmetric errors.}
 \usage{
 aplms(
   formula,
@@ -13,7 +13,8 @@ aplms(
   data,
   family = Normal(),
   p = 1,
-  control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS")),
+  control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS"), Maxiter1 =
+    20, Maxiter2 = 25),
   init,
   lam
 )
@@ -21,29 +22,29 @@ aplms(
 \method{print}{aplms}(model, ...)
 }
 \arguments{
-\item{formula}{formula}
+\item{formula}{A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under ‘Details’.}
 
-\item{npc}{non parametric component}
+\item{npc}{A vector of names of non parametric component.}
 
-\item{basis}{basis}
+\item{basis}{A vector of names of the basis to be used for each non parametric covariate.}
 
-\item{Knot}{knots}
+\item{Knot}{A vector of the number of knots in each non-linear component of the model.}
 
-\item{data}{data frame}
+\item{data}{A data frame containing the variables in the model}
 
 \item{family}{Symmetric error distribution}
 
 \item{p}{autoregressive order of the error}
 
-\item{control}{optimization rutine}
+\item{control}{optimization rutine.}
 
-\item{init}{initiation}
+\item{init}{A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.}
 
-\item{lam}{smoothing parameter vector}
+\item{lam}{smoothing parameter vector.}
+
+\item{model}{APLMS object.}
 
 \item{...}{other arguments}
-
-\item{mod}{APLMS object.}
 }
 \description{
 Fitting Additive partial linear models with symmetric errors

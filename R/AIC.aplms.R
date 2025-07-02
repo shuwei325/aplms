@@ -10,7 +10,7 @@
 #' @export
 
 AIC.aplms<- function(model,...){
-  if(!inherits(mod, what="aplms", which = FALSE))
+  if(!inherits(model, what="aplms", which = FALSE))
     stop("not a aplms object")
   model$AIC
 

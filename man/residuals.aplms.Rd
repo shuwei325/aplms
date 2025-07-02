@@ -4,17 +4,15 @@
 \alias{residuals.aplms}
 \title{Extract Residuals for APLMS fits.}
 \usage{
-\method{residuals}{aplms}(mod, type = c("response", "pearson", "quant"), plot = NULL, ...)
+\method{residuals}{aplms}(model, ...)
 }
 \arguments{
-\item{mod}{an object with the result of fitting additive partial linear models with symmetric errors.}
+\item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
+
+\item{...}{other arguments.}
 
 \item{type}{a character string that indicates the type of residuals.
 \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.}
-
-\item{plot}{a logical evaluating.}
-
-\item{...}{other arguments.}
 }
 \description{
 Extract Residuals for APLMS fits.

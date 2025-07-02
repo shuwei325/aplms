@@ -1,10 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # aplms
-
-<!-- badges: start -->
-<!-- badges: end -->
 
 The goal of `aplms` is fitting Additive partial linear models with
 symmetric errors.
@@ -21,23 +16,54 @@ devtools::install_github("shuwei325/aplms")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This package provides two datasets to illustrate the model fitting
+procedure. To load the package:
 
 ``` r
-#library(aplms)
-## basic example code
+library(aplms)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+The first dataset:
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+data(temperature)
+
+# Create dataframe object to fit the model
+datos = data.frame(temperature,time=1:length(temperature))
+
+mod1<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=datos,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+summary(mod1)
+plot(mod1)
+aplms.diag.plot(mod1)
+```
+
+The second dataset:
+
+``` r
+data(hospitalization)
+
+mod2<-aplms::aplms(formula = y ~ 
+              MP10_avg + NO_avg + O3_avg + TEMP_min + ampl_max + RH_max,
+            npc=c("tdate","epi.week"), basis=c("cr","cc"),Knot=c(60,12),
+            data=hospitalization,family=Powerexp(k=0.3),p=3,
+            control = list(tol = 0.001,
+                           algorithm1 = c("P-GAM"),
+                           algorithm2 = c("BFGS"),
+                           Maxiter1 = 20,
+                           Maxiter2 = 25),
+            lam=c(100,10))
+```
+
+``` r
+summary(mod2)
+plot(mod2)
+aplms.diag.plot(mod2)
 ```

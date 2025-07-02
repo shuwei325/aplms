@@ -540,6 +540,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   fit <- list(
     formula = formula, family = family, npc = npc, Knot = Knot,
     lam = lam, summary_table = summary_table, VAR_F = VAR_F,
+    basis = basis,
     WALD_f = WALD_f,
     summary_table_phirho = summary_table_phirho,
     N_i = N_i, f = f,
@@ -570,7 +571,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
 }
 
 #' Print APLMS object.
-#' @param mod APLMS object.
+#' @param model APLMS object.
 #'
 #' @param ... other arguments
 #' @examples
@@ -579,7 +580,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
 #' @method print aplms
 #' @export
 print.aplms <- function(model, ...) {
-  if (!inherits(mod, what = "aplms", which = FALSE)) {
+  if (!inherits(model, what = "aplms", which = FALSE)) {
     stop("not a aplms object")
   }
   cat("Call:\n")
