@@ -1,6 +1,3 @@
-# residuals.aplms(model,type=c("Quant","Pearson"),plot=NULL)
-
-
 #' Diagnostic Plots for additive partial linear models with symmetric errors.
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
