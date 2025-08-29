@@ -10,7 +10,7 @@
 #' @import psych MASS
 #'
 influence.aplms(model,
-                perturbation = c("case-weight","dispersion","response"), #,"explanatory", "corAR"),
+                perturbation = c("case-weight","dispersion","response","explanatory"), #,, "corAR"),
                 part = TRUE,
                 C = 4,
                 #ident = NULL,
@@ -21,16 +21,22 @@ influence.aplms(model,
 
 list_output <- list()
 
-p = nrow(model$summary_table_phirho)-1
-nn = nrow(model$data)
-ONE<-cbind(rep(1,nn))
+p <- nrow(model$summary_table_phirho)-1
+nn <- nrow(model$data)
+ONE <- cbind(rep(1,nn))
 A <- matrix_A(model$summary_table_phirho[2:(p+1),1],nn)
 B <- BB(p=4,nn)
 
 phi <- model$summary_table_phirho[1,1]
 N_i <- model$N_i
+Lobs <- model$LL_obs
 
-if (any(perturbation) == "case-weight"){
+coef_index <- c(sapply(N_i,dim)[2,],1,p)
+gamma_index <- seq_len(sum(sapply(N_i,dim)[2,]))
+phi_index <- sum(coef_index)-p
+rho_index <- ((sum(coef_index)-p+1):sum(coef_index))
+
+if (any(perturbation == "case-weight")){
 
     #calculo de las Deltas
     Delta_i <- lapply(model$N_i,
@@ -44,63 +50,44 @@ if (any(perturbation) == "case-weight"){
     DELTA <- t(cbind(do.call(cbind,Delta_i),
                      Delta_phi,
                      do.call(cbind,Delta_rho)))
-    Lobs <- model$LL_obs
 
-    num_ger<-t(DELTA)%*%solve(-Lobs)%*%DELTA
-    aux_ger <- num_ger %*% num_ger  # o considerar aux_ger<-SMUT::eigenMapMatMult(num_ger,num_ger)
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_ger/den_ger
-    C_i <- diag(BB_ger)
-    C_i_iden <-which(C_i>mean(C_i)+C*sd(C_i))
+    C_i <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = 0)
+    C_i_iden <- influential_index(C_i)
 
     list_output[[which(perturbation=="case-weight")]] <- list()
     list_output[[which(perturbation=="case-weight")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
   if(part){
 
-    coef_index<-c(sapply(N_i,dim)[2,],1,p)
-
     # gamma
 
-    B_gamma = Lobs
-    B_gamma[1:(sum(sapply(N_i,dim)[2,])),] = 0
-    B_gamma[,1:(sum(sapply(N_i,dim)[2,]))] = 0
+    B_gamma <- Lobs
+    B_gamma[gamma_index,] <- 0
+    B_gamma[,gamma_index] <- 0
     Lobs.aux_gamma = MASS::ginv(B_gamma)
-    num_gamma<-t(DELTA)%*%(solve(-Lobs) -Lobs.aux_gamma)%*%DELTA
-    aux_ger <- num_gamma %*% num_gamma # aux_ger <- SMUT::eigenMapMatMult(num_gamma,num_gamma)
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_gamma/den_ger
-    C_i_gamma <- diag(BB_ger)
-    C_i_gamma_iden <-which(C_i_gamma>mean(C_i_gamma)+C*sd(C_i_gamma))
+
+    C_i_gamma <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_gamma)
+    C_i_gamma_iden <- influential_index(C_i_gamma)
 
     # phi
 
-    B_phi = Lobs
-    B_phi[(sum(coef_index)-p),]=0
-    B_phi[,1:(sum(coef_index)-p)]=0
+    B_phi <- Lobs
+    B_phi[phi_index,] <- 0
+    B_phi[,phi_index] <- 0
     Lobs.aux_phi = MASS::ginv(B_phi)
 
-    num_phi<-t(DELTA)%*%(solve(-Lobs) -Lobs.aux_phi)%*%DELTA
-    aux_ger <- num_phi %*% num_phi  ## SMUT::eigenMapMatMult
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_phi/den_ger
-    C_i_phi <- diag(BB_ger)
-    C_i_phi_iden <-which(C_i_phi>mean(C_i_phi)+C*sd(C_i_phi))
-
+    C_i_phi <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_phi)
+    C_i_phi_iden <- influential_index(C_i_gamma)
 
     # rhos
 
-    B_rhos = Lobs
-    B_rhos[((sum(coef_index)-p+1):sum(coef_index)),]=0
-    B_rhos[,((sum(coef_index)-p+1):sum(coef_index))]=0
+    B_rhos <- Lobs
+    B_rhos[rho_index,]<- 0
+    B_rhos[,rho_index] <- 0
     Lobs.aux_rhos = MASS::ginv(B_rhos)
 
-    num_rhos<-t(DELTA)%*%(solve(-Lobs) -Lobs.aux_rhos)%*%DELTA
-    aux_ger <- num_rhos %*% num_rhos ## SMUT::eigenMapMatMult
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_rhos/den_ger
-    C_i_rhos <- diag(BB_ger)
-    C_i_rhos_iden<-which(C_i_rhos>mean(C_i_rhos)+4*sd(C_i_rhos))
+    C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
+    C_i_rhos_iden <- influential_index(C_i_rhos)
 
     list_output[[which(perturbation=="case-weight")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
                                                                  C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
@@ -108,8 +95,7 @@ if (any(perturbation) == "case-weight"){
   }
 }
 
-
-if (any(perturbation) == "dispersion"){
+if (any(perturbation == "dispersion")){
 
   #calculo de las Deltas
 
@@ -124,61 +110,46 @@ if (any(perturbation) == "dispersion"){
   DELTA_pdispersao <- t(cbind(do.call(cbind,Delta_i),
                               t(Delta_phi),
                               do.call(cbind,Delta_rho)))
-  num_ger<-t(DELTA_pdispersao)%*%solve(-Lobs)%*%DELTA_pdispersao
-  aux_ger <- num_ger %*% num_ger
-  den_ger<-sqrt(tr(aux_ger))
-  BB_ger<-num_ger/den_ger
-  C_i <- diag(BB_ger)
-  C_i_iden <-which(C_i>mean(C_i)+C*sd(C_i))
+
+  C_i <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = 0)
+  C_i_iden <- influential_index(C_i)
+
 
   list_output[[which(perturbation=="dispersion")]] <- list()
   list_output[[which(perturbation=="dispersion")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
   if(part){
 
-    coef_index<-c(sapply(N_i,dim)[2,],1,p)
-
     # gamma
 
-    B_gamma = Lobs
-    B_gamma[1:(sum(sapply(N_i,dim)[2,])),] = 0
-    B_gamma[,1:(sum(sapply(N_i,dim)[2,]))] = 0
+    B_gamma <- Lobs
+    B_gamma[gamma_index,] <- 0
+    B_gamma[,gamma_index] <- 0
     Lobs.aux_gamma = MASS::ginv(B_gamma)
-    num_gamma<-t(DELTA_pdispersao)%*%(solve(-Lobs) -Lobs.aux_gamma)%*%DELTA_pdispersao
-    aux_ger <- num_gamma %*% num_gamma # aux_ger <- SMUT::eigenMapMatMult(num_gamma,num_gamma)
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_gamma/den_ger
-    C_i_gamma <- diag(BB_ger)
-    C_i_gamma_iden <-which(C_i_gamma>mean(C_i_gamma)+C*sd(C_i_gamma))
+
+    C_i_gamma <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = Lobs.aux_gamma)
+    C_i_gamma_iden <- influential_index(C_i_gamma)
 
     # phi
 
-    B_phi = Lobs
-    B_phi[(sum(coef_index)-p),]=0
-    B_phi[,1:(sum(coef_index)-p)]=0
+    B_phi <- Lobs
+    B_phi[phi_index,] <- 0
+    B_phi[,phi_index] <- 0
     Lobs.aux_phi = MASS::ginv(B_phi)
 
-    num_phi<-t(DELTA_pdispersao)%*%(solve(-Lobs) -Lobs.aux_phi)%*%DELTA_pdispersao
-    aux_ger <- num_phi %*% num_phi  ## SMUT::eigenMapMatMult
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_phi/den_ger
-    C_i_phi <- diag(BB_ger)
-    C_i_phi_iden <-which(C_i_phi>mean(C_i_phi)+C*sd(C_i_phi))
-
+    C_i_phi <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = Lobs.aux_phi)
+    C_i_phi_iden <- influential_index(C_i_phi)
 
     # rhos
 
-    B_rhos = Lobs
-    B_rhos[((sum(coef_index)-p+1):sum(coef_index)),]=0
-    B_rhos[,((sum(coef_index)-p+1):sum(coef_index))]=0
+    B_rhos <- Lobs
+    B_rhos[rho_index,]<- 0
+    B_rhos[,rho_index]<- 0
     Lobs.aux_rhos = MASS::ginv(B_rhos)
 
-    num_rhos<-t(DELTA_pdispersao)%*%(solve(-Lobs) -Lobs.aux_rhos)%*%DELTA_pdispersao
-    aux_ger <- num_rhos %*% num_rhos ## SMUT::eigenMapMatMult
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_rhos/den_ger
-    C_i_rhos <- diag(BB_ger)
-    C_i_rhos_iden<-which(C_i_rhos>mean(C_i_rhos)+4*sd(C_i_rhos))
+    C_i_rhos <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = Lobs.aux_rhos)
+    C_i_rhos_iden <- influential_index(C_i_rhos)
+
 
     list_output[[which(perturbation=="dispersion")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
                                                                    C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
@@ -186,8 +157,7 @@ if (any(perturbation) == "dispersion"){
   }
 }
 
-
-if (any(perturbation) == "response"){
+if (any(perturbation == "response")){
 
   #calculo de las Deltas
   Delta_i <- lapply(N_i,
@@ -203,66 +173,129 @@ if (any(perturbation) == "response"){
                                 t(Delta_phi),
                                 do.call(cbind,Delta_rho)))
 
-  num_ger<-t(DELTA_pvarresposta)%*%solve(-Lobs)%*%DELTA_pvarresposta
-  aux_ger <- num_ger %*% num_ger  # o considerar aux_ger<-SMUT::eigenMapMatMult(num_ger,num_ger)
-  den_ger<-sqrt(tr(aux_ger))
-  BB_ger<-num_ger/den_ger
-  C_i <- diag(BB_ger)
-  C_i_iden <-which(C_i>mean(C_i)+C*sd(C_i))
+  C_i <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = 0)
+  C_i_iden <- influential_index(C_i)
 
   list_output[[which(perturbation=="response")]] <- list()
   list_output[[which(perturbation=="response")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
   if(part){
 
-    coef_index<-c(sapply(N_i,dim)[2,],1,p)
-
     # gamma
 
-    B_gamma = Lobs
-    B_gamma[1:(sum(sapply(N_i,dim)[2,])),] = 0
-    B_gamma[,1:(sum(sapply(N_i,dim)[2,]))] = 0
+    B_gamma <- Lobs
+    B_gamma[gamma_index,] <- 0
+    B_gamma[,gamma_index] <- 0
     Lobs.aux_gamma = MASS::ginv(B_gamma)
-    num_gamma<-t(DELTA_pvarresposta)%*%(solve(-Lobs) -Lobs.aux_gamma)%*%DELTA_pvarresposta
-    aux_ger <- num_gamma %*% num_gamma # aux_ger <- SMUT::eigenMapMatMult(num_gamma,num_gamma)
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_gamma/den_ger
-    C_i_gamma <- diag(BB_ger)
-    C_i_gamma_iden <-which(C_i_gamma>mean(C_i_gamma)+C*sd(C_i_gamma))
+
+    C_i_gamma <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = Lobs.aux_gamma)
+    C_i_gamma_iden <- influential_index(C_i_gamma)
 
     # phi
 
-    B_phi = Lobs
-    B_phi[(sum(coef_index)-p),]=0
-    B_phi[,1:(sum(coef_index)-p)]=0
-    Lobs.aux_phi = MASS::ginv(B_phi)
+    B_phi <- Lobs
+    B_phi[phi_index,]<- 0
+    B_phi[,phi_index]<- 0
+    Lobs.aux_phi <- MASS::ginv(B_phi)
 
-    num_phi<-t(DELTA_pvarresposta)%*%(solve(-Lobs) -Lobs.aux_phi)%*%DELTA_pvarresposta
-    aux_ger <- num_phi %*% num_phi  ## SMUT::eigenMapMatMult
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_phi/den_ger
-    C_i_phi <- diag(BB_ger)
-    C_i_phi_iden <-which(C_i_phi>mean(C_i_phi)+C*sd(C_i_phi))
-
+    C_i_phi <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = Lobs.aux_phi)
+    C_i_phi_iden <- influential_index(C_i_phi)
 
     # rhos
 
     B_rhos = Lobs
-    B_rhos[((sum(coef_index)-p+1):sum(coef_index)),]=0
-    B_rhos[,((sum(coef_index)-p+1):sum(coef_index))]=0
-    Lobs.aux_rhos = MASS::ginv(B_rhos)
+    B_rhos[rho_index,]<- 0
+    B_rhos[,rho_index]<- 0
+    Lobs.aux_rhos <- MASS::ginv(B_rhos)
 
-    num_rhos<-t(DELTA_pvarresposta)%*%(solve(-Lobs) -Lobs.aux_rhos)%*%DELTA_pvarresposta
-    aux_ger <- num_rhos %*% num_rhos ## SMUT::eigenMapMatMult
-    den_ger<-sqrt(tr(aux_ger))
-    BB_ger<-num_rhos/den_ger
-    C_i_rhos <- diag(BB_ger)
-    C_i_rhos_iden<-which(C_i_rhos>mean(C_i_rhos)+4*sd(C_i_rhos))
+    C_i_rhos <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = Lobs.aux_rhos)
+    C_i_rhos_iden <- influential_index(C_i_rhos)
 
     list_output[[which(perturbation=="response")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
                                                                   C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
                                                                   C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
   }
+
+}
+
+if (any(perturbation == "explanatory")){
+
+  if (coef_index[1]==1){
+    print("There is no explanatory variables")
+    list_output[[which(perturbation=="explanatory")]] <- NULL
+  } else {
+
+    exp_index <- 2:coef_index[1]
+    exp_numbers <- coef_index[1]-1
+
+    list_output[[which(perturbation=="explanatory")]] <- list()
+
+    for (r in exp_index){
+
+      gamma_r<-model$f[[1]][r]
+
+      #calculo de las Deltas
+      Delta_i <- lapply(N_i,
+                        FUN = function(x){t(t(A%*%x) %*%
+                                              (4*model$Dd-model$Dv) %*% A/phi)})
+      Delta_phi<- t(A %*% model$residuals_mu) %*% (2* model$Dd-model$Dv) %*% A /(phi^2)
+      Delta_rho <- lapply(B,
+                          FUN = function(x){t( t(x%*%model$residuals_mu)%*%
+                                                 (model$Dv-4*model$Dd)%*% A -
+                                                 #####
+                                               t(A%*%model$residuals_mu) %*%
+                                                 model$Dv %*% x) /phi})
+      DELTA_pvarexpl <- gamma_r  * t(cbind(do.call(cbind,Delta_i),
+                                           t(Delta_phi),
+                                           do.call(cbind,Delta_rho)))
+
+      C_i <- conf_normal_curvature(DELTA_pvarexpl, Lobs, Lobs.aux = 0)
+      C_i_iden <- influential_index(C_i)
+
+      list_output[[which(perturbation=="explanatory")]][[r-1]] <- list()
+      list_output[[which(perturbation=="explanatory")]][[r-1]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+
+      if(part){
+
+        # gamma
+
+        B_gamma <- Lobs
+        B_gamma[gamma_index,] <- 0
+        B_gamma[,gamma_index] <- 0
+        Lobs.aux_gamma = MASS::ginv(B_gamma)
+
+        C_i_gamma <- conf_normal_curvature(DELTA_pvarexpl, Lobs, Lobs.aux = Lobs.aux_gamma)
+        C_i_gamma_iden <- influential_index(C_i_gamma)
+
+        # phi
+
+        B_phi <- Lobs
+        B_phi[phi_index,] <- 0
+        B_phi[,phi_index] <- 0
+        Lobs.aux_phi = MASS::ginv(B_phi)
+
+        C_i_phi <- conf_normal_curvature(DELTA_pvarexpl, Lobs, Lobs.aux = Lobs.aux_phi)
+        C_i_phi_iden <- influential_index(C_i_gamma)
+
+        # rhos
+
+        B_rhos <- Lobs
+        B_rhos[rho_index,]<- 0
+        B_rhos[,rho_index] <- 0
+        Lobs.aux_rhos = MASS::ginv(B_rhos)
+
+        C_i_rhos <- conf_normal_curvature(DELTA_pvarexpl,Lobs, Lobs.aux = Lobs.aux_rhos)
+        C_i_rhos_iden <- influential_index(C_i_rhos)
+
+        list_output[[which(perturbation=="explanatory")]][[r-1]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
+                                                                       C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
+                                                                       C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+
+      }
+    }
+  }
+
+  names(list_output[[which(perturbation=="explanatory")]]) <- row.names(model$f[[1]])[-1]
 
 }
 
