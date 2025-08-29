@@ -127,8 +127,8 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   f_aux <- f_init
 
   #####
-  conv_betaf <- array()
-  conv_betaf[1] <- 1
+  # conv_betaf <- array()
+  # conv_betaf[1] <- 1
   conv_geral <- array()
   conv_geral[1] <- 1
   i <- j <- 1
