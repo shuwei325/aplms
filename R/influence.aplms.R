@@ -1,4 +1,4 @@
-#' local influence of the object `aplms()`.
+#' local influence 2 of the object `aplms()`.
 #'
 #' Takes a fitted `aplms` object and outputs some diagnostic information about the fitting procedure and results. Returns the conformal normal curvature of the fitted `aplms` model object. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
 #'
@@ -11,383 +11,231 @@
 #' @export
 
 influence.aplms <- function(model,
-                perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
-                part = TRUE,
-                C = 4,
-                #ident = NULL,
-                plot = FALSE#,
-                # labels = NULL,
-                # iden = F
-                ){
+                            perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
+                            part = TRUE,
+                            C = 4,
+                            #ident = NULL,
+                            plot = FALSE#,
+                            # labels = NULL,
+                            # iden = F
+){
 
 
+  if (sapply(model$N_i,ncol)[1]==1 & any(perturbation == "explanatory")){
+    stop("There is no explanatory variables.")
+  }
 
-list_output <- list()
+  if ((nrow(model$summary_table_phirho)-1)== 0 & any(perturbation == "corAR")){
+    stop("There is no autoregressive coeficients.")
+  }
 
-p <- nrow(model$summary_table_phirho)-1
-nn <- nrow(model$data)
-ONE <- cbind(rep(1,nn))
-A <- matrix_A(model$summary_table_phirho[2:(p+1),1],nn)
-B <- BB(p=p,nn)
 
-phi <- model$summary_table_phirho[1,1]
-N_i <- model$N_i
-Lobs <- model$LL_obs
+  list_output <- list()
 
-coef_index <- c(sapply(N_i,dim)[2,],1,p)
-gamma_index <- seq_len(sum(sapply(N_i,dim)[2,]))
-phi_index <- sum(coef_index)-p
-rho_index <- ((sum(coef_index)-p+1):sum(coef_index))
+   p <- nrow(model$summary_table_phirho)-1
+  # nn <- nrow(model$data)
+  # ONE <- cbind(rep(1,nn))
+  # A <- matrix_A(model$summary_table_phirho[2:(p+1),1],nn)
+  # B <- BB(p=p,nn)
+  #
+  # phi <- model$summary_table_phirho[1,1]
+  N_i <- model$N_i
+  Lobs <- model$LL_obs
 
-if (any(perturbation == "case-weight")){
+  coef_index <- c(sapply(N_i,dim)[2,],1,p)
+  gamma_index <- seq_len(sum(sapply(N_i,dim)[2,]))
+  phi_index <- sum(coef_index)-p
+  rho_index <- ((sum(coef_index)-p+1):sum(coef_index))
 
-    #calculo de las Deltas
-    Delta_i <- lapply(model$N_i,
-                      FUN = function(x){
-                          t(t(A%*%x) %*% model$Dv %*% diag(c(A %*% model$residuals_mu))/phi)
-                        })
-    Delta_phi<- -ONE/(2*phi) + model$Dm%*%ONE/(2*phi)
-    Delta_rho <- lapply(B,
-                        FUN = function(x){t(t(x %*% model$residuals_mu) %*%
-                                              model$Dv %*% diag(c(A %*% model$residuals_mu))/phi)})
-    DELTA <- t(cbind(do.call(cbind,Delta_i),
-                     Delta_phi,
-                     do.call(cbind,Delta_rho)))
+  if (any(perturbation == "case-weight")){
 
-    C_i <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = 0)
+    DELTA <- influence_DELTA(model = model, perturb_scheme = "case-weight")
+
+    C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
     C_i_iden <- influential_index(C_i, C = C)
 
     list_output[[which(perturbation=="case-weight")]] <- list()
     list_output[[which(perturbation=="case-weight")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
-  if(part){
+    if(part){
 
-    # gamma
+      # gamma
+      Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
+      C_i_gamma <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_gamma)
+      C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
-    B_gamma <- Lobs
-    B_gamma[gamma_index,] <- 0
-    B_gamma[,gamma_index] <- 0
-    Lobs.aux_gamma = MASS::ginv(B_gamma)
+      # phi
+      Lobs.aux_phi <- Gp(Lobs, index = phi_index)
+      C_i_phi <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_phi)
+      C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
-    C_i_gamma <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_gamma)
-    C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
+      # rhos
+      Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
+      C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
+      C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-    # phi
-
-    B_phi <- Lobs
-    B_phi[phi_index,] <- 0
-    B_phi[,phi_index] <- 0
-    Lobs.aux_phi = MASS::ginv(B_phi)
-
-    C_i_phi <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_phi)
-    C_i_phi_iden <- influential_index(C_i_phi, C = C)
-
-    # rhos
-
-    B_rhos <- Lobs
-    B_rhos[rho_index,]<- 0
-    B_rhos[,rho_index] <- 0
-    Lobs.aux_rhos = MASS::ginv(B_rhos)
-
-    C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
-    C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
-
-    list_output[[which(perturbation=="case-weight")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                 C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                 C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+      list_output[[which(perturbation=="case-weight")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
+                                                                     C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
+                                                                     C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+    }
   }
-}
 
-if (any(perturbation == "dispersion")){
+  if (any(perturbation == "dispersion")){
 
-  #calculo de las Deltas
+    DELTA <- influence_DELTA(model = model, perturb_scheme = "dispersion")
+    C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
+    C_i_iden <- influential_index(C_i, C = C)
 
-  Delta_i <- lapply(N_i,
-                    FUN = function(x){t(t(A%*%x) %*% (model$Dv-2*model$Dd) %*%
-                                          diag(c(A %*% model$residuals_mu))/phi)})
-  Delta_phi<- 1/(2*phi)*t(model$delta) %*% ( model$Dv - 2* model$Dd)
-  Delta_rho <- lapply(B,
-                      FUN = function(x){t( t(x%*%model$residuals_mu)%*%
-                                             (2*model$Dd-model$Dv)%*%
-                                             diag(c(A%*%model$residuals_mu)) /phi)})
-  DELTA_pdispersao <- t(cbind(do.call(cbind,Delta_i),
-                              t(Delta_phi),
-                              do.call(cbind,Delta_rho)))
+    list_output[[which(perturbation=="dispersion")]] <- list()
+    list_output[[which(perturbation=="dispersion")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
-  C_i <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = 0)
-  C_i_iden <- influential_index(C_i, C = C)
+    if(part){
 
+      # gamma
+      Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
+      C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
+      C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
-  list_output[[which(perturbation=="dispersion")]] <- list()
-  list_output[[which(perturbation=="dispersion")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+      # phi
+      Lobs.aux_phi <- Gp(Lobs, index = phi_index)
+      C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
+      C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
-  if(part){
-
-    # gamma
-
-    B_gamma <- Lobs
-    B_gamma[gamma_index,] <- 0
-    B_gamma[,gamma_index] <- 0
-    Lobs.aux_gamma = MASS::ginv(B_gamma)
-
-    C_i_gamma <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = Lobs.aux_gamma)
-    C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
-
-    # phi
-
-    B_phi <- Lobs
-    B_phi[phi_index,] <- 0
-    B_phi[,phi_index] <- 0
-    Lobs.aux_phi = MASS::ginv(B_phi)
-
-    C_i_phi <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = Lobs.aux_phi)
-    C_i_phi_iden <- influential_index(C_i_phi, C = C)
-
-    # rhos
-
-    B_rhos <- Lobs
-    B_rhos[rho_index,]<- 0
-    B_rhos[,rho_index]<- 0
-    Lobs.aux_rhos = MASS::ginv(B_rhos)
-
-    C_i_rhos <- conf_normal_curvature(DELTA_pdispersao, Lobs, Lobs.aux = Lobs.aux_rhos)
-    C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
+      # rhos
+      Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
+      C_i_rhos <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_rhos)
+      C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
 
-    list_output[[which(perturbation=="dispersion")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                   C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                   C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+      list_output[[which(perturbation=="dispersion")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
+                                                                    C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
+                                                                    C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+    }
   }
-}
 
-if (any(perturbation == "response")){
+  if (any(perturbation == "response")){
 
-  #calculo de las Deltas
-  Delta_i <- lapply(N_i,
-                    FUN = function(x){t(t(A%*%x) %*%
-                                          (model$Dv-4*model$Dd) %*% A/phi)})
-  Delta_phi<- t(A %*% model$residuals_mu) %*% ( model$Dv - 2* model$Dd) %*% A /(phi^2)
-  Delta_rho <- lapply(B,
-                      FUN = function(x){t( t(x%*%model$residuals_mu)%*%
-                                             (4*model$Dd-model$Dv)%*% A -
-                                             t(A%*%model$residuals_mu) %*%
-                                             model$Dv %*% x) /phi})
-  DELTA_pvarresposta <- t(cbind(do.call(cbind,Delta_i),
-                                t(Delta_phi),
-                                do.call(cbind,Delta_rho)))
+    DELTA <- influence_DELTA(model = model, perturb_scheme = "response")
 
-  C_i <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = 0)
-  C_i_iden <- influential_index(C_i, C = C)
+    C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
+    C_i_iden <- influential_index(C_i, C = C)
 
-  list_output[[which(perturbation=="response")]] <- list()
-  list_output[[which(perturbation=="response")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+    list_output[[which(perturbation=="response")]] <- list()
+    list_output[[which(perturbation=="response")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
-  if(part){
+    if(part){
 
-    # gamma
+      # gamma
+      Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
+      C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
+      C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
-    B_gamma <- Lobs
-    B_gamma[gamma_index,] <- 0
-    B_gamma[,gamma_index] <- 0
-    Lobs.aux_gamma = MASS::ginv(B_gamma)
+      # phi
+      Lobs.aux_phi <- Gp(Lobs, index = phi_index)
+      C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
+      C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
-    C_i_gamma <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = Lobs.aux_gamma)
-    C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
+      # rhos
+      Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
+      C_i_rhos <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_rhos)
+      C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-    # phi
-
-    B_phi <- Lobs
-    B_phi[phi_index,]<- 0
-    B_phi[,phi_index]<- 0
-    Lobs.aux_phi <- MASS::ginv(B_phi)
-
-    C_i_phi <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = Lobs.aux_phi)
-    C_i_phi_iden <- influential_index(C_i_phi, C = C)
-
-    # rhos
-
-    B_rhos = Lobs
-    B_rhos[rho_index,]<- 0
-    B_rhos[,rho_index]<- 0
-    Lobs.aux_rhos <- MASS::ginv(B_rhos)
-
-    C_i_rhos <- conf_normal_curvature(DELTA_pvarresposta, Lobs, Lobs.aux = Lobs.aux_rhos)
-    C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
-
-    list_output[[which(perturbation=="response")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
+      list_output[[which(perturbation=="response")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
                                                                   C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
                                                                   C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
-  }
-
-}
-
-if (any(perturbation == "explanatory")){
-
-  if (coef_index[1]==1){
-    print("There is no explanatory variables")
-    list_output[[which(perturbation=="explanatory")]] <- NULL
-  } else {
-
-    exp_index <- 2:coef_index[1]
-
-    list_output[[which(perturbation=="explanatory")]] <- list()
-
-    for (r in exp_index){
-
-      gamma_r<-model$f[[1]][r]
-
-      #calculo de las Deltas
-      Delta_i <- lapply(N_i,
-                        FUN = function(x){t(t(A%*%x) %*%
-                                              (4*model$Dd-model$Dv) %*% A/phi)})
-      Delta_phi<- t(A %*% model$residuals_mu) %*% (2* model$Dd-model$Dv) %*% A /(phi^2)
-      Delta_rho <- lapply(B,
-                          FUN = function(x){t( t(x%*%model$residuals_mu)%*%
-                                                 (model$Dv-4*model$Dd)%*% A -
-                                                 #####
-                                               t(A%*%model$residuals_mu) %*%
-                                                 model$Dv %*% x) /phi})
-      DELTA_pvarexpl <- gamma_r  * t(cbind(do.call(cbind,Delta_i),
-                                           t(Delta_phi),
-                                           do.call(cbind,Delta_rho)))
-
-      C_i <- conf_normal_curvature(DELTA_pvarexpl, Lobs, Lobs.aux = 0)
-      C_i_iden <- influential_index(C_i, C = C)
-
-      list_output[[which(perturbation=="explanatory")]][[r-1]] <- list()
-      list_output[[which(perturbation=="explanatory")]][[r-1]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
-
-      if(part){
-
-        # gamma
-
-        B_gamma <- Lobs
-        B_gamma[gamma_index,] <- 0
-        B_gamma[,gamma_index] <- 0
-        Lobs.aux_gamma = MASS::ginv(B_gamma)
-
-        C_i_gamma <- conf_normal_curvature(DELTA_pvarexpl, Lobs, Lobs.aux = Lobs.aux_gamma)
-        C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
-
-        # phi
-
-        B_phi <- Lobs
-        B_phi[phi_index,] <- 0
-        B_phi[,phi_index] <- 0
-        Lobs.aux_phi = MASS::ginv(B_phi)
-
-        C_i_phi <- conf_normal_curvature(DELTA_pvarexpl, Lobs, Lobs.aux = Lobs.aux_phi)
-        C_i_phi_iden <- influential_index(C_i_phi, C = C)
-
-        # rhos
-
-        B_rhos <- Lobs
-        B_rhos[rho_index,]<- 0
-        B_rhos[,rho_index] <- 0
-        Lobs.aux_rhos = MASS::ginv(B_rhos)
-
-        C_i_rhos <- conf_normal_curvature(DELTA_pvarexpl,Lobs, Lobs.aux = Lobs.aux_rhos)
-        C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
-
-        list_output[[which(perturbation=="explanatory")]][[r-1]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                       C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                       C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
-
-      }
     }
+
   }
 
-  names(list_output[[which(perturbation=="explanatory")]]) <- row.names(model$f[[1]])[-1]
+  if (any(perturbation == "explanatory")){
 
-}
+      exp_index <- 1:(sapply(N_i,ncol)[1]-1)
+      list_output[[which(perturbation=="explanatory")]] <- list()
 
+      for (r in exp_index){
 
-if (any(perturbation == "corAR")){
+        DELTA <- influence_DELTA(model = model, perturb_scheme = "explanatory", r = r)
 
-  if (p==0){
-    print("There is no autoregressive coeficients")
-    list_output[[which(perturbation=="corAR")]] <- NULL
-  } else {
+        C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
+        C_i_iden <- influential_index(C_i, C = C)
 
-    rho_index <- 1:p
+        list_output[[which(perturbation=="explanatory")]][[r]] <- list()
+        list_output[[which(perturbation=="explanatory")]][[r]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
 
-    list_output[[which(perturbation=="corAR")]] <- list()
+        if(part){
 
-    for (r in rho_index){
+          # gamma
+          Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
+          C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
+          C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
-      Br <- B[[r]]
+          # phi
+          Lobs.aux_phi <- Gp(Lobs, index = phi_index)
+          C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
+          C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
-      #calculo de las Deltas
+          # rhos
+          Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
+          C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
+          C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-      Delta_i <- lapply(N_i,
-                        FUN = function(x){(1/phi)*t(t(A%*%x) %*%
-                                                      (model$Dv-4*model$Dd) %*% diag(c(Br%*%model$residuals_mu)) +
-                                                      t(Br%*%x) %*% model$Dv %*% diag(c(A%*%model$residuals_mu)))})
+          list_output[[which(perturbation=="explanatory")]][[r]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
+                                                                                C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
+                                                                                C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
 
-      Delta_phi<- t(A %*% model$residuals_mu) %*% ( model$Dv - 2* model$Dd) %*% (diag(c(Br%*%model$residuals_mu))) /(phi^2)
-
-      Delta_rho <- lapply(B,
-                          FUN = function(x){(1/phi) *t( t(x%*%model$residuals_mu)%*%
-                                                          (4*model$Dd-model$Dv)%*%
-                                                          (diag(c(Br%*%model$residuals_mu))))})
-
-      DELTA_pcoef <- t(cbind(do.call(cbind,Delta_i),
-                             t(Delta_phi),
-                             do.call(cbind,Delta_rho)))
-
-
-      C_i <- conf_normal_curvature(DELTA_pcoef, Lobs, Lobs.aux = 0)
-      C_i_iden <- influential_index(C_i, C = C)
-
-      list_output[[which(perturbation=="corAR")]][[r]] <- list()
-      list_output[[which(perturbation=="corAR")]][[r]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
-
-      if(part){
-
-        # gamma
-
-        B_gamma <- Lobs
-        B_gamma[gamma_index,] <- 0
-        B_gamma[,gamma_index] <- 0
-        Lobs.aux_gamma = MASS::ginv(B_gamma)
-
-        C_i_gamma <- conf_normal_curvature(DELTA_pcoef, Lobs, Lobs.aux = Lobs.aux_gamma)
-        C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
-
-        # phi
-
-        B_phi <- Lobs
-        B_phi[phi_index,] <- 0
-        B_phi[,phi_index] <- 0
-        Lobs.aux_phi = MASS::ginv(B_phi)
-
-        C_i_phi <- conf_normal_curvature(DELTA_pcoef, Lobs, Lobs.aux = Lobs.aux_phi)
-        C_i_phi_iden <- influential_index(C_i_phi, C = C)
-
-        # rhos
-
-        B_rhos <- Lobs
-        B_rhos[rho_index,]<- 0
-        B_rhos[,rho_index] <- 0
-        Lobs.aux_rhos = MASS::ginv(B_rhos)
-
-        C_i_rhos <- conf_normal_curvature(DELTA_pcoef,Lobs, Lobs.aux = Lobs.aux_rhos)
-        C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
-
-        list_output[[which(perturbation=="corAR")]][[r]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                              C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                              C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+        }
       }
-    }
+    names(list_output[[which(perturbation=="explanatory")]]) <- row.names(model$f[[1]])[-1]
   }
 
-  names(list_output[[which(perturbation=="corAR")]]) <- paste0("rho",1:p)
 
-}
+  if (any(perturbation == "corAR")){
+
+      k_index <- 1:p
+
+      list_output[[which(perturbation=="corAR")]] <- list()
+
+      for (k in k_index){
+
+        DELTA <- influence_DELTA(model = model, perturb_scheme = "corAR", k = k)
+
+        C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
+        C_i_iden <- influential_index(C_i, C = C)
+
+        list_output[[which(perturbation=="corAR")]][[k]] <- list()
+        list_output[[which(perturbation=="corAR")]][[k]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+
+        if(part){
+
+          # gamma
+          Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
+          C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
+          C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
+
+          # phi
+          Lobs.aux_phi <- Gp(Lobs, index = phi_index)
+          C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
+          C_i_phi_iden <- influential_index(C_i_phi, C = C)
+
+          # rhos
+          Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
+          C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
+          C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
+
+          list_output[[which(perturbation=="corAR")]][[k]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
+                                                                        C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
+                                                                        C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+        }
+      }
 
 
-names(list_output) <- perturbation
+    names(list_output[[which(perturbation=="corAR")]]) <- paste0("rho",1:p)
 
-return(list_output)
+  }
+
+
+  names(list_output) <- perturbation
+
+  return(list_output)
 
 }
