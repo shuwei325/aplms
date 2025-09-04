@@ -1,3 +1,4 @@
+source("utils.aplms.R")
 #' Fitting Additive partial linear models with symmetric errors
 #'
 #' \code{aplms} is used to fit additive partial linear models with symmetric errors.
@@ -29,26 +30,14 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
                   init,
                   lam) {
   this.call <- match.call()
-  if (missingArg(formula)) {
-    stop("The formula argument is missing.")
-  }
-  if (missingArg(npc)) {
-    stop("The model needs at least one non-parametric component.")
-  }
-  if (missingArg(data)) {
-    stop("The data argument is missing.")
-  }
-  if (!all(npc %in% names(data))) {
-    stop("The non-parametric variables must be in data.")
-  }
-  if (control["algorithm2"] == "BFGS") {
-    gradient <- NULL
-  }
-  # if (control["algorithm"]=="Fisher.score"){
-  #   gradient=grr
-  # }
 
-  k <- length(npc)
+  # Check for missing arguments
+  if (missingArg(formula)) stop("The formula argument is missing.")
+  if (missingArg(npc)) stop("The model needs at least one non-parametric component.")
+  if (missingArg(data)) stop("The data argument is missing.")
+  if (!all(npc %in% names(data))) stop("The non-parametric variables must be in data.")
+  if (is.null(family$family)) stop("'family' not recognized")
+
   if (missingArg(basis)) {
     if (k == 1) basis <- c("ps")
     if (k >= 2) basis <- c("ps", rep("cp", k - 1)) # if (k==2) basis <- c("cr","cc")
@@ -58,55 +47,48 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     lam <- rep(10, k)
   }
 
-  data1 <- model.frame(formula, data = data)
-
-  y <- model.response(data1)
-
-  N0 <- model.matrix(formula, data = data1)
-  q <- ncol(N0)
-  nn <- nrow(N0)
-
   if (missingArg(Knot)) {
     Knot <- unlist(lapply(data[npc], max)) * (1 / 4)
     Knot <- sapply(Knot, function(x) min(x, 35))
   }
 
-  K0 <- matrix(0, nrow = ncol(N0), ncol = ncol(N0))
-
-  ZZ <- list()
-  N_i <- list()
-  K_i <- list()
-  for (i in 1:k) {
-    XX <- as.list(substitute(list(npc[i])))[-1]
-    YY <- s(XX, bs = basis[i], m = c(2, 3), k = Knot[i])
-    YY$term <- npc[i]
-    ZZ[[i]] <- mgcv::smoothCon(YY, data = data, absorb.cons = T)
-    N_i[[i]] <- ZZ[[i]][[1]]$X
-    K_i[[i]] <- (ZZ[[i]][[1]]$S)[[1]]
-  }
-
-  N_i <- append(list(N0), N_i)
-  K_i <- append(list(K0), K_i)
-
-  rdf <- nrow(data) - ncol(N0) - p - 1
-
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
   }
+
   if (is.function(family)) {
     family <- family()
   }
-  if (is.null(family$family)) {
-    print(family)
-    stop("'family' not recognized")
-  }
 
-  # Symmetric error setup
   xi_t <- family$g4(1,
     df = family$df,
     alpha = family$alpha, mp = family$mp, epsi = family$epsi,
     sigmap = family$sigmap, k = family$k, nu = family$nu
   )
+
+  if (missingArg(init)) {
+    phi <- sd(y) / xi_t
+    rho <- rep(0, p)
+  } else {
+    phi <- init[[1]]
+    rho <- init[[2]]
+  }
+
+  ###############################
+
+  k <- length(npc)
+  data1 <- model.frame(formula, data = data)
+  y <- model.response(data1)
+  N0 <- model.matrix(formula, data = data1)
+  q <- ncol(N0)
+  nn <- nrow(N0)
+
+  K0 <- matrix(0, nrow = q, ncol = nn)
+  response <- setupNiKi(npc, basis, Knot, data)
+  N_i <- append(list(N0), response[1])
+  K_i <- append(list(K0), response[2])
+
+  rdf <- nrow(data) - ncol(N0) - p - 1
 
   # initial values
   f_init <- vector("list", k + 1)
@@ -116,145 +98,63 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     f_init[[i + 1]] <- cbind(rep(0, length = dim(N_i[[i + 1]])[2]))
   }
 
-  if (missingArg(init)) {
-    phi_ini <- sd(y) / xi_t
-    rho_ini <- rep(0, p)
-  } else {
-    phi_ini <- init[[1]]
-    rho_ini <- init[[2]]
-  }
-
   f_aux <- f_init
 
   #####
-  conv_betaf <- array()
-  conv_betaf[1] <- 1
   conv_geral <- array()
   conv_geral[1] <- 1
-  i <- j <- 1
-  while (conv_geral[j] > control$tol) {
+  j <- 2
+
+  while (conv_geral[j] > control$tol && j <= control$Maxiter2) {
     print(paste("While", j))
-    i <- 1
+    i <- 2
     conv_betaf <- array()
     conv_betaf[1] <- 1
-    j <- j + 1
-    A <- matrix_A(rho_ini, nn)
+    A <- matrix_A(rho, nn)
 
+    while (conv_betaf[i] > control$tol && i <= control$Maxiter1) {
+      print(i)
+      a <- res(y, f_init, phi, rho, N_i)
+      posicao <- as.vector(family$g1(a,
+        df = family$df,
+        alpha = family$alpha, mp = family$mp, epsi = family$epsi,
+        sigmap = family$sigmap, k = family$k, nu = family$nu
+      ))
+      Dv <- (diag(-2 * posicao))
 
-    if (control$algorithm1 == "backfitting") {
-      while (conv_betaf[i] > control$tol) {
-        a <- res(y, f_init, phi_ini, rho_ini, N_i)
-        posicao <- as.vector(family$g1(a,
-          df = family$df,
-          alpha = family$alpha, mp = family$mp, epsi = family$epsi,
-          sigmap = family$sigmap, k = family$k, nu = family$nu
-        ))
-        Dv <- (diag(-2 * posicao))
-        ############################
-        print(i)
-        i <- i + 1
-        if (i > control$Maxiter1) {
-          break
-        } ############################ control
-
-        S_i <- list()
-        S_i[[1]] <- tcrossprod(
-          solve(t(A %*% N_i[[1]]) %*% Dv %*% (A %*% N_i[[1]])),
-          (A %*% N_i[[1]])
-        ) %*% Dv
-        for (l in 1:k) {
-          S_i[[l + 1]] <- tcrossprod(
-            solve(t(A %*% N_i[[l + 1]]) %*% Dv %*% (A %*% N_i[[l + 1]]) + phi_ini * lam[l] * K_i[[l + 1]]),
-            (A %*% N_i[[l + 1]])
-          ) %*% Dv
-        }
-
-        f <- f_init
-        f0 <- S_i[[1]] %*% (A %*% (y - Reduce(`+`, mapply("%*%", N_i[-1], f[-1], SIMPLIFY = FALSE))))
-        f[[1]] <- f0
-        for (l in 1:k) {
-          f_i <- S_i[[l + 1]] %*% (A %*% (y - Reduce(`+`, mapply("%*%", N_i[-(l + 1)], f[-(l + 1)], SIMPLIFY = FALSE))))
-          f[[l + 1]] <- f_i
-        }
-
-        error <- mapply("-", f, f_init, SIMPLIFY = FALSE)
-        conv_betaf[i] <- max(unlist(sapply(error, abs)))
-
-        f_init <- f
+      if (control$algorithm1 == "backfitting") {
+        f <- backfitting(N_i, A, Dv, k, f_init)          
+      } else if (control$algorithm1 == "P-GAM") {
+        f <- pgam(N_i, A, lam, phi, y, f_init)
       }
-    } else if (control$algorithm1 == "P-GAM") {
-      while (conv_betaf[i] > control$tol) {
-        a <- res(y, f_init, phi_ini, rho_ini, N_i)
-        posicao <- as.vector(family$g1(a,
-          df = family$df,
-          alpha = family$alpha, mp = family$mp, epsi = family$epsi,
-          sigmap = family$sigmap, k = family$k, nu = family$nu
-        ))
-        Dv <- (diag(-2 * posicao))
 
-        dg <- family$g2(a,
-          df = family$df,
-          alpha = family$alpha, mp = family$mp, epsi = family$epsi,
-          sigmap = family$sigmap, k = family$k, nu = family$nu
-        )
-        ############################
-        print(i)
-        i <- i + 1
-        if (i > control$Maxiter1) {
-          break
-        }
-
-        AN_i <- lapply(N_i, FUN = function(x) {
-          A %*% x
-        })
-        N_A <- do.call(cbind, AN_i)
-        lam_list <- as.list(lam)
-        lam_list <- append(0, lam_list)
-        M_gamma <- mapply("*", lam_list, K_i, SIMPLIFY = FALSE)
-
-        f_vector <- solve(t(N_A) %*% Dv %*% N_A + phi_ini * Matrix::bdiag(M_gamma)) %*% t(N_A) %*% Dv %*% (A %*% y)
-
-        f <- list()
-        param_f <- sapply(f_init, nrow)
-        f_dimension <- cumsum(param_f)
-        f[[1]] <- cbind(f_vector[1:f_dimension[1]])
-        for (l in 2:length(f_dimension)) {
-          f[[l]] <- cbind(f_vector[(f_dimension[l - 1] + 1):f_dimension[l]])
-        }
-
-        error <- mapply("-", f, f_init, SIMPLIFY = FALSE)
-        conv_betaf[i] <- max(unlist(sapply(error, abs)))
-
-        f_init <- f
-      }
+      error <- mapply("-", f, f_init, SIMPLIFY = FALSE)
+      conv_betaf[i] <- max(unlist(sapply(error, abs)))
+      f_init <- f
+      i <- i + 1
     }
 
     par1 <- optim(
-      par = c(phi_ini, rho_ini),
+      par = c(phi, rho),
       fn = logLik3.test, f = f_init, y = y, N_i = N_i, family = family,
       method = "L-BFGS-B",
       lower = c(0.001, rep(-1, p)), upper = c(Inf, rep(1, p)),
       control = list(fnscale = -1), hessian = T
     )
 
-    dif_phi_rho <- par1$par - c(phi_ini, rho_ini)
-    phi_ini <- par1$par[1]
+    dif_phi_rho <- par1$par - c(phi, rho)
+    phi <- par1$par[1]
     if (p > 0) {
-      rho_ini <- par1$par[2:(1 + p)]
+      rho <- par1$par[2:(1 + p)]
     }
 
     f_error <- mapply("-", f_aux, f, SIMPLIFY = FALSE)
     f_aux <- f
 
     conv_geral[j] <- max(abs(dif_phi_rho), unlist(sapply(f_error, abs)))
-
-    if (j == control$Maxiter2) {
-      break
-    }
+    j <- j + 1
   }
 
-  rho <- rho_ini
-  phi <- phi_ini
   A <- matrix_A(rho, nn)
   a <- res(y, f, phi, rho, N_i)
   posicao <- as.vector(family$g1(a,
