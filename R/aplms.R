@@ -1,4 +1,3 @@
-source("utils.aplms.R")
 #' Fitting Additive partial linear models with symmetric errors
 #'
 #' \code{aplms} is used to fit additive partial linear models with symmetric errors.
