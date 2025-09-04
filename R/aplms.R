@@ -103,7 +103,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   conv_geral <- array()
   conv_geral[1] <- 1
   j <- 2
-
+  print("Hola")
   while (conv_geral[j] > control$tol && j <= control$Maxiter2) {
     print(paste("While", j))
     i <- 2
