@@ -29,14 +29,13 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
                   init,
                   lam) {
   this.call <- match.call()
-
-  # Check for missing arguments
   if (missingArg(formula)) stop("The formula argument is missing.")
   if (missingArg(npc)) stop("The model needs at least one non-parametric component.")
   if (missingArg(data)) stop("The data argument is missing.")
   if (!all(npc %in% names(data))) stop("The non-parametric variables must be in data.")
   if (is.null(family$family)) stop("'family' not recognized")
 
+  k <- length(npc)
   if (missingArg(basis)) {
     if (k == 1) basis <- c("ps")
     if (k >= 2) basis <- c("ps", rep("cp", k - 1)) # if (k==2) basis <- c("cr","cc")
@@ -54,17 +53,19 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
   }
-
   if (is.function(family)) {
     family <- family()
   }
 
+  # Symmetric error setup
   xi_t <- family$g4(1,
     df = family$df,
     alpha = family$alpha, mp = family$mp, epsi = family$epsi,
     sigmap = family$sigmap, k = family$k, nu = family$nu
   )
+  data1 <- model.frame(formula, data = data)
 
+  y <- model.response(data1)
   if (missingArg(init)) {
     phi <- sd(y) / xi_t
     rho <- rep(0, p)
@@ -73,46 +74,45 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     rho <- init[[2]]
   }
 
-  ###############################
-
-  k <- length(npc)
-  data1 <- model.frame(formula, data = data)
-  y <- model.response(data1)
   N0 <- model.matrix(formula, data = data1)
   q <- ncol(N0)
   nn <- nrow(N0)
 
-  K0 <- matrix(0, nrow = q, ncol = nn)
-  response <- setupNiKi(npc, basis, Knot, data)
-  N_i <- append(list(N0), response[1])
-  K_i <- append(list(K0), response[2])
 
-  rdf <- nrow(data) - ncol(N0) - p - 1
+  K0 <- matrix(0, nrow = q, ncol = q)
 
-  # initial values
-  f_init <- vector("list", k + 1)
-  f_init[[1]] <- rbind(mean(y), cbind(rep(0, dim(N_i[[1]])[2] - 1)))
-  # assign nonparametric functions init.
+  ZZ <- list()
+  N_i <- list()
+  K_i <- list()
   for (i in 1:k) {
-    f_init[[i + 1]] <- cbind(rep(0, length = dim(N_i[[i + 1]])[2]))
+    XX <- as.list(substitute(list(npc[i])))[-1]
+    YY <- s(XX, bs = basis[i], m = c(2, 3), k = Knot[i])
+    YY$term <- npc[i]
+    ZZ[[i]] <- mgcv::smoothCon(YY, data = data, absorb.cons = T)
+    N_i[[i]] <- ZZ[[i]][[1]]$X
+    K_i[[i]] <- (ZZ[[i]][[1]]$S)[[1]]
   }
 
+  N_i <- append(list(N0), N_i)
+  K_i <- append(list(K0), K_i)
+
+  rdf <- nrow(data) - ncol(N0) - p - 1
+  f_init <- calculatef_init(k, y, N_i)
   f_aux <- f_init
 
   #####
   conv_geral <- array()
   conv_geral[1] <- 1
-  j <- 2
-  print("Hola")
-  while (conv_geral[j] > control$tol && j <= control$Maxiter2) {
+  j <- 1
+  while (conv_geral[j] > control$tol && j < control$Maxiter2) {
     print(paste("While", j))
-    i <- 2
+    i <- 1
     conv_betaf <- array()
     conv_betaf[1] <- 1
+    j <- j + 1
     A <- matrix_A(rho, nn)
 
-    while (conv_betaf[i] > control$tol && i <= control$Maxiter1) {
-      print(i)
+    while (conv_betaf[i] > control$tol && i < control$Maxiter1) {
       a <- res(y, f_init, phi, rho, N_i)
       posicao <- as.vector(family$g1(a,
         df = family$df,
@@ -120,17 +120,16 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
         sigmap = family$sigmap, k = family$k, nu = family$nu
       ))
       Dv <- (diag(-2 * posicao))
-
+      print(i)
+      i <- i + 1
       if (control$algorithm1 == "backfitting") {
-        f <- backfitting(N_i, A, Dv, k, f_init)          
+        f <- backfitting(A, N_i, Dv, k, phi, lam, K_i, f_init, y)
       } else if (control$algorithm1 == "P-GAM") {
-        f <- pgam(N_i, A, lam, phi, y, f_init)
+        f <- pgam(N_i, lam, K_i, A, phi, Dv, y, f_init)
       }
-
       error <- mapply("-", f, f_init, SIMPLIFY = FALSE)
       conv_betaf[i] <- max(unlist(sapply(error, abs)))
       f_init <- f
-      i <- i + 1
     }
 
     par1 <- optim(
@@ -151,7 +150,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     f_aux <- f
 
     conv_geral[j] <- max(abs(dif_phi_rho), unlist(sapply(f_error, abs)))
-    j <- j + 1
   }
 
   A <- matrix_A(rho, nn)
@@ -163,32 +161,17 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   ))
   Dv <- (diag(-2 * posicao))
   Dm <- diag(-2 * posicao * as.vector(a)^2)
-
   Dd <- diag(posicao * as.vector(a))
+  delta_i <- a^2
 
   # loglik evaluation
-
-  Lp <- logLik_fim.test(y, f, rho, phi, N_i, family)
-
-  AN <- lapply(N_i, FUN = function(x) A %*% x)
-  N_bar_a <- rlist::list.cbind(AN) # N_A
-  N_bar <- rlist::list.cbind(N_i)
-  K_ast <- phi * as.matrix(Matrix::bdiag(mapply("*", c(0, lam), K_i, SIMPLIFY = FALSE)))
-
-  #
-  H_alpha <- N_bar_a %*% solve((t(N_bar_a) %*% Dv) %*% N_bar_a + K_ast) %*% (t(N_bar_a) %*% Dv) # (4.18)
-
-  q1 <- t(N_bar_a) %*% Dv %*% N_bar_a
-  dec <- eigen(q1)
-  q12 <- dec$vectors %*% (diag(dec$values^(1 / 2))) %*% t(dec$vectors)
-  q12m <- dec$vectors %*% (diag(dec$values^(-1 / 2))) %*% t(dec$vectors)
-  auto <- q12m %*% (K_ast) %*% q12m
-
-  df_alpha <- sum(1 / (1 + eigen(auto)$value)) + p + 1 # Efective degree of freedom
-
-  effect <- solve(t(N_bar_a) %*% Dv %*% N_bar_a + K_ast) %*% t(N_bar_a) %*% Dv %*% N_bar_a # pag 57, L4
+  Lp <- logLik_fim.test(y, f, rho, phi, N_i, family) # Global
+  AN <- lapply(N_i, FUN = function(x) A %*% x) # Local
+  N_bar_a <- rlist::list.cbind(AN) # Local
+  K_ast <- phi * as.matrix(Matrix::bdiag(mapply("*", c(0, lam), K_i, SIMPLIFY = FALSE))) # Locals
 
   # effective degree of freedom per function
+  effect <- solve(t(N_bar_a) %*% Dv %*% N_bar_a + K_ast) %*% t(N_bar_a) %*% Dv %*% N_bar_a # pag 57, L4 Local
   n_i <- sapply(N_i, ncol)
   npc_dimension <- cumsum(n_i)
   dfk <- sum(diag(effect)[1:npc_dimension[1]])
@@ -198,7 +181,15 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   }
 
   ######
+  q1 <- t(N_bar_a) %*% Dv %*% N_bar_a # Local
+  dec <- eigen(q1)
+  q12 <- dec$vectors %*% (diag(dec$values^(1 / 2))) %*% t(dec$vectors) # Local
+  q12m <- dec$vectors %*% (diag(dec$values^(-1 / 2))) %*% t(dec$vectors) # Local
+  auto <- q12m %*% (K_ast) %*% q12m # Local
+  df_alpha <- sum(1 / (1 + eigen(auto)$value)) + p + 1 # Efective degree of freedom Local
+
   II <- diag(nn)
+  H_alpha <- N_bar_a %*% solve((t(N_bar_a) %*% Dv) %*% N_bar_a + K_ast) %*% (t(N_bar_a) %*% Dv) # (4.18) # Local
   yhat <- H_alpha %*% (A %*% y) - (A - II) %*% y
 
   AIC <- -2 * Lp + 2 * (df_alpha)
@@ -208,86 +199,13 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   AICc_alpha <- log((sum((sqrt(Dv) %*% (cbind(y - yhat)))^2)) / nn) + 1 +
     2 * (sum(diag(H_alpha)) + 1) / (nn - 2 - sum(diag(H_alpha)))
 
-
   muhat1 <- Reduce(`+`, mapply("%*%", N_i, f, SIMPLIFY = FALSE))
   error_hat <- y - muhat1
 
   GCV <- ((1 / nn) * sum(((sqrt(Dv) %*% (A %*% (y - muhat1)))^2))) /
     ((1 - sum(diag(H_alpha)) / nn)^2)
 
-
-
-  ######################
-  dg_t <- family$g2(args,
-    df = family$df, r = family$r,
-    s = family$s, alpha = family$alpha, mp = family$mp,
-    epsi = family$epsi, sigmap = family$sigmap,
-    k = family$k, nu = family$nu
-  )
-  fg_t <- family$g3(args,
-    df = family$df, r = family$r,
-    s = family$s, alpha = family$alpha, mp = family$mp,
-    epsi = family$epsi, sigmap = family$sigmap,
-    k = family$k, nu = family$nu
-  )
-  ###################################################
-
-  Dd1 <- 4 * (dg_t / phi) * diag(nn)
-
-  # Variancias de phi y rho.
-
-  fis_phi <- (nn / (4 * phi^2)) * (4 * fg_t - 1) # pag 52
-  # fis_rho = (4*dg_t*xi_t/(1-rho[1]^2))*(nn-1:p)
-
-  VAR_phi <- 1 / fis_phi
-  # VAR_rho<-1/fis_rho
-
-  if (p > 0) {
-    VAR_rho <- diag(solve(-par1$hessian))[2:(1 + p)]
-  }
-
-  # Variancias de las funciones suaves.
-
-  const <- 4 * (dg_t / phi)
-  const2 <- Map("*", K_i, c(0, lam))
-
-  rep_AN <- rep(AN, k + 1)
-  seq_AN <- rep(AN, each = k + 1)
-
-  fis_block <- mapply(FUN = function(X, Y) {
-    t(X) %*% Y * const
-  }, X = rep_AN, Y = seq_AN)
-
-  diag_index <- diag(matrix(1:((k + 1)^2), ncol = k + 1))
-
-  fis_block[diag_index] <- Map("+", fis_block[diag_index], const2)
-  names(fis_block) <- letters[seq(from = 1, to = (k + 1)^2)]
-
-  fis_FF <- list()
-  for (l in 0:k) {
-    fis_FF[[l + 1]] <- do.call(rbind, fis_block[(l * (k + 1) + 1):((l + 1) * (k + 1))])
-  }
-
-  fis_FF <- do.call(cbind, fis_FF)
-  VAR_F <- solve(fis_FF)
-
-  WALD <- list()
-  for (l in 2:length(npc_dimension)) {
-    WALD[[l - 1]] <- t(f[[l]]) %*% solve(VAR_F[(npc_dimension[l - 1] + 1):npc_dimension[l], (npc_dimension[l - 1] + 1):npc_dimension[l]]) %*% f[[l]]
-  }
-
-  WALD_vec <- unlist(WALD)
-
-  WALD_p_value <- mapply(
-    FUN = function(X, Y) {
-      pchisq(q = X, df = Y, lower.tail = FALSE)
-    },
-    X = WALD_vec, Y = dfk[-1]
-  )
-  #
-
   ### LL_observada
-
   c_i <- as.vector(family$g5(a,
     df = family$df,
     alpha = family$alpha, mp = family$mp, epsi = family$epsi,
@@ -296,66 +214,16 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
 
   Dc <- diag(c_i)
   Dd <- diag(as.vector(a) * c_i)
-
-  LL_block <- mapply(FUN = function(X, Y) {
-    (1 / phi) * t(X) %*% (4 * Dd - Dv) %*% Y
-  }, X = rep_AN, Y = seq_AN)
-
-  diag_index <- diag(matrix(1:((k + 1)^2), ncol = k + 1))
-
-  LL_block[diag_index] <- Map("-", LL_block[diag_index], const2)
-  names(LL_block) <- letters[seq(from = 1, to = (k + 1)^2)]
-
-  LL_FF <- list()
-  for (l in 0:k) {
-    LL_FF[[l + 1]] <- do.call(rbind, LL_block[(l * (k + 1) + 1):((l + 1) * (k + 1))])
-  }
-
-  LL_FF <- do.call(cbind, LL_FF)
-
-
-  delta_i <- a^2
-  ONE <- cbind(rep(1, nn))
-
-  LL_phi <- (1 / phi^2) * (nn / 2 + t(delta_i) %*% Dc %*% delta_i - t(delta_i) %*% Dv %*% ONE)
-
-  LL_FF_phi_block <- lapply(AN, FUN = function(x) {
-    (1 / phi^2) * (t(x) %*% (2 * Dd - Dv) %*% (A %*% error_hat))
-  })
-  LL_FF_phi <- do.call(rbind, LL_FF_phi_block)
+  const2 <- Map("*", K_i, c(0, lam))
+  LL_FF <- calculateLL_FF(phi, Dd, Dv, AN, k, const2)
+  LL_FF_phi <- calculateLL_FF_Phi(phi, AN, Dd, Dv, A, error_hat)
+  LL_phi <- calculateLL_Phi(nn, phi, delta_i, Dc, Dv)
 
   if (p > 0) {
     B <- BB(p = p, nn = nn)
-    rep_B <- rep(B, p)
-    seq_B <- rep(B, each = p)
-    LL_rho_block <- mapply(FUN = function(X, Y) {
-      (1 / phi) * (t(X %*% error_hat) %*% (4 * Dd - Dv) %*% (Y %*% error_hat))
-    }, X = rep_B, Y = seq_B)
-
-    LL_rho <- matrix(LL_rho_block, nrow = p)
-
-    rep_N_i <- rep(N_i, each = p)
-    seq_B <- rep(B, k + 1)
-    LL_FF_rho_block <- mapply(
-      FUN = function(X, Y) {
-        (1 / phi) * ((t(A %*% X) %*% (Dv - 4 * Dd) %*% (Y %*% error_hat)) + t(Y %*% X) %*% Dv %*% A %*% error_hat)
-      },
-      X = rep_N_i, Y = seq_B
-    )
-
-    LL_FF_rho <- list()
-    for (l in 0:k) {
-      LL_FF_rho[[l + 1]] <- do.call(cbind, LL_FF_rho_block[(l * (p) + 1):((l + 1) * p)])
-    }
-
-    LL_FF_rho <- do.call(rbind, LL_FF_rho)
-
-
-    LL_phi_rho_block <- lapply(B, FUN = function(x) {
-      (1 / phi^2) * (t(x %*% error_hat) %*% (Dv - 2 * Dd) %*% (A %*% error_hat))
-    })
-    LL_phi_rho <- do.call(cbind, LL_phi_rho_block)
-
+    LL_rho <- calculateLL_Rho(B, p, phi, error_hat, Dd, Dv)
+    LL_FF_rho <- calculateLL_FF_Rho(B, N_i, p, k, phi, A, Dv, Dd, error_hat)
+    LL_phi_rho <- calculateLL_Phi_Rho(B, phi, error_hat, Dv, Dd, A)
     LL_obs <- rbind(
       cbind(LL_FF, LL_FF_phi, LL_FF_rho),
       cbind(t(LL_FF_phi), LL_phi, LL_phi_rho),
@@ -368,73 +236,11 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     )
   }
 
-  # coeficientes
-
-  f0 <- f[[1]]
-  est_coef <- as.vector(f0)
-  ee <- sqrt(diag(VAR_F)[1:length(f0)])
-  t_test <- est_coef / ee
-
-  p_value <- sapply(t_test, FUN = function(x) {
-    2 * pt(abs(x), rdf, lower.tail = FALSE)
-  })
-
-  summary_table <- cbind(
-    est_coef,
-    ee,
-    t_test,
-    p_value
-  )
-
-  terms_formula <- stats::terms(formula)
-  var_names <- attr(terms_formula, "term.labels")
-
-  rownames(summary_table) <- c("intercept", var_names)
-  colnames(summary_table) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
-
-  WALD_f <- cbind(WALD_vec, dfk[-1], WALD_p_value)
-  rownames(WALD_f) <- npc
-  colnames(WALD_f) <- c("Wald", "df", "Pr(>.)")
-
-  if (p > 0) {
-    WALD_rho <- rho / sqrt(VAR_rho)
-
-    p_value_rho_normal <- sapply(WALD_rho, FUN = function(x) {
-      2 * pnorm(abs(x), lower.tail = FALSE)
-    })
-    p_value_rho_t <- sapply(WALD_rho, FUN = function(x) {
-      2 * pt(abs(x), rdf, lower.tail = FALSE)
-    })
-    summary_table_rho <- cbind(
-      rho,
-      sqrt(VAR_rho),
-      WALD_rho,
-      # p_value_rho_normal,
-      p_value_rho_t
-    )
-
-    colnames(summary_table_rho) <- c("rho", "ee", "Wald", "p-value_t")
-    rownames(summary_table_rho) <- c(paste0("rho", as.character(1:p)))
-  } else {
-    summary_table_rho <- NULL
-  }
-
-  WALD_phi <- phi / sqrt(VAR_phi)
-
-  p_value_phi_normal <- 2 * pnorm(abs(WALD_phi), lower.tail = FALSE)
-  p_value_phi_t <- 2 * pt(abs(WALD_phi), rdf, lower.tail = FALSE)
-  summary_table_phi <- cbind(
-    phi,
-    sqrt(VAR_phi),
-    WALD_phi,
-    p_value_phi_t
-  )
-
-  rownames(summary_table_phi) <- "phi"
-
-
-  summary_table_phirho <- rbind(summary_table_phi, summary_table_rho)
-  colnames(summary_table_phirho) <- c("Estimate", "Std. Error", "Wald", "Pr(>|t|)")
+  # Summary Tables
+  VAR_F <- estimateVarF(family, phi, const2, k, AN)
+  summary_table <- generateSummaryTable(f, rdf, formula, VAR_F) 
+  WALD_f <- generateWaldF(npc_dimension, dfk, npc, f, VAR_F)
+  summary_table_phirho <- generateSummartTablePhiRho(p, par1, rdf, rho, phi, nn, family)
 
   fit <- list(
     formula = formula, family = family, npc = npc, Knot = Knot,
