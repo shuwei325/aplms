@@ -128,9 +128,27 @@ conf_normal_curvature <- function(DELTA, Lobs, Lobs.aux = 0){
 }
 
 
-influential_index <- function(C_i, C = 4){
-  C_i_iden <-which(C_i > mean(C_i, na.rm=  TRUE) + C * sd(C_i, na.rm = TRUE))
-  return(C_i_iden)
+# influential_index <- function(C_i, C = 4){
+#   C_i_iden <-which(C_i > mean(C_i, na.rm=  TRUE) + C * sd(C_i, na.rm = TRUE))
+#   return(C_i_iden)
+# }
+
+
+influential_plot1 <- function(k, output, labels = NULL, C = 4,...){
+  C_i <- output[[k]]
+  name <- names(output)[[k]]
+  C_mean <- mean(C_i, na.rm = TRUE)
+  C_sd <- sd(C_i, na.rm = TRUE)
+  thres <- C_mean + C * C_sd
+  C_i_iden <-which(C_i > thres)
+  plot(labels, C_i, ylim=c(0, max(C_i)+C_sd),
+       xlab = "t",
+       ylab = name,
+       ...)
+  abline(h = thres, col = "red")
+  text(labels[C_i > thres],C_i[C_i > thres], labels = labels[C_i > thres], pos =3)
 }
+
+
 
 

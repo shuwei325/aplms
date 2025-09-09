@@ -1,23 +1,17 @@
-#' local influence 2 of the object `aplms()`.
+#' local influence analysis of the object `aplms()`.
 #'
 #' Takes a fitted `aplms` object and outputs some diagnostic information about the fitting procedure and results. Returns the conformal normal curvature of the fitted `aplms` model object. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param perturbation A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
 #' @param part A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.
-#' @param C The cutoff criterion such that \eqn{C_i > \bar{C_i} + C*sd(C_i)} to detect influential observations.
-#' @param plot A logical value used to plot.
 #' @import psych MASS
+#' @method influence aplms
 #' @export
 
 influence.aplms <- function(model,
                             perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
-                            part = TRUE,
-                            C = 4,
-                            #ident = NULL,
-                            plot = FALSE#,
-                            # labels = NULL,
-                            # iden = F
+                            part = TRUE
 ){
 
 
@@ -52,31 +46,28 @@ influence.aplms <- function(model,
     DELTA <- influence_DELTA(model = model, perturb_scheme = "case-weight")
 
     C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
-    C_i_iden <- influential_index(C_i, C = C)
 
     list_output[[which(perturbation=="case-weight")]] <- list()
-    list_output[[which(perturbation=="case-weight")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+    list_output[[which(perturbation=="case-weight")]]$C_i <- C_i
 
     if(part){
 
       # gamma
       Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
       C_i_gamma <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_gamma)
-      C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
       # phi
       Lobs.aux_phi <- Gp(Lobs, index = phi_index)
       C_i_phi <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_phi)
-      C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
       # rhos
       Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
       C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
-      C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-      list_output[[which(perturbation=="case-weight")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                     C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                     C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+      list_output[[which(perturbation=="case-weight")]]$C_i_gamma <- C_i_gamma
+      list_output[[which(perturbation=="case-weight")]]$C_i_phi <- C_i_phi
+      list_output[[which(perturbation=="case-weight")]]$C_i_rhos <- C_i_rhos
+
     }
   }
 
@@ -84,32 +75,27 @@ influence.aplms <- function(model,
 
     DELTA <- influence_DELTA(model = model, perturb_scheme = "dispersion")
     C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
-    C_i_iden <- influential_index(C_i, C = C)
 
     list_output[[which(perturbation=="dispersion")]] <- list()
-    list_output[[which(perturbation=="dispersion")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+    list_output[[which(perturbation=="dispersion")]]$C_i <- C_i
 
     if(part){
 
       # gamma
       Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
       C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
-      C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
       # phi
       Lobs.aux_phi <- Gp(Lobs, index = phi_index)
       C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
-      C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
       # rhos
       Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
       C_i_rhos <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_rhos)
-      C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-
-      list_output[[which(perturbation=="dispersion")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                    C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                    C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+      list_output[[which(perturbation=="dispersion")]]$C_i_gamma <- C_i_gamma
+      list_output[[which(perturbation=="dispersion")]]$C_i_phi <- C_i_phi
+      list_output[[which(perturbation=="dispersion")]]$C_i_rhos <- C_i_rhos
     }
   }
 
@@ -118,31 +104,27 @@ influence.aplms <- function(model,
     DELTA <- influence_DELTA(model = model, perturb_scheme = "response")
 
     C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
-    C_i_iden <- influential_index(C_i, C = C)
 
     list_output[[which(perturbation=="response")]] <- list()
-    list_output[[which(perturbation=="response")]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+    list_output[[which(perturbation=="response")]]$C_i <- C_i
 
     if(part){
 
       # gamma
       Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
       C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
-      C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
       # phi
       Lobs.aux_phi <- Gp(Lobs, index = phi_index)
       C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
-      C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
       # rhos
       Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
       C_i_rhos <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_rhos)
-      C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-      list_output[[which(perturbation=="response")]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                  C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                  C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+      list_output[[which(perturbation=="response")]]$C_i_gamma <- C_i_gamma
+      list_output[[which(perturbation=="response")]]$C_i_phi <- C_i_phi
+      list_output[[which(perturbation=="response")]]$C_i_rhos <- C_i_rhos
     }
 
   }
@@ -157,37 +139,31 @@ influence.aplms <- function(model,
         DELTA <- influence_DELTA(model = model, perturb_scheme = "explanatory", r = r)
 
         C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
-        C_i_iden <- influential_index(C_i, C = C)
 
         list_output[[which(perturbation=="explanatory")]][[r]] <- list()
-        list_output[[which(perturbation=="explanatory")]][[r]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+        list_output[[which(perturbation=="explanatory")]][[r]]$C_i <- C_i
 
         if(part){
 
           # gamma
           Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
           C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
-          C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
           # phi
           Lobs.aux_phi <- Gp(Lobs, index = phi_index)
           C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
-          C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
           # rhos
           Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
           C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
-          C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-          list_output[[which(perturbation=="explanatory")]][[r]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                                C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                                C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
-
+          list_output[[which(perturbation=="explanatory")]][[r]]$C_i_gamma <- C_i_gamma
+          list_output[[which(perturbation=="explanatory")]][[r]]$C_i_phi <- C_i_phi
+          list_output[[which(perturbation=="explanatory")]][[r]]$C_i_rhos <- C_i_rhos
         }
       }
     names(list_output[[which(perturbation=="explanatory")]]) <- row.names(model$f[[1]])[-1]
   }
-
 
   if (any(perturbation == "corAR")){
 
@@ -200,31 +176,27 @@ influence.aplms <- function(model,
         DELTA <- influence_DELTA(model = model, perturb_scheme = "corAR", k = k)
 
         C_i <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
-        C_i_iden <- influential_index(C_i, C = C)
 
         list_output[[which(perturbation=="corAR")]][[k]] <- list()
-        list_output[[which(perturbation=="corAR")]][[k]][[1]] <- list(C_i=C_i, C_i_iden=C_i_iden)
+        list_output[[which(perturbation=="corAR")]][[k]]$C_i <- C_i
 
         if(part){
 
           # gamma
           Lobs.aux_gamma <- Gp(Lobs, index = gamma_index)
           C_i_gamma <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_gamma)
-          C_i_gamma_iden <- influential_index(C_i_gamma, C = C)
 
           # phi
           Lobs.aux_phi <- Gp(Lobs, index = phi_index)
           C_i_phi <- conf_normal_curvature(DELTA, Lobs, Lobs.aux = Lobs.aux_phi)
-          C_i_phi_iden <- influential_index(C_i_phi, C = C)
 
           # rhos
           Lobs.aux_rhos <- Gp(Lobs, index = rho_index)
           C_i_rhos <- conf_normal_curvature(DELTA,Lobs, Lobs.aux = Lobs.aux_rhos)
-          C_i_rhos_iden <- influential_index(C_i_rhos, C = C)
 
-          list_output[[which(perturbation=="corAR")]][[k]][[2]] <- list(C_i_gamma=C_i_gamma, C_i_gamma_iden=C_i_gamma_iden,
-                                                                        C_i_phi=C_i_phi, C_i_phi_iden=C_i_phi_iden,
-                                                                        C_i_rhos=C_i_rhos, C_i_rhos_iden=C_i_rhos_iden)
+          list_output[[which(perturbation=="corAR")]][[k]]$C_i_gamma <- C_i_gamma
+          list_output[[which(perturbation=="corAR")]][[k]]$C_i_phi <- C_i_phi
+          list_output[[which(perturbation=="corAR")]][[k]]$C_i_rhos <- C_i_rhos
         }
       }
 
@@ -233,9 +205,12 @@ influence.aplms <- function(model,
 
   }
 
-
   names(list_output) <- perturbation
 
   return(list_output)
 
 }
+
+
+
+

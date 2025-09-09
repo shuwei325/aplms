@@ -2,14 +2,12 @@
 % Please edit documentation in R/influence.aplms.R
 \name{influence.aplms}
 \alias{influence.aplms}
-\title{local influence of the object `aplms()`.}
+\title{local influence analysis of the object `aplms()`.}
 \usage{
 \method{influence}{aplms}(
   model,
-  perturbation = c("case-weight", "dispersion", "response", "explanatory"),
-  part = TRUE,
-  C = 4,
-  plot = FALSE
+  perturbation = c("case-weight", "dispersion", "response", "explanatory", "corAR"),
+  part = TRUE
 )
 }
 \arguments{
@@ -18,10 +16,6 @@
 \item{perturbation}{A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.}
 
 \item{part}{A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.}
-
-\item{C}{The cutoff criterion such that \eqn{C_i > \bar{C_i} + C*sd(C_i)} to detect influential observations.}
-
-\item{plot}{A logical value used to plot.}
 }
 \description{
 Takes a fitted `aplms` object and outputs some diagnostic information about the fitting procedure and results. Returns the conformal normal curvature of the fitted `aplms` model object. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
