@@ -10,6 +10,20 @@
 #'   interactive menu with eleven options to make plots.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
+#'
+#' data(temperature)
+#' datos = data.frame(temperature,time=1:length(temperature))
+#' mod1<-aplms::aplms(temperature ~ 1,
+#'                    npc=c("time"), basis=c("cr"),Knot=c(60),
+#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    control = list(tol = 0.001,
+#'                                   algorithm1 = c("P-GAM"),
+#'                                   algorithm2 = c("BFGS"),
+#'                                   Maxiter1 = 20,
+#'                                   Maxiter2 = 25),
+#'                    lam=c(10))
+#' plot(mod1)
+#'
 #' @export plot.aplms
 #' @export
 plot.aplms <- function(model, level = 0.95, len = 100, plot = TRUE , ...) {

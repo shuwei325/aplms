@@ -1,6 +1,3 @@
-# residuals.aplms(model,type=c("Quant","Pearson"),plot=NULL)
-
-
 #' Diagnostic Plots for additive partial linear models with symmetric errors.
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
@@ -20,6 +17,19 @@
 #' 9: Autocorrelation function of conditional quantile residual.
 #' 10: Partial autocorrelation function of conditional quantile residuals.
 #' 11: QQ-plot of conditional quantile residuals.
+#'
+#' data(temperature)
+#' datos = data.frame(temperature,time=1:length(temperature))
+#' mod1<-aplms::aplms(temperature ~ 1,
+#'                    npc=c("time"), basis=c("cr"),Knot=c(60),
+#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    control = list(tol = 0.001,
+#'                                   algorithm1 = c("P-GAM"),
+#'                                   algorithm2 = c("BFGS"),
+#'                                   Maxiter1 = 20,
+#'                                   Maxiter2 = 25),
+#'                    lam=c(10))
+#' aplms.diag.plot(mod1, perturbation = c("case-weight"))
 #'
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
