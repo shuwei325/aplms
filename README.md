@@ -43,6 +43,7 @@ mod1<-aplms::aplms(temperature ~ 1,
 summary(mod1)
 plot(mod1)
 aplms.diag.plot(mod1)
+influenceplot.aplms(mod1,  perturbation = c("case-weight"))
 ```
 
 The second dataset:
@@ -66,4 +67,5 @@ mod2<-aplms::aplms(formula = y ~
 summary(mod2)
 plot(mod2)
 aplms.diag.plot(mod2)
+influenceplot.aplms(mod2,  perturbation = c("case-weight"))
 ```

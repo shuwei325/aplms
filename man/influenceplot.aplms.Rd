@@ -21,7 +21,20 @@ influenceplot.aplms(
 
 \item{C}{The cutoff criterion such that \eqn{C_i > \bar{C_i} + C*sd(C_i)} to detect influential observations.}
 
-\item{labels}{label to especify each data point.}
+\item{labels}{label to especify each data point.
+
+data(temperature)
+datos = data.frame(temperature,time=1:length(temperature))
+mod1<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=datos,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+influenceplot.aplms(mod1, perturbation = c("case-weight"))}
 }
 \description{
 Takes a fitted `aplms` object and outputs diagnostics of the sensitivity analysis by assessing the effects of perturbations in the model and/or data, on the parameter estimates. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.

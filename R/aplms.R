@@ -15,7 +15,20 @@
 #' @param init A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.
 #' @param lam smoothing parameter vector.
 #' @examples
-#' a <- 1
+
+#' data(temperature)
+#' datos = data.frame(temperature,time=1:length(temperature))
+
+#' mod1<-aplms::aplms(temperature ~ 1,
+#'                    npc=c("time"), basis=c("cr"),Knot=c(60),
+#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    control = list(tol = 0.001,
+#'                                   algorithm1 = c("P-GAM"),
+#'                                   algorithm2 = c("BFGS"),
+#'                                   Maxiter1 = 20,
+#'                                   Maxiter2 = 25),
+#'                    lam=c(10))
+#' summary(mod1)
 #' @import methods mgcv stats
 #' @export aplms
 aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
