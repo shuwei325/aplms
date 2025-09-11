@@ -24,34 +24,26 @@ Return a list of all non parametric component functions with their confidence in
 \description{
 Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
 }
-\keyword{0.001,}
-\keyword{1,}
-\keyword{20,}
-\keyword{25),}
-\keyword{=}
+\examples{
+data(temperature)
+datos = data.frame(temperature,time=1:length(temperature))
+mod1<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=datos,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+plot(mod1)
+
+}
 \keyword{Additive}
-\keyword{Maxiter1}
-\keyword{Maxiter2}
 \keyword{Residuals}
-\keyword{algorithm1}
-\keyword{algorithm2}
-\keyword{basis=c("cr"),Knot=c(60),}
-\keyword{c("BFGS"),}
-\keyword{c("P-GAM"),}
-\keyword{control}
-\keyword{data(temperature)}
-\keyword{data.frame(temperature,time=1:length(temperature))}
-\keyword{data=datos,family=Powerexp(k=0.3),p=1,}
-\keyword{datos}
 \keyword{errors}
-\keyword{lam=c(10))}
 \keyword{linear}
-\keyword{list(tol}
-\keyword{mod1<-aplms::aplms(temperature}
 \keyword{models}
-\keyword{npc=c("time"),}
 \keyword{partial}
-\keyword{plot(mod1)}
 \keyword{symmetric}
 \keyword{with}
-\keyword{~}

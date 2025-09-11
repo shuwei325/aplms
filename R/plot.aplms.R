@@ -10,7 +10,7 @@
 #'   interactive menu with eleven options to make plots.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
-#'
+#' @examples
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,

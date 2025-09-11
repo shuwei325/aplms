@@ -6,6 +6,8 @@
 #' @param ... other arguments.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
+#' @examples
+#' \dontrun{residuals(model)}
 #' @export residuals.aplms
 #' @export
 residuals.aplms <- function(model, ...) {

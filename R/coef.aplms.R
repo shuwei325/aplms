@@ -5,7 +5,7 @@
 #'
 #' @param ... other arguments
 #' @examples
-#' a <- 1
+#' \dontrun{coef(model)}
 #' @method coef aplms
 #' @export
 

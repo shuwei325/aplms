@@ -66,5 +66,4 @@ mod1<-aplms::aplms(temperature ~ 1,
                                   Maxiter2 = 25),
                    lam=c(10))
 summary(mod1)
-a <- 1
 }

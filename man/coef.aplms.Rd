@@ -15,5 +15,5 @@
 Extract the coefficients of the fitted APLMS model.
 }
 \examples{
-a <- 1
+\dontrun{coef(model)}
 }

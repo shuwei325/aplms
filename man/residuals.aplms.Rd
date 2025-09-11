@@ -17,6 +17,9 @@
 \description{
 Extract Residuals for APLMS fits.
 }
+\examples{
+\dontrun{residuals(model)}
+}
 \keyword{Additive}
 \keyword{Residuals}
 \keyword{errors}

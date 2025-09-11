@@ -14,3 +14,6 @@
 \description{
 Print method for "foo" class
 }
+\examples{
+\dontrun{summary(model)}
+}

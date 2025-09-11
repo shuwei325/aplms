@@ -2,6 +2,8 @@
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param ... Other arguments passed to or from other methods
+#' @examples
+#' \dontrun{summary(model)}
 #' @rdname summary
 #' @method summary aplms
 #' @export summary.aplms

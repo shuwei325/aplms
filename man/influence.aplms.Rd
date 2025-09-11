@@ -20,3 +20,6 @@
 \description{
 Takes a fitted `aplms` object and outputs some diagnostic information about the fitting procedure and results. Returns the conformal normal curvature of the fitted `aplms` model object. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
 }
+\examples{
+\dontrun{influence(model)}
+}
