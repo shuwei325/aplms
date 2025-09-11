@@ -25,7 +25,7 @@ data(hospitalization)
 \description{
 This dataset consists of respiratory diseases hospitalization in Sorocaba, São Paulo, Brazil.
 The details of the statistical modeling using the APLMS-AR(p) approach can be found in Chou-Chen, et al. (2024). \doi{10.1007/s00362-024-01590-w}.
-The hospitalization data of respiratory diseases in Sorocaba city, São Paulo, Brazil are obtained from the Hospital Information System of Brazil’s Unified National Health System (SIH-SUS, \link{https://datasus.saude.gov.br/}), and the climatic and pollution data are provided by the QUALAR system (\link{https://qualar.cetesb.sp.gov.br/qualar/}).
+The hospitalization data of respiratory diseases in Sorocaba city, São Paulo, Brazil are obtained from the Hospital Information System of Brazil’s Unified National Health System (\href{https://datasus.saude.gov.br/}{SIH-SUS}), and the climatic and pollution data are provided by the \href{https://qualar.cetesb.sp.gov.br/qualar/}{QUALAR system}.
 }
 \examples{
 data(hospitalization)

@@ -8,6 +8,7 @@
 #' @param C The cutoff criterion such that \eqn{C_i > \bar{C_i} + C*sd(C_i)} to detect influential observations.
 #' @param labels label to especify each data point.
 #' @examples
+#' \dontrun{
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,
@@ -20,6 +21,7 @@
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
 #' influenceplot.aplms(mod1, perturbation = c("case-weight"))
+#' }
 #'
 #' @export
 

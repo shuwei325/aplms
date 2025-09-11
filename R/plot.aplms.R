@@ -4,13 +4,14 @@
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param level Confidence level.
 #' @param len The desired length of the sequence of covariates to compute the non parametric component functions.
-#' @param plot a logical value to return plots. Default value is code{TRUE}.
+#' @param plot a logical value to return plots. Default value is \code{TRUE}.
 #' @param ... other arguments.
 #' @return Return a list of all non parametric component functions with their confidence intervals.
 #'   interactive menu with eleven options to make plots.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @examples
+#' \dontrun{
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,
@@ -23,8 +24,8 @@
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
 #' plot(mod1)
-#'
-#' @export plot.aplms
+#' }
+#' @method plot aplms
 #' @export
 plot.aplms <- function(model, level = 0.95, len = 100, plot = TRUE , ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {
@@ -84,9 +85,15 @@ plot.aplms <- function(model, level = 0.95, len = 100, plot = TRUE , ...) {
       points(npc_predict_list[[k]]$cov,
              npc_predict_list[[k]]$fmean_ls, type = "l", lty = 2)
     }
-    close.screen(all = TRUE)
+    close.screen(all.screens = TRUE)
   }
 
 return(npc_predict_list)
 
+}
+
+#' @rdname plot.aplms
+#' @export
+plot.aplms <- function(model, level, len, plot, ...) {
+  UseMethod("plot")
 }

@@ -5,10 +5,10 @@
 #' @format Time series data.
 #' @source NASA/GISS/GISTEMP
 #' @keywords datasets
-#' @references \link{https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt}
+#' @references
+#' \href{https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt}{Land-Ocean Temperature Index}.
 #' @examples
 #' data(temperature)
-#' plot(temperature)
 #'
 "temperature"
 
@@ -16,7 +16,7 @@
 #' @title Respiratory diseases hospitalization Dataset
 #' @description This dataset consists of respiratory diseases hospitalization in Sorocaba, São Paulo, Brazil.
 #' The details of the statistical modeling using the APLMS-AR(p) approach can be found in Chou-Chen, et al. (2024). \doi{10.1007/s00362-024-01590-w}.
-#' The hospitalization data of respiratory diseases in Sorocaba city, São Paulo, Brazil are obtained from the Hospital Information System of Brazil’s Unified National Health System (SIH-SUS, \link{https://datasus.saude.gov.br/}), and the climatic and pollution data are provided by the QUALAR system (\link{https://qualar.cetesb.sp.gov.br/qualar/}).
+#' The hospitalization data of respiratory diseases in Sorocaba city, São Paulo, Brazil are obtained from the Hospital Information System of Brazil’s Unified National Health System (\href{https://datasus.saude.gov.br/}{SIH-SUS}), and the climatic and pollution data are provided by the \href{https://qualar.cetesb.sp.gov.br/qualar/}{QUALAR system}.
 #' @format The "data" slot is a data frame with 932 weekly data on the following 29 variables.
 #' \describe{
 #' \item{date, year, epi.week, tdate}{Date, year, epidemiologic weeks, and time index.}

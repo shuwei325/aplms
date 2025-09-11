@@ -18,10 +18,9 @@ Land-ocean temperature index from 1880--2021 (with base period 1951-1980).
 }
 \examples{
 data(temperature)
-plot(temperature)
 
 }
 \references{
-\link{https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt}
+\href{https://data.giss.nasa.gov/gistemp/graphs/graph_data/Global_Mean_Estimates_based_on_Land_and_Ocean_Data/graph.txt}{Land-Ocean Temperature Index}.
 }
 \keyword{datasets}

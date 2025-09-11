@@ -2,9 +2,16 @@
 % Please edit documentation in R/influence.aplms.R
 \name{influence.aplms}
 \alias{influence.aplms}
+\alias{influence}
 \title{local influence analysis of the object `aplms()`.}
 \usage{
 \method{influence}{aplms}(
+  model,
+  perturbation = c("case-weight", "dispersion", "response", "explanatory", "corAR"),
+  part = TRUE
+)
+
+influence(
   model,
   perturbation = c("case-weight", "dispersion", "response", "explanatory", "corAR"),
   part = TRUE

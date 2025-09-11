@@ -2,9 +2,12 @@
 % Please edit documentation in R/plot.aplms.R
 \name{plot.aplms}
 \alias{plot.aplms}
+\alias{plot}
 \title{Default APLMS plotting.}
 \usage{
 \method{plot}{aplms}(model, level = 0.95, len = 100, plot = TRUE, ...)
+
+plot(model, ...)
 }
 \arguments{
 \item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
@@ -13,7 +16,7 @@
 
 \item{len}{The desired length of the sequence of covariates to compute the non parametric component functions.}
 
-\item{plot}{a logical value to return plots. Default value is code{TRUE}.}
+\item{plot}{a logical value to return plots. Default value is \code{TRUE}.}
 
 \item{...}{other arguments.}
 }
@@ -25,6 +28,7 @@ Return a list of all non parametric component functions with their confidence in
 Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
 }
 \examples{
+\dontrun{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,
@@ -37,7 +41,7 @@ mod1<-aplms::aplms(temperature ~ 1,
                                   Maxiter2 = 25),
                    lam=c(10))
 plot(mod1)
-
+}
 }
 \keyword{Additive}
 \keyword{Residuals}

@@ -2,9 +2,12 @@
 % Please edit documentation in R/coef.aplms.R
 \name{coef.aplms}
 \alias{coef.aplms}
+\alias{coef}
 \title{Extract the coefficients of the fitted APLMS model}
 \usage{
 \method{coef}{aplms}(model, ...)
+
+coef(model, ...)
 }
 \arguments{
 \item{model}{APLMS object.}

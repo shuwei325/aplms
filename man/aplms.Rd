@@ -3,6 +3,7 @@
 \name{aplms}
 \alias{aplms}
 \alias{print.aplms}
+\alias{print}
 \title{Fitting Additive partial linear models with symmetric errors.}
 \usage{
 aplms(
@@ -20,6 +21,8 @@ aplms(
 )
 
 \method{print}{aplms}(model, ...)
+
+print(model, ...)
 }
 \arguments{
 \item{formula}{A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under ‘Details’.}
@@ -54,6 +57,7 @@ Fitting Additive partial linear models with symmetric errors
 In this setup, the natural cubic splines or cubic P-splines.
 }
 \examples{
+\dontrun{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,
@@ -66,4 +70,5 @@ mod1<-aplms::aplms(temperature ~ 1,
                                   Maxiter2 = 25),
                    lam=c(10))
 summary(mod1)
+}
 }

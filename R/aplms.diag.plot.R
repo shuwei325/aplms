@@ -17,7 +17,8 @@
 #' 9: Autocorrelation function of conditional quantile residual.
 #' 10: Partial autocorrelation function of conditional quantile residuals.
 #' 11: QQ-plot of conditional quantile residuals.
-#'
+#' @examples
+#' \dontrun{
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,
@@ -30,13 +31,14 @@
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
 #' aplms.diag.plot(mod1, perturbation = c("case-weight"))
-#'
+#' }
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
+#' @import utils graphics
 #' @export
 
 
-aplms.diag.plot <- function(model, which, subset = NULL,
+aplms.diag.plot <- function(model, which,
                             labels = NULL,
                             iden = F, ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {

@@ -2,9 +2,12 @@
 % Please edit documentation in R/BIC.aplms.R
 \name{BIC.aplms}
 \alias{BIC.aplms}
+\alias{BIC}
 \title{Bayesian information criterion}
 \usage{
 \method{BIC}{aplms}(model, ...)
+
+BIC(model, ...)
 }
 \arguments{
 \item{model}{APLMS object.}

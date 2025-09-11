@@ -4,7 +4,7 @@
 \alias{aplms.diag.plot}
 \title{Diagnostic Plots for additive partial linear models with symmetric errors.}
 \usage{
-aplms.diag.plot(model, which, subset = NULL, labels = NULL, iden = F, ...)
+aplms.diag.plot(model, which, labels = NULL, iden = F, ...)
 }
 \arguments{
 \item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
@@ -30,7 +30,12 @@ Return an interactive menu with eleven options to make plots. This menu contains
 9: Autocorrelation function of conditional quantile residual.
 10: Partial autocorrelation function of conditional quantile residuals.
 11: QQ-plot of conditional quantile residuals.
-
+}
+\description{
+Diagnostic Plots for additive partial linear models with symmetric errors.
+}
+\examples{
+\dontrun{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,
@@ -44,8 +49,6 @@ mod1<-aplms::aplms(temperature ~ 1,
                    lam=c(10))
 aplms.diag.plot(mod1, perturbation = c("case-weight"))
 }
-\description{
-Diagnostic Plots for additive partial linear models with symmetric errors.
 }
 \keyword{Additive}
 \keyword{Residuals}

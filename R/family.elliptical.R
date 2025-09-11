@@ -39,7 +39,6 @@ family.elliptical<- function (object,...)
 }
 
 #' @rdname family.elliptical
-#' @method print family.elliptical
 #' @noRd
 #' @export
 print.family.elliptical <- function (x, ...)

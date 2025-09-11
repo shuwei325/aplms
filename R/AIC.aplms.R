@@ -13,5 +13,10 @@ AIC.aplms<- function(model,...){
   if(!inherits(model, what="aplms", which = FALSE))
     stop("not a aplms object")
   model$AIC
+}
 
+#' @rdname AIC.aplms
+#' @export
+AIC <- function(model, ...) {
+  UseMethod("AIC")
 }

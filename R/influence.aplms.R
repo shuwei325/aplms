@@ -10,7 +10,6 @@
 #' @import psych MASS
 #' @method influence aplms
 #' @export
-
 influence.aplms <- function(model,
                             perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
                             part = TRUE
@@ -212,6 +211,15 @@ influence.aplms <- function(model,
   return(list_output)
 
 }
+
+#' @rdname influence.aplms
+#' @export
+influence <- function(model,
+                      perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
+                      part = TRUE) {
+  UseMethod("influence")
+}
+
 
 
 

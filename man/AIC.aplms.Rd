@@ -2,9 +2,12 @@
 % Please edit documentation in R/AIC.aplms.R
 \name{AIC.aplms}
 \alias{AIC.aplms}
+\alias{AIC}
 \title{Akaike information criterion}
 \usage{
 \method{AIC}{aplms}(model, ...)
+
+AIC(model, ...)
 }
 \arguments{
 \item{model}{APLMS object.}

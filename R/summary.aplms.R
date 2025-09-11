@@ -1,12 +1,11 @@
-#' Print method for "foo" class
+
+#' Print method for "aplms" class
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param ... Other arguments passed to or from other methods
 #' @examples
 #' \dontrun{summary(model)}
-#' @rdname summary
 #' @method summary aplms
-#' @export summary.aplms
 #' @export
 summary.aplms<-function(model, ...)
 {
@@ -57,6 +56,12 @@ generateSummaryTable <- function(f, rdf, formula, VAR_F) {
   rownames(summary_table) <- c("intercept", var_names)
   colnames(summary_table) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
   return(summary_table)
+}
+
+#' @rdname summary.aplms
+#' @export
+summary <- function(model, ...) {
+  UseMethod("summary")
 }
 
 generateWaldF <- function(npc_dimension, dfk, npc, f, VAR_F) {
@@ -134,3 +139,5 @@ generateSummartTablePhiRho <- function(p, par1, rdf, rho, phi, nn, family) {
   colnames(summary_table_phirho) <- c("Estimate", "Std. Error", "Wald", "Pr(>|t|)")
   return(summary_table_phirho)
 }
+
+

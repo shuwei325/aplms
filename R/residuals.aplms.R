@@ -1,14 +1,13 @@
 #' Extract Residuals for APLMS fits.
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
-#' @param type a character string that indicates the type of residuals.
 #' \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.
 #' @param ... other arguments.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @examples
 #' \dontrun{residuals(model)}
-#' @export residuals.aplms
+#' @method residuals aplms
 #' @export
 residuals.aplms <- function(model, ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {
@@ -49,4 +48,10 @@ residuals.aplms <- function(model, ...) {
       res_quant = as.numeric(residual_quant)
     )
   )
+}
+
+#' @rdname residuals.aplms
+#' @export
+residuals <- function(model, ...) {
+  UseMethod("residuals")
 }
