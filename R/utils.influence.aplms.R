@@ -1,9 +1,13 @@
-#Delta computation depending on the perturbation scheme
-
+#' Delta computation depending on the perturbation scheme
+#'
+#' @param model an object with the result of fitting additive partial linear models with symmetric errors.
+#' @param perturb_scheme A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
+#' @param r Index of explanatory variable
+#' @param k Index of autocorrelation coefficient
 influence_DELTA <- function(model,
                             perturb_scheme = "case-weight",
-                            r = 1,  # index of explanatory variable
-                            k = 1   # index of autocorrelation coefficient
+                            r = 1,
+                            k = 1
                               ){
   p <- nrow(model$summary_table_phirho)-1
   nn <- nrow(model$data)
@@ -90,7 +94,10 @@ influence_DELTA <- function(model,
   return(DELTA)
 }
 
-
+#' Setting columns and rows indexes of a matrix to zero
+#' @param mat squared matrix
+#' @param rows Row index
+#' @param cols Column Index
 set_zero_matrix <- function(mat, rows = NULL, cols = NULL) {
 
   if (!is.matrix(mat)) stop("Input must be a matrix.")
@@ -105,7 +112,9 @@ set_zero_matrix <- function(mat, rows = NULL, cols = NULL) {
   return(mat)
 }
 
-
+#' Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion.
+#' @param Lobs The observed information matrix
+#' @param index Indices of columns and rows to be set to zero
 Gp <- function(Lobs, index = NULL){
 
   Lobs <- set_zero_matrix(mat = Lobs,
@@ -116,9 +125,14 @@ Gp <- function(Lobs, index = NULL){
 }
 
 
-
-
-
+#' Conformal normal curvature of local influence
+#'
+#' Computes the conformal normal curvature.
+#'
+#' @param DELTA A numeric matrix, \eqn{\Delta}, that depends on the perturbation scheme.
+#' @param Lobs A square numeric matrix representing the observed information matrix.
+#' @param Lobs.aux An optional numeric matrix of the same dimension as
+#'   \code{Lobs}. Default is \code{0} (no auxiliary adjustment).
 conf_normal_curvature <- function(DELTA, Lobs, Lobs.aux = 0){
   CC <- t(DELTA)%*%(solve(-Lobs)-Lobs.aux)%*%DELTA
   CC2 <- CC %*% CC
@@ -126,12 +140,6 @@ conf_normal_curvature <- function(DELTA, Lobs, Lobs.aux = 0){
   C_i <- diag(CC_l)
   return(C_i)
 }
-
-
-# influential_index <- function(C_i, C = 4){
-#   C_i_iden <-which(C_i > mean(C_i, na.rm=  TRUE) + C * sd(C_i, na.rm = TRUE))
-#   return(C_i_iden)
-# }
 
 
 influential_plot1 <- function(k, output, labels = NULL, C = 4,...){

@@ -94,6 +94,6 @@ return(npc_predict_list)
 
 #' @rdname plot.aplms
 #' @export
-plot.aplms <- function(model, level, len, plot, ...) {
+plot <- function(model, level = 0.95, len = 100, plot = TRUE , ...){
   UseMethod("plot")
 }
