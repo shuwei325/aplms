@@ -109,23 +109,21 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   N_i <- append(list(N0), N_i)
   K_i <- append(list(K0), K_i)
 
-  rdf <- nrow(data) - ncol(N0) - p - 1
+  rdf <- nrow(data) - q - p - 1
   f_init <- calculatef_init(k, y, N_i)
   f_aux <- f_init
 
   #####
-  conv_geral <- array()
-  conv_geral[1] <- 1
+  conv_geral <- 1
   j <- 1
-  while (conv_geral[j] > control$tol && j < control$Maxiter2) {
+  while (conv_geral > control$tol && j < control$Maxiter2) {
     print(paste("While", j))
     i <- 1
-    conv_betaf <- array()
-    conv_betaf[1] <- 1
-    j <- j + 1
+    conv_betaf <- 1
     A <- matrix_A(rho, nn)
 
-    while (conv_betaf[i] > control$tol && i < control$Maxiter1) {
+    while (conv_betaf > control$tol && i < control$Maxiter1) {
+      print(i)
       a <- res(y, f_init, phi, rho, N_i)
       posicao <- as.vector(family$g1(a,
         df = family$df,
@@ -133,16 +131,17 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
         sigmap = family$sigmap, k = family$k, nu = family$nu
       ))
       Dv <- (diag(-2 * posicao))
-      print(i)
-      i <- i + 1
+
       if (control$algorithm1 == "backfitting") {
         f <- backfitting(A, N_i, Dv, k, phi, lam, K_i, f_init, y)
       } else if (control$algorithm1 == "P-GAM") {
         f <- pgam(N_i, lam, K_i, A, phi, Dv, y, f_init)
       }
+
       error <- mapply("-", f, f_init, SIMPLIFY = FALSE)
-      conv_betaf[i] <- max(unlist(sapply(error, abs)))
+      conv_betaf <- max(unlist(sapply(error, abs)))
       f_init <- f
+      i <- i + 1
     }
 
     par1 <- optim(
@@ -162,7 +161,8 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     f_error <- mapply("-", f_aux, f, SIMPLIFY = FALSE)
     f_aux <- f
 
-    conv_geral[j] <- max(abs(dif_phi_rho), unlist(sapply(f_error, abs)))
+    conv_geral <- max(abs(dif_phi_rho), unlist(sapply(f_error, abs)))
+    j <- j + 1
   }
 
   A <- matrix_A(rho, nn)
@@ -251,15 +251,12 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
 
   # Summary Tables
   VAR_F <- estimateVarF(family, phi, const2, k, AN)
-  summary_table <- generateSummaryTable(f, rdf, formula, VAR_F)
   WALD_f <- generateWaldF(npc_dimension, dfk, npc, f, VAR_F)
   summary_table_phirho <- generateSummartTablePhiRho(p, par1, rdf, rho, phi, nn, family)
 
   fit <- list(
     formula = formula, family = family, npc = npc, Knot = Knot,
-    lam = lam, summary_table = summary_table, VAR_F = VAR_F,
-    basis = basis,
-    WALD_f = WALD_f,
+    lam = lam, rdf = rdf, VAR_F = VAR_F, basis = basis, WALD_f = WALD_f,
     summary_table_phirho = summary_table_phirho,
     N_i = N_i, f = f,
     Dv = Dv,

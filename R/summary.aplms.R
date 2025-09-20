@@ -9,6 +9,7 @@
 #' @export
 summary.aplms<-function(model, ...)
 {
+  summary_table <- generateSummaryTable(model)
   cat(" ---------------------------------------------------------------")
   cat("\n Additive partial linear models with symmetric errors \n")
   cat(" ---------------------------------------------------------------\n")
@@ -33,14 +34,21 @@ summary.aplms<-function(model, ...)
   cat(" --------------------------------------------------------------------\n")
 }
 
-generateSummaryTable <- function(f, rdf, formula, VAR_F) {
-  f0 <- f[[1]]
+#' @rdname summary.aplms
+#' @export
+summary <- function(model, ...) {
+  UseMethod("summary")
+}
+
+
+generateSummaryTable <- function(model) {
+  f0 <- model$f[[1]]
   est_coef <- as.vector(f0)
-  ee <- sqrt(diag(VAR_F)[1:length(f0)])
+  ee <- sqrt(diag(model$VAR_F)[1:length(f0)])
   t_test <- est_coef / ee
 
   p_value <- sapply(t_test, FUN = function(x) {
-    2 * pt(abs(x), rdf, lower.tail = FALSE)
+    2 * pt(abs(x), model$rdf, lower.tail = FALSE)
   })
 
   summary_table <- cbind(
@@ -50,18 +58,12 @@ generateSummaryTable <- function(f, rdf, formula, VAR_F) {
     p_value
   )
 
-  terms_formula <- stats::terms(formula)
+  terms_formula <- stats::terms(model$formula)
   var_names <- attr(terms_formula, "term.labels")
 
   rownames(summary_table) <- c("intercept", var_names)
   colnames(summary_table) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
   return(summary_table)
-}
-
-#' @rdname summary.aplms
-#' @export
-summary <- function(model, ...) {
-  UseMethod("summary")
 }
 
 generateWaldF <- function(npc_dimension, dfk, npc, f, VAR_F) {

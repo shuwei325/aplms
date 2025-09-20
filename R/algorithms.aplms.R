@@ -4,18 +4,18 @@ backfitting <- function(A, N_i, Dv, k, phi, lam, K_i, f_init, y) {
 	  solve(t(A %*% N_i[[1]]) %*% Dv %*% (A %*% N_i[[1]])),
 	  (A %*% N_i[[1]])
 	) %*% Dv
-	for (l in 1:k) {
-	  S_i[[l + 1]] <- tcrossprod(
-	    solve(t(A %*% N_i[[l + 1]]) %*% Dv %*% (A %*% N_i[[l + 1]]) + phi * lam[l] * K_i[[l + 1]]),
-	    (A %*% N_i[[l + 1]])
+	for (l in 2:k) {
+	  S_i[[l]] <- tcrossprod(
+	    solve(t(A %*% N_i[[l]]) %*% Dv %*% (A %*% N_i[[l]]) + phi * lam[l] * K_i[[l]]),
+	    (A %*% N_i[[l]])
 	  ) %*% Dv
 	}
 	f <- f_init
 	f0 <- S_i[[1]] %*% (A %*% (y - Reduce(`+`, mapply("%*%", N_i[-1], f[-1], SIMPLIFY = FALSE))))
 	f[[1]] <- f0
-	for (l in 1:k) {
-	  f_i <- S_i[[l + 1]] %*% (A %*% (y - Reduce(`+`, mapply("%*%", N_i[-(l + 1)], f[-(l + 1)], SIMPLIFY = FALSE))))
-	  f[[l + 1]] <- f_i
+	for (l in 2:k) {
+	  f_i <- S_i[[l]] %*% (A %*% (y - Reduce(`+`, mapply("%*%", N_i[-(l)], f[-(l)], SIMPLIFY = FALSE))))
+	  f[[l]] <- f_i
 	}
 	return(f)
 }
