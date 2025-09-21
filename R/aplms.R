@@ -135,7 +135,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
       if (control$algorithm1 == "backfitting") {
         f <- backfitting(A, N_i, Dv, k, phi, lam, K_i, f_init, y)
       } else if (control$algorithm1 == "P-GAM") {
-        f <- pgam(N_i, lam, K_i, A, phi, Dv, y, f_init)
+        f <- pgam(A, N_i, Dv, phi, lam, K_i, f_init, y)
       }
 
       error <- mapply("-", f, f_init, SIMPLIFY = FALSE)

@@ -91,5 +91,5 @@ test_that("The funtion returns an object of class aplms", {
                                  Maxiter1 = 20,
                                  Maxiter2 = 25),
                   lam=c(100,10))
-  expect_s3_class(result, "aplms")
+  expect_s3_class(mod2, "aplms")
 })
