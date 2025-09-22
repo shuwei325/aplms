@@ -1,4 +1,9 @@
-library(testthat)
+#' @title Tests for the aplms function
+#' @description 
+#' Unit tests for the the aplms function. This tests include that the function returns
+#' the correct answer when called with appropiate parameters and that the execution halts
+#' when called with inappropiate parameters.
+#' 
 
 test_that("aplms halts the program when missing formula", {
   expect_error(
