@@ -5,6 +5,7 @@
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param perturbation A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
 #' @param part A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.
+#' @return A list object of conformal normal curvature of different perturbations.
 #' @examples
 #' \dontrun{influence(model)}
 #' @import psych MASS

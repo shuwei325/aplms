@@ -7,7 +7,7 @@
 \usage{
 \method{plot}{aplms}(model, level = 0.95, len = 100, plot = TRUE, ...)
 
-plot(model, level = 0.95, len = 100, plot = TRUE, ...)
+plot(model, ...)
 }
 \arguments{
 \item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}

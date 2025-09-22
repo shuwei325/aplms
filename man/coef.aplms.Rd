@@ -14,6 +14,9 @@ coef(model, ...)
 
 \item{...}{other arguments}
 }
+\value{
+A list vector of the corresponding estimated parameters.
+}
 \description{
 Extract the coefficients of the fitted APLMS model.
 }

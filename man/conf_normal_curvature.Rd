@@ -14,6 +14,9 @@ conf_normal_curvature(DELTA, Lobs, Lobs.aux = 0)
 \item{Lobs.aux}{An optional numeric matrix of the same dimension as
 \code{Lobs}. Default is \code{0} (no auxiliary adjustment).}
 }
+\value{
+A vector, results of conformal normal curvature.
+}
 \description{
 Computes the conformal normal curvature.
 }
