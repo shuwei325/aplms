@@ -2,8 +2,8 @@
 #'
 #' @description Print the BIC of the fitted APLMS model.
 #' @param model APLMS object.
-#'
 #' @param ... other arguments
+#' @return a numeric value of the corresponding BIC.
 #' @examples
 #' \dontrun{BIC(model)}
 #' @method BIC aplms

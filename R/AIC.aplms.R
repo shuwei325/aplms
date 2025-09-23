@@ -2,8 +2,8 @@
 #'
 #' @description Print the AIC of the fitted APLMS model.
 #' @param model APLMS object.
-#'
 #' @param ... other arguments
+#' @return a numeric value of the corresponding AIC.
 #' @examples
 #' \dontrun{AIC(model)}
 #' @method AIC aplms

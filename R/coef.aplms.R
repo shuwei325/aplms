@@ -2,8 +2,8 @@
 #'
 #' Extract the coefficients of the fitted APLMS model.
 #' @param model APLMS object.
-#'
 #' @param ... other arguments
+#' @return A list vector of the corresponding estimated parameters.
 #' @examples
 #' \dontrun{coef(model)}
 #' @method coef aplms

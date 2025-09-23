@@ -14,6 +14,9 @@ BIC(model, ...)
 
 \item{...}{other arguments}
 }
+\value{
+a numeric value of the corresponding BIC.
+}
 \description{
 Print the BIC of the fitted APLMS model.
 }

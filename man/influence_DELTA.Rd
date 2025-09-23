@@ -15,6 +15,9 @@ influence_DELTA(model, perturb_scheme = "case-weight", r = 1, k = 1)
 
 \item{k}{Index of autocorrelation coefficient}
 }
+\value{
+A matrix Delta to support the perturbation scheme calculation.
+}
 \description{
 Delta computation depending on the perturbation scheme
 }
