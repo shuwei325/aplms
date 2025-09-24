@@ -17,7 +17,7 @@ summary.aplms<-function(model, ...)
   cat(" \n -------------------------- Model ---------------------------\n\n")
   print(model$this.call)
   cat(" \n ------------------- Parametric component -------------------\n\n")
-  printCoefmat(model$summary_table, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
+  printCoefmat(summary_table, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
                signif.legend = FALSE, tst.ind = c(2, 3))
   cat("\n ----------------- Non-parametric component ------------------ \n\n")
   printCoefmat(model$WALD_f, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
