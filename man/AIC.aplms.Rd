@@ -14,6 +14,9 @@ AIC(model, ...)
 
 \item{...}{other arguments}
 }
+\value{
+a numeric value of the corresponding AIC.
+}
 \description{
 Print the AIC of the fitted APLMS model.
 }

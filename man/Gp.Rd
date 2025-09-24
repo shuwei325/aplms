@@ -11,6 +11,9 @@ Gp(Lobs, index = NULL)
 
 \item{index}{Indices of columns and rows to be set to zero}
 }
+\value{
+The generalized inverse of the matrix \code{Lobs}, with the specified rows and columns set to zero, to support perturbation scheme computations.
+}
 \description{
 Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion.
 }

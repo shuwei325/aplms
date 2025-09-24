@@ -13,6 +13,9 @@ set_zero_matrix(mat, rows = NULL, cols = NULL)
 
 \item{cols}{Column Index}
 }
+\value{
+A matrix with the specified rows and columns set to zero.
+}
 \description{
 Setting columns and rows indexes of a matrix to zero
 }
