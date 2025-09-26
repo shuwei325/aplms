@@ -2,9 +2,9 @@
 #'
 #' Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
-#' @param level Confidence level.
 #' @param len The desired length of the sequence of covariates to compute the non parametric component functions.
 #' @param plot a logical value to return plots. Default value is \code{TRUE}.
+#' @param level Confidence level.
 #' @param ... other arguments.
 #' @return Return a list of all non parametric component functions with their confidence intervals.
 #'   interactive menu with eleven options to make plots.
@@ -27,7 +27,7 @@
 #' }
 #' @method plot aplms
 #' @export
-plot.aplms <- function(model, level = 0.95, len = 100, plot = TRUE , ...) {
+plot.aplms <- function(model, len = 100, plot = TRUE , level = 0.95, ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {
     stop("not a aplms object")
   }

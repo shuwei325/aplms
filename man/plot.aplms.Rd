@@ -5,18 +5,18 @@
 \alias{plot}
 \title{Default APLMS plotting.}
 \usage{
-\method{plot}{aplms}(model, level = 0.95, len = 100, plot = TRUE, ...)
+\method{plot}{aplms}(model, len = 100, plot = TRUE, level = 0.95, ...)
 
-plot(model, ...)
+plot(model, level = 0.95, len = 100, plot = TRUE, ...)
 }
 \arguments{
 \item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
 
-\item{level}{Confidence level.}
-
 \item{len}{The desired length of the sequence of covariates to compute the non parametric component functions.}
 
 \item{plot}{a logical value to return plots. Default value is \code{TRUE}.}
+
+\item{level}{Confidence level.}
 
 \item{...}{other arguments.}
 }

@@ -8,7 +8,7 @@ Authors@R: c(
   person("Gilberto", "Alvarenga Paula", email = "giapaula@ime.usp.br", role = c("aut")))
 Maintainer: Shu Wei Chou-Chen <shuwei.chou@ucr.ac.cr>
 Description: Set of tools for fitting the additive partial linear models with symmetric autoregressive errors of order p, or APLMS-AR(p). This setup enables the modeling of a time series response variable using linear and nonlinear structures of a set of explanatory variables, with nonparametric components approximated by natural cubic splines or P-splines. It also accounts for error distributions with lighter or heavier tails than the normal distribution. The package includes various error distributions, such as normal, generalized normal, Student's t, generalized Student's t, power-exponential, and Cauchy distributions.
-License: GPL (>= 3)
+License: GPL (>= 3) + file LICENSE
 URL: https://github.com/shuwei325/aplms
 BugReports: https://github.com/shuwei325/aplms/issues
 Encoding: UTF-8

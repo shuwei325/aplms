@@ -54,8 +54,8 @@ estimateVarF <- function(family, phi, const2, k, AN) {
 #' Calculate the second derivative with respect to the gamma estimations
 #'
 #' @param phi vector of the estimated phi parameters.
-#' @param Dd diagonal of the {d1, ..., dn} vectors
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dd diagonal of the d1, ..., dn vectors
+#' @param Dv diagonal of the v1, ..., vn vectors
 #' @param AN vector of the function matrices multiplied by the matrix A
 #' @param k number of non parametric components.
 #' @param const2 constant
@@ -85,8 +85,8 @@ calculateLL_FF <- function(phi, Dd, Dv, AN, k, const2) {
 #'
 #' @param phi vector of the estimated phi parameters.
 #' @param AN vector of the function matrices multiplied by the matrix A
-#' @param Dd diagonal of the {d1, ..., dn} vectors
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dd diagonal of the d1, ..., dn vectors
+#' @param Dv diagonal of the v1, ..., vn vectors
 #' @param A A matrix
 #' @param error_hat residual of the model
 calculateLL_FF_Phi <- function(phi, AN, Dd, Dv, A, error_hat) {
@@ -102,8 +102,8 @@ calculateLL_FF_Phi <- function(phi, AN, Dd, Dv, A, error_hat) {
 #' @param nn number of observations.
 #' @param phi vector of the estimated phi parameters.
 #' @param delta_i delta_i
-#' @param Dd diagonal of the {d1, ..., dn} vectors
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dc diagonal of the  c1, ..., cn vectors
+#' @param Dv diagonal of the  v1, ..., vn vectors
 calculateLL_Phi <- function(nn, phi, delta_i, Dc, Dv) {
   ONE <- cbind(rep(1, nn))
   LL_phi <- (1 / phi^2) * (nn / 2 + t(delta_i) %*% Dc %*% delta_i - t(delta_i) %*% Dv %*% ONE)
@@ -118,8 +118,8 @@ calculateLL_Phi <- function(nn, phi, delta_i, Dc, Dv) {
 #' @param k number of non parametric components
 #' @param phi vector of the estimated phi parameters.
 #' @param A A matrix
-#' @param Dd diagonal of the {d1, ..., dn} vectors
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dd diagonal of the d1, ..., dn vectors
+#' @param Dv diagonal of the  v1, ..., vn vectors
 #' @param error_hat residual of the model
 calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
   rep_N_i <- rep(N_i, each = p)
@@ -144,8 +144,8 @@ calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
 #' @param p autoregressive order of the error
 #' @param phi vector of the estimated phi parameters.
 #' @param error_hat residual of the model
-#' @param Dd diagonal of the {d1, ..., dn} vectors
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dd diagonal of the d1, ..., dn vectors
+#' @param Dv diagonal of the v1, ..., vn vectors
 calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
   rep_B <- rep(B, p)
   seq_B <- rep(B, each = p)
@@ -161,8 +161,8 @@ calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
 #' @param B B matrix
 #' @param phi vector of the estimated phi parameters.
 #' @param error_hat residual of the model
-#' @param Dd diagonal of the {d1, ..., dn} vectors
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dd diagonal of the d1, ..., dn vectors
+#' @param Dv diagonal of the v1, ..., vn vectors
 #' @param A A matrix
 calculateLL_Phi_Rho <- function(B, phi, error_hat, Dv, Dd, A) {
   LL_phi_rho_block <- lapply(B, FUN = function(x) {

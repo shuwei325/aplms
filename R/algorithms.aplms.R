@@ -2,7 +2,7 @@
 #' 
 #' @param A A matrix
 #' @param N_i function matrices
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dv diagonal of the v1, ..., vn vectors
 #' @param k number of non parametric components
 #' @param phi vector of the estimations of the phi parameters
 #' @param lam smoothing parameter vector.
@@ -35,7 +35,7 @@ backfitting <- function(A, N_i, Dv, k, phi, lam, K_i, f_init, y) {
 #' 
 #' @param A A matrix
 #' @param N_i function matrices
-#' @param Dv diagonal of the {v1, ..., vn} vectors
+#' @param Dv diagonal of the v1, ..., vn vectors
 #' @param phi vector of the estimations of the phi parameters
 #' @param lam smoothing parameter vector.
 #' @param K_i function of matrices
