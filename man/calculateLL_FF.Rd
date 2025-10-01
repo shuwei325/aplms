@@ -19,6 +19,9 @@ calculateLL_FF(phi, Dd, Dv, AN, k, const2)
 
 \item{const2}{constant}
 }
+\value{
+second derivative of the log function with respect to gamma
+}
 \description{
 Calculate the second derivative with respect to the gamma estimations
 }

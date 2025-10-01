@@ -25,6 +25,9 @@ calculateLL_FF_Rho(B, N_i, p, k, phi, A, Dv, Dd, error_hat)
 
 \item{error_hat}{residual of the model}
 }
+\value{
+second derivative of the log function with respect to the gamma estimations and rho estimations
+}
 \description{
 Calculate the second derivative with respect to the gamma estimations and rho estimations.
 }

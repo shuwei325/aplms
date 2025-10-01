@@ -19,6 +19,9 @@ calculateLL_Phi_Rho(B, phi, error_hat, Dv, Dd, A)
 
 \item{A}{A matrix}
 }
+\value{
+second derivative of the log function with respect to the phi and rho estimations
+}
 \description{
 Calculate the second derivative with respect to the phi estimations and rho estimations.
 }

@@ -18,6 +18,9 @@ estimateVarF(family, phi, const2, k, AN)
 
 \item{AN}{vector of the function matrices multiplied by the matrix A}
 }
+\value{
+estimation of the variance of f.
+}
 \description{
 Estimate the variance the asymptotic covariance-variance matrix for the estimated
 gamma parameters.

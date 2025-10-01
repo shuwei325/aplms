@@ -19,6 +19,9 @@ calculateLL_Rho(B, p, phi, error_hat, Dd, Dv)
 
 \item{Dv}{diagonal of the v1, ..., vn vectors}
 }
+\value{
+second derivative of the log function with respect to the rho estimations
+}
 \description{
 Calculate the second derivative with respect to the rho estimations.
 }

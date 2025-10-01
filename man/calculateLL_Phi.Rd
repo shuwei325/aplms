@@ -17,6 +17,9 @@ calculateLL_Phi(nn, phi, delta_i, Dc, Dv)
 
 \item{Dv}{diagonal of the  v1, ..., vn vectors}
 }
+\value{
+second derivative of the log function with respect to the phi estimations
+}
 \description{
 Calculate the second derivative with respect to the phi estimations.
 }

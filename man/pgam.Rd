@@ -23,6 +23,9 @@ pgam(A, N_i, Dv, phi, lam, K_i, f_init, y)
 
 \item{y}{vector of the observed values of the response variable}
 }
+\value{
+The estimation of the gamma parameters
+}
 \description{
 Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters.
 }

@@ -19,6 +19,9 @@ calculateLL_FF_Phi(phi, AN, Dd, Dv, A, error_hat)
 
 \item{error_hat}{residual of the model}
 }
+\value{
+second derivative of the log function with respect to tha gamma estimations and phi estimations
+}
 \description{
 Calculate the second derivative with respect to the gamma estimations and phi estimations.
 }

@@ -13,6 +13,9 @@ calculatef_init(k, y, N_i)
 
 \item{N_i}{function matrices.}
 }
+\value{
+initial aproximation of the gamma parameters.
+}
 \description{
 Calculate the first aproximation of the gamma parameters.
 }
