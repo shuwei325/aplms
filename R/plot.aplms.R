@@ -1,15 +1,16 @@
 #' Default APLMS plotting.
 #'
 #' Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
-#' @param model an object with the result of fitting additive partial linear models with symmetric errors.
+#' @param x an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param len The desired length of the sequence of covariates to compute the non parametric component functions.
 #' @param plot a logical value to return plots. Default value is \code{TRUE}.
 #' @param level Confidence level.
 #' @param ... other arguments.
 #' @return Return a list of all non parametric component functions with their confidence intervals.
 #'   interactive menu with eleven options to make plots.
-#' @keywords Additive partial linear models with symmetric errors
+#' @keywords Additive partial linear xs with symmetric errors
 #' @keywords Residuals
+#' @importFrom graphics plot
 #' @examples
 #' \dontrun{
 #' data(temperature)
@@ -27,26 +28,26 @@
 #' }
 #' @method plot aplms
 #' @export
-plot.aplms <- function(model, len = 100, plot = TRUE , level = 0.95, ...) {
-  if (!inherits(model, what = "aplms", which = FALSE)) {
+plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
+  if (!inherits(x, what = "aplms", which = FALSE)) {
     stop("not a aplms object")
   }
 
   npc_predict_list <- list()
 
-  for (k in seq_along(model$npc)) {
-    cov_name <- model$npc[(k)]
-    basis <- model$basis[(k)]
-    f_cov <- model$f[[(k+1)]]
-    nm <- model$Knot[(k)]
+  for (k in seq_along(x$npc)) {
+    cov_name <- x$npc[(k)]
+    basis <- x$basis[(k)]
+    f_cov <- x$f[[(k+1)]]
+    nm <- x$Knot[(k)]
 
-    data_aux<-data.frame(cov=seq(min(model$data[cov_name]),max(model$data[cov_name]),length = len))
+    data_aux<-data.frame(cov=seq(min(x$data[cov_name]),max(x$data[cov_name]),length = len))
     ZZ_aux<-smoothCon(s(cov,bs=basis,k=nm),data=data_aux,knots=NULL,absorb.cons=T)
     N1_aux<-ZZ_aux[[1]]$X
 
     fmean <- N1_aux %*% f_cov
-    VAR_F <- model$VAR_F
-    dim_coef <- sapply(model$N_i,dim)[2,]
+    VAR_F <- x$VAR_F
+    dim_coef <- sapply(x$N_i,dim)[2,]
     index_dim_coef <- cumsum(dim_coef)
 
     se <- sqrt(
@@ -67,23 +68,24 @@ plot.aplms <- function(model, len = 100, plot = TRUE , level = 0.95, ...) {
 
   if (plot) {
 
-    if (length(model$npc)==1) {
+    if (length(x$npc)==1) {
       split.screen(c(1, 1))
     } else {
-      split.screen(c(ceiling(length(model$npc)/2), 2))
+      split.screen(c(ceiling(length(x$npc)/2), 2))
     }
 
-    for (k in seq_along(model$npc)) {
+    for (k in seq_along(x$npc)) {
       screen(k)
       plot(npc_predict_list[[k]]$cov,
            npc_predict_list[[k]]$fmean,
            type = "l",
            ylim = range(c(npc_predict_list[[k]]$fmean_li, npc_predict_list[[k]]$fmean_ls)),
-           xlab = model$npc[k], ylab = "effect", main = model$npc[k])
+           xlab = x$npc[k], ylab = parse(text = paste0("f[", k,"](.)")), main = x$npc[k])
       points(npc_predict_list[[k]]$cov,
              npc_predict_list[[k]]$fmean_li, type = "l", lty = 2)
       points(npc_predict_list[[k]]$cov,
              npc_predict_list[[k]]$fmean_ls, type = "l", lty = 2)
+      grid()
     }
     close.screen(all.screens = TRUE)
   }
@@ -92,8 +94,4 @@ return(npc_predict_list)
 
 }
 
-#' @rdname plot.aplms
-#' @export
-plot <- function(model, level = 0.95, len = 100, plot = TRUE , ...){
-  UseMethod("plot")
-}
+

@@ -2,15 +2,12 @@
 % Please edit documentation in R/AIC.aplms.R
 \name{AIC.aplms}
 \alias{AIC.aplms}
-\alias{AIC}
 \title{Akaike information criterion}
 \usage{
-\method{AIC}{aplms}(model, ...)
-
-AIC(model, ...)
+\method{AIC}{aplms}(object, ...)
 }
 \arguments{
-\item{model}{APLMS object.}
+\item{object}{APLMS object.}
 
 \item{...}{other arguments}
 }
@@ -21,5 +18,5 @@ a numeric value of the corresponding AIC.
 Print the AIC of the fitted APLMS model.
 }
 \examples{
-\dontrun{AIC(model)}
+\dontrun{AIC(object)}
 }

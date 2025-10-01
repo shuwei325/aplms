@@ -2,15 +2,12 @@
 % Please edit documentation in R/summary.aplms.R
 \name{summary.aplms}
 \alias{summary.aplms}
-\alias{summary}
 \title{Print method for "aplms" class}
 \usage{
-\method{summary}{aplms}(model, ...)
-
-summary(model, ...)
+\method{summary}{aplms}(object, ...)
 }
 \arguments{
-\item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
+\item{object}{an object with the result of fitting additive partial linear models with symmetric errors.}
 
 \item{...}{Other arguments passed to or from other methods}
 }
@@ -18,5 +15,5 @@ summary(model, ...)
 Print method for "aplms" class
 }
 \examples{
-\dontrun{summary(model)}
+\dontrun{summary(object)}
 }

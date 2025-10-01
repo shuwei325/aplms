@@ -1,28 +1,29 @@
 #' Extract Residuals for APLMS fits.
 #'
-#' @param model an object with the result of fitting additive partial linear models with symmetric errors.
+#' @param object an object with the result of fitting additive partial linear models with symmetric errors.
 #' \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.
 #' @param ... other arguments.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @examples
-#' \dontrun{residuals(model)}
+#' \dontrun{residuals(object)}
+#' @importFrom stats residuals
 #' @method residuals aplms
 #' @export
-residuals.aplms <- function(model, ...) {
-  if (!inherits(model, what = "aplms", which = FALSE)) {
+residuals.aplms <- function(object, ...) {
+  if (!inherits(object, what = "aplms", which = FALSE)) {
     stop("not a aplms object")
   }
 
-  phi <- model$summary_table_phirho[1, 1]
-  family_sym <- model$family
+  phi <- object$summary_table_phirho[1, 1]
+  family_sym <- object$family
 
   xi_t <- family_sym$g4(1,
     df = family_sym$df,
     alpha = family_sym$alpha, mp = family_sym$mp, epsi = family_sym$epsi,
     sigmap = family_sym$sigmap, k = family_sym$k
   )
-  residual_pearson <- model$residuals_y / sqrt(phi * xi_t)
+  residual_pearson <- object$residuals_y / sqrt(phi * xi_t)
 
 
   p_dist <- function(q, dist) {
@@ -38,20 +39,16 @@ residuals.aplms <- function(model, ...) {
     )
   }
 
-  res_stand <- model$residuals_y / sqrt(phi)
+  res_stand <- object$residuals_y / sqrt(phi)
   residual_quant <- qnorm(p_dist(res_stand, family_sym$family))
 
   return(
     data.frame(
-      res = as.numeric(model$residuals_y),
+      res = as.numeric(object$residuals_y),
       res_pearson = as.numeric(residual_pearson),
       res_quant = as.numeric(residual_quant)
     )
   )
 }
 
-#' @rdname residuals.aplms
-#' @export
-residuals <- function(model, ...) {
-  UseMethod("residuals")
-}
+

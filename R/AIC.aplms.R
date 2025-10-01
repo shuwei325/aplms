@@ -1,22 +1,18 @@
 #' @title Akaike information criterion
 #'
 #' @description Print the AIC of the fitted APLMS model.
-#' @param model APLMS object.
+#' @param object APLMS object.
 #' @param ... other arguments
 #' @return a numeric value of the corresponding AIC.
 #' @examples
-#' \dontrun{AIC(model)}
+#' \dontrun{AIC(object)}
+#' @importFrom stats AIC
 #' @method AIC aplms
 #' @export
 
-AIC.aplms<- function(model,...){
-  if(!inherits(model, what="aplms", which = FALSE))
+AIC.aplms<- function(object,...){
+  if(!inherits(object, what="aplms", which = FALSE))
     stop("not a aplms object")
-  model$AIC
+  object$AIC
 }
 
-#' @rdname AIC.aplms
-#' @export
-AIC <- function(model, ...) {
-  UseMethod("AIC")
-}

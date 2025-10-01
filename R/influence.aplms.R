@@ -5,15 +5,17 @@
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param perturbation A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
 #' @param part A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.
+#' @param ... other arguments.
 #' @return A list object of conformal normal curvature of different perturbations.
 #' @examples
 #' \dontrun{influence(model)}
+#' @importFrom stats influence
 #' @import psych MASS
 #' @method influence aplms
 #' @export
 influence.aplms <- function(model,
                             perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
-                            part = TRUE
+                            part = TRUE,...
 ){
 
 
@@ -212,15 +214,6 @@ influence.aplms <- function(model,
   return(list_output)
 
 }
-
-#' @rdname influence.aplms
-#' @export
-influence <- function(model,
-                      perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),
-                      part = TRUE) {
-  UseMethod("influence")
-}
-
 
 
 

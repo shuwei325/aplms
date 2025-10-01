@@ -2,15 +2,12 @@
 % Please edit documentation in R/residuals.aplms.R
 \name{residuals.aplms}
 \alias{residuals.aplms}
-\alias{residuals}
 \title{Extract Residuals for APLMS fits.}
 \usage{
-\method{residuals}{aplms}(model, ...)
-
-residuals(model, ...)
+\method{residuals}{aplms}(object, ...)
 }
 \arguments{
-\item{model}{an object with the result of fitting additive partial linear models with symmetric errors.
+\item{object}{an object with the result of fitting additive partial linear models with symmetric errors.
 \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.}
 
 \item{...}{other arguments.}
@@ -19,7 +16,7 @@ residuals(model, ...)
 Extract Residuals for APLMS fits.
 }
 \examples{
-\dontrun{residuals(model)}
+\dontrun{residuals(object)}
 }
 \keyword{Additive}
 \keyword{Residuals}

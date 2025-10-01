@@ -32,7 +32,7 @@ influenceplot.aplms <- function(model,
                             labels = NULL){
 
   perturbation <- match.arg(perturbation)
-  if (is.null(labels)) labels <- 1:(nrow(model$data))
+  if (is.null(labels)) labels <- seq_along(model$yhat)
 
   output_list <- influence(model,
                     perturbation = perturbation,

@@ -1,47 +1,43 @@
 
 #' Print method for "aplms" class
 #'
-#' @param model an object with the result of fitting additive partial linear models with symmetric errors.
+#' @param object an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param ... Other arguments passed to or from other methods
 #' @examples
-#' \dontrun{summary(model)}
+#' \dontrun{summary(object)}
 #' @method summary aplms
 #' @export
-summary.aplms<-function(model, ...)
+summary.aplms<-function(object, ...)
 {
-  summary_table <- generateSummaryTable(model)
+  summary_table <- generateSummaryTable(object)
   cat(" ---------------------------------------------------------------")
   cat("\n Additive partial linear models with symmetric errors \n")
   cat(" ---------------------------------------------------------------\n")
-  cat(" Sample size: ", length(model$yhat))
+  cat(" Sample size: ", length(object$yhat))
   cat(" \n -------------------------- Model ---------------------------\n\n")
-  print(model$this.call)
+  print(object$this.call)
   cat(" \n ------------------- Parametric component -------------------\n\n")
   printCoefmat(summary_table, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
                signif.legend = FALSE, tst.ind = c(2, 3))
   cat("\n ----------------- Non-parametric component ------------------ \n\n")
-  printCoefmat(model$WALD_f, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
+  printCoefmat(object$WALD_f, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
                signif.legend = FALSE, tst.ind = c(1,2))
   cat("\n --------------- Autoregressive and Scale parameter ---------------- \n\n")
-  printCoefmat(model$summary_table_phirho, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
+  printCoefmat(object$summary_table_phirho, P.values = TRUE, has.Pvalue = TRUE, digits = 5,
                signif.legend = FALSE, tst.ind = c(2, 3))
   cat(" \n\n------ Penalized Log-likelihood and Information criterion------\n\n")
-  cat(" Log-lik: ", round(model$loglike, digits = 2), "\n")
-  cat(" AIC    : ", round(model$AIC, digits = 2), "\n")
-  cat(" AICc   : ", round(model$AICC, digits = 2), "\n")
-  cat(" BIC    : ", round(model$BIC, digits = 2), "\n")
-  cat(" GCV    : ", round(model$GCV, digits = 2), "\n\n")
+  cat(" Log-lik: ", round(object$loglike, digits = 2), "\n")
+  cat(" AIC    : ", round(object$AIC, digits = 2), "\n")
+  cat(" AICc   : ", round(object$AICC, digits = 2), "\n")
+  cat(" BIC    : ", round(object$BIC, digits = 2), "\n")
+  cat(" GCV    : ", round(object$GCV, digits = 2), "\n\n")
   cat(" --------------------------------------------------------------------\n")
 }
 
-#' @rdname summary.aplms
-#' @export
-summary <- function(model, ...) {
-  UseMethod("summary")
-}
+
 
 #' Generate the summary table of the parametric components.
-#' 
+#'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 generateSummaryTable <- function(model) {
   f0 <- model$f[[1]]
@@ -69,9 +65,9 @@ generateSummaryTable <- function(model) {
 }
 
 #' Generate the Walf F statistic and its table.
-#' 
+#'
 #' @param npc_dimension cumulative sum of the number of rows of the function matrices
-#' @param dfk effective degrees of freedon 
+#' @param dfk effective degrees of freedon
 #' @param npc vector with the names of non parametric components
 #' @param f estimated gamma parameters
 #' @param VAR_F covariance-variance matrix of the estimated gamma parameters
@@ -97,7 +93,7 @@ generateWaldF <- function(npc_dimension, dfk, npc, f, VAR_F) {
 }
 
 #' Generate the summary table of the rho parameter.
-#' 
+#'
 #' @param p autoregressive order of the error
 #' @param par1 optimized log-likelihood function
 #' @param rho vector of estimated rho parameters
@@ -129,7 +125,7 @@ generateSummaryTableRho <- function(p, par1, rho, rdf) {
 }
 
 #' Generate the summary table of the rho parameter.
-#' 
+#'
 #' @param p autoregressive order of the error
 #' @param par1 optimized log-likelihood function
 #' @param rdf regressive degrees of freedom

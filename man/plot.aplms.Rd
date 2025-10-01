@@ -2,15 +2,12 @@
 % Please edit documentation in R/plot.aplms.R
 \name{plot.aplms}
 \alias{plot.aplms}
-\alias{plot}
 \title{Default APLMS plotting.}
 \usage{
-\method{plot}{aplms}(model, len = 100, plot = TRUE, level = 0.95, ...)
-
-plot(model, level = 0.95, len = 100, plot = TRUE, ...)
+\method{plot}{aplms}(x, len = 100, plot = TRUE, level = 0.95, ...)
 }
 \arguments{
-\item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
+\item{x}{an object with the result of fitting additive partial linear models with symmetric errors.}
 
 \item{len}{The desired length of the sequence of covariates to compute the non parametric component functions.}
 
@@ -47,7 +44,7 @@ plot(mod1)
 \keyword{Residuals}
 \keyword{errors}
 \keyword{linear}
-\keyword{models}
 \keyword{partial}
 \keyword{symmetric}
 \keyword{with}
+\keyword{xs}

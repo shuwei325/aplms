@@ -2,19 +2,13 @@
 % Please edit documentation in R/influence.aplms.R
 \name{influence.aplms}
 \alias{influence.aplms}
-\alias{influence}
 \title{local influence analysis of the object `aplms()`.}
 \usage{
 \method{influence}{aplms}(
   model,
   perturbation = c("case-weight", "dispersion", "response", "explanatory", "corAR"),
-  part = TRUE
-)
-
-influence(
-  model,
-  perturbation = c("case-weight", "dispersion", "response", "explanatory", "corAR"),
-  part = TRUE
+  part = TRUE,
+  ...
 )
 }
 \arguments{
@@ -23,6 +17,8 @@ influence(
 \item{perturbation}{A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.}
 
 \item{part}{A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.}
+
+\item{...}{other arguments.}
 }
 \value{
 A list object of conformal normal curvature of different perturbations.

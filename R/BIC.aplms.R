@@ -1,21 +1,17 @@
 #' @title Bayesian information criterion
 #'
 #' @description Print the BIC of the fitted APLMS model.
-#' @param model APLMS object.
+#' @param object APLMS object.
 #' @param ... other arguments
 #' @return a numeric value of the corresponding BIC.
 #' @examples
-#' \dontrun{BIC(model)}
+#' \dontrun{BIC(object)}
+#' @importFrom stats BIC
 #' @method BIC aplms
 #' @export
-BIC.aplms<- function(model,...){
-  if(!inherits(model, what="aplms", which = FALSE))
+BIC.aplms<- function(object,...){
+  if(!inherits(object, what="aplms", which = FALSE))
     stop("not a aplms object")
-  model$BIC
+  object$BIC
 }
 
-#' @rdname BIC.aplms
-#' @export
-BIC <- function(model, ...) {
-  UseMethod("BIC")
-}

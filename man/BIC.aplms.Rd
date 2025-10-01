@@ -2,15 +2,12 @@
 % Please edit documentation in R/BIC.aplms.R
 \name{BIC.aplms}
 \alias{BIC.aplms}
-\alias{BIC}
 \title{Bayesian information criterion}
 \usage{
-\method{BIC}{aplms}(model, ...)
-
-BIC(model, ...)
+\method{BIC}{aplms}(object, ...)
 }
 \arguments{
-\item{model}{APLMS object.}
+\item{object}{APLMS object.}
 
 \item{...}{other arguments}
 }
@@ -21,5 +18,5 @@ a numeric value of the corresponding BIC.
 Print the BIC of the fitted APLMS model.
 }
 \examples{
-\dontrun{BIC(model)}
+\dontrun{BIC(object)}
 }

@@ -81,6 +81,7 @@ aplms.diag.plot <- function(model, which,
              x1 <- model$yhat
             plot(x1, y1, xlab = "Fitted values", ylab = "Response residual",
                   ...)
+            grid()
             xx <- list(x1)
             yy <- list(y1)
            },
@@ -89,26 +90,29 @@ aplms.diag.plot <- function(model, which,
              x2 <- seq_along(y2)
              plot(x2, y2, xlab = "Index", ylab = "Response residual",
                   ...)
+             grid()
              xx <- list(x2)
              yy <- list(y2)
            },
            `3` = {
              y3 <- res_data$res
-             hist(y3)
+             hist(y3, main="Response residuals")
+             grid()
            },
            `4` = {
              y4 <- res_data$res
-             acf(y4)
+             acf(y4, main="Response residuals")
            },
            `5` = {
              y5 <- res_data$res
-             pacf(y5)
+             pacf(y5, main="Response residuals")
            },
            `6` = {
              y6 <- res_data$res_quant
              x6 <- model$yhat
              plot(x6, y6, xlab = "Fitted values", ylab = "Conditional quantile residual",
                   ...)
+             grid()
              xx <- list(x6)
              yy <- list(y6)
            },
@@ -117,20 +121,22 @@ aplms.diag.plot <- function(model, which,
              x7 <- seq_along(y7)
              plot(x7, y7, xlab = "Index", ylab = "Conditional quantile residual",
                   ...)
+             grid()
              xx <- list(x7)
              yy <- list(y7)
            },
            `8` = {
              y8 <- res_data$res_quant
-             hist(y8)
+             hist(y8, main="Conditional quantile residual")
+             grid()
            },
            `9` = {
              y9 <- res_data$res_quant
-             acf(y9)
+             acf(y9, main="Conditional quantile residual")
            },
            `10` = {
              y10<- res_data$res_quant
-             pacf(y10)
+             pacf(y10, main="Conditional quantile residual")
            },
            `11` = {
              y11 <- res_data$res_quant
@@ -139,6 +145,7 @@ aplms.diag.plot <- function(model, which,
              plot(x11, y11, xlab = paste("Quantiles of standard normal"),
                   ylab = "Ordered standardized residual", xlim = .lim,
                   ylim = .lim, ...)
+             grid()
              abline(0, 1, lty = 2)
              xx <- list(x11)
              yy <- list(y11)
