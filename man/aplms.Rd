@@ -19,7 +19,7 @@ aplms(
   lam
 )
 
-\method{print}{aplms}(model, ...)
+\method{print}{aplms}(x, ...)
 }
 \arguments{
 \item{formula}{A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under ‘Details’.}
@@ -42,7 +42,7 @@ aplms(
 
 \item{lam}{smoothing parameter vector.}
 
-\item{model}{APLMS object.}
+\item{x}{APLMS object.}
 
 \item{...}{other arguments}
 }
@@ -54,7 +54,6 @@ Fitting Additive partial linear models with symmetric errors
 In this setup, the natural cubic splines or cubic P-splines.
 }
 \examples{
-\dontrun{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,
@@ -67,5 +66,5 @@ mod1<-aplms::aplms(temperature ~ 1,
                                   Maxiter2 = 25),
                    lam=c(10))
 summary(mod1)
-}
+print(mod1)
 }

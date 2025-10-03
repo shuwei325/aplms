@@ -41,31 +41,31 @@ family.elliptical<- function (object,...)
 #' @rdname family.elliptical
 #' @noRd
 #' @export
-print.family.elliptical <- function (model, ...)
+print.family.elliptical <- function (x, ...)
 {
-  cat("\n", model$family, "family\n")
-  cat("\n density  : ", as.character(as.list(model[["g0"]])),
+  cat("\n", x$family, "family\n")
+  cat("\n density  : ", as.character(as.list(x[["g0"]])),
       "\n")
-  cat("\n Wg: ", as.character(as.list(model[["g1"]])), "\n")
-  cat("\n scale: ", as.character(as.list(model[["g2"]])), "\n")
-  cat("\n scale dispersion: ", as.character(as.list(model[["g3"]])),
+  cat("\n Wg: ", as.character(as.list(x[["g1"]])), "\n")
+  cat("\n scale: ", as.character(as.list(x[["g2"]])), "\n")
+  cat("\n scale dispersion: ", as.character(as.list(x[["g3"]])),
       "\n")
-  cat("\n scale variance: ", as.character(as.list(model[["g4"]])),
+  cat("\n scale variance: ", as.character(as.list(x[["g4"]])),
       "\n")
-  cat("\n Wg': ", as.character(as.list(model[["g5"]])), "\n")
-  if (charmatch(model$family, "Gstudent", F))
-    cat("\n r :", model$r, "\n", "\n s :", model$s, "\n")
-  if (charmatch(model$family, "Glogis", F))
-    cat("\n alpha :", model$alpha, "\n", "\n m :", model$mp, "\n")
-  if (charmatch(model$family, "Cnormal", F))
-    cat("\n epsilon :", model$epsi, "\n", "\n sigma :", model$sigmap,
+  cat("\n Wg': ", as.character(as.list(x[["g5"]])), "\n")
+  if (charmatch(x$family, "Gstudent", F))
+    cat("\n r :", x$r, "\n", "\n s :", x$s, "\n")
+  if (charmatch(x$family, "Glogis", F))
+    cat("\n alpha :", x$alpha, "\n", "\n m :", x$mp, "\n")
+  if (charmatch(x$family, "Cnormal", F))
+    cat("\n epsilon :", x$epsi, "\n", "\n sigma :", x$sigmap,
         "\n")
-  if (charmatch(model$family, "Student", F))
-    cat("\n df :", model$df, "\n")
-  if (charmatch(model$family, "Poweremodelp", F))
-    cat("\n k  :", model$k, "\n")
-  if (charmatch(model$family, "GNormal", F))
-    cat("\n nu  :", model$nu, "\n")
+  if (charmatch(x$family, "Student", F))
+    cat("\n df :", x$df, "\n")
+  if (charmatch(x$family, "Powerexp", F))
+    cat("\n k  :", x$k, "\n")
+  if (charmatch(x$family, "GNormal", F))
+    cat("\n nu  :", x$nu, "\n")
   return(invisible(0))
 }
 
