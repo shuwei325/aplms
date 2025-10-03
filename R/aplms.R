@@ -289,7 +289,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
 #' @param model APLMS object.
 #' @param ... other arguments
 #' @rdname aplms
-#' @method print aplms
 #' @export
 print.aplms <- function(model, ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {
@@ -297,10 +296,4 @@ print.aplms <- function(model, ...) {
   }
   cat("Call:\n")
   print(model$this.call)
-}
-
-#' @rdname aplms
-#' @export
-print <- function(model, ...) {
-  UseMethod("print")
 }

@@ -11,7 +11,6 @@
 #' \dontrun{influence(model)}
 #' @importFrom stats influence
 #' @import psych MASS
-#' @method influence aplms
 #' @export
 influence.aplms <- function(model,
                             perturbation = c("case-weight","dispersion","response","explanatory", "corAR"),

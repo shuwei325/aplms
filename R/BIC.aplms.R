@@ -7,7 +7,6 @@
 #' @examples
 #' \dontrun{BIC(object)}
 #' @importFrom stats BIC
-#' @method BIC aplms
 #' @export
 BIC.aplms<- function(object,...){
   if(!inherits(object, what="aplms", which = FALSE))

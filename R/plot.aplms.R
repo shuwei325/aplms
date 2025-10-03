@@ -26,7 +26,6 @@
 #'                    lam=c(10))
 #' plot(mod1)
 #' }
-#' @method plot aplms
 #' @export
 plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
   if (!inherits(x, what = "aplms", which = FALSE)) {
@@ -91,7 +90,6 @@ plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
   }
 
 return(npc_predict_list)
-
 }
 
 

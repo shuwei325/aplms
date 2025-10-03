@@ -36,8 +36,6 @@
 #' @keywords Residuals
 #' @import utils graphics
 #' @export
-
-
 aplms.diag.plot <- function(model, which,
                             labels = NULL,
                             iden = F, ...) {

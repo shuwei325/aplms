@@ -8,7 +8,6 @@
 #' @examples
 #' \dontrun{residuals(object)}
 #' @importFrom stats residuals
-#' @method residuals aplms
 #' @export
 residuals.aplms <- function(object, ...) {
   if (!inherits(object, what = "aplms", which = FALSE)) {

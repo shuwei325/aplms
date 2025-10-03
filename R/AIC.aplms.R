@@ -7,9 +7,7 @@
 #' @examples
 #' \dontrun{AIC(object)}
 #' @importFrom stats AIC
-#' @method AIC aplms
 #' @export
-
 AIC.aplms<- function(object,...){
   if(!inherits(object, what="aplms", which = FALSE))
     stop("not a aplms object")

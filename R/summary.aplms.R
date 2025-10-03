@@ -5,7 +5,6 @@
 #' @param ... Other arguments passed to or from other methods
 #' @examples
 #' \dontrun{summary(object)}
-#' @method summary aplms
 #' @export
 summary.aplms<-function(object, ...)
 {
