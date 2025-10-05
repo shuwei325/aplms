@@ -75,7 +75,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   if (is.character(family)) {
     family <- get(family, mode = "function", envir = parent.frame())
   }
-
   if (is.function(family)) {
     family <- family()
   }
