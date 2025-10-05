@@ -69,7 +69,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     Knot <- unlist(lapply(data[npc], max)) * (1 / 4)
     Knot <- sapply(Knot, function(x) min(x, 35))
   } else {
-    if (length(knot) != k) stop("The vector of the knots should be the same length as the non-parametric component.")
+    if (length(Knot) != k) stop("The vector of the knots should be the same length as the non-parametric component.")
   }
 
   if (is.character(family)) {
