@@ -46,20 +46,30 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   if (missingArg(data)) stop("The data argument is missing.")
   if (!all(npc %in% names(data))) stop("The non-parametric variables must be in data.")
   if (is.null(family$family)) stop("'family' not recognized")
+  if (control$algorithm1 != "P-GAM" & control$algorithm1 != "backfitting") stop("The algorithm should be P-GAM or backfitting.")
+  if(control$Maxiter1 < 0 | control$Maxiter2 < 0) stop("Maxiter1 and Maxiter2 should be positive integers.")
+  if(control$tol < 0) stop("The tolerance should be positive number.")
 
   k <- length(npc)
+
   if (missingArg(basis)) {
     if (k == 1) basis <- c("ps")
-    if (k >= 2) basis <- c("ps", rep("cp", k - 1)) # if (k==2) basis <- c("cr","cc")
+    if (k >= 2) basis <- c("ps", rep("cp", k - 1))
+  } else {
+    if (length(basis) != k) stop("The vector of names of the basis should be the same length as the non-parametric component.")
   }
 
   if (missingArg(lam)) {
     lam <- rep(10, k)
+  } else {
+    if (length(lam) != k) stop("The smoothing parameter vector should be the same length as the non-parametric component.")
   }
 
   if (missingArg(Knot)) {
     Knot <- unlist(lapply(data[npc], max)) * (1 / 4)
     Knot <- sapply(Knot, function(x) min(x, 35))
+  } else {
+    if (length(Knot) != k) stop("The vector of the knots should be the same length as the non-parametric component.")
   }
 
   if (is.character(family)) {
@@ -82,6 +92,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     phi <- sd(y) / xi_t
     rho <- rep(0, p)
   } else {
+    if(length(init) != 2) stop("There should be an initial value for the symmetric error scale and for the autoregressive coefficients")
     phi <- init[[1]]
     rho <- init[[2]]
   }
@@ -177,13 +188,13 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   delta_i <- a^2
 
   # loglik evaluation
-  Lp <- logLik_fim.test(y, f, rho, phi, N_i, family) # Global
-  AN <- lapply(N_i, FUN = function(x) A %*% x) # Local
-  N_bar_a <- rlist::list.cbind(AN) # Local
-  K_ast <- phi * as.matrix(Matrix::bdiag(mapply("*", c(0, lam), K_i, SIMPLIFY = FALSE))) # Locals
+  Lp <- logLik_fim.test(y, f, rho, phi, N_i, family) 
+  AN <- lapply(N_i, FUN = function(x) A %*% x)
+  N_bar_a <- rlist::list.cbind(AN)
+  K_ast <- phi * as.matrix(Matrix::bdiag(mapply("*", c(0, lam), K_i, SIMPLIFY = FALSE)))
 
   # effective degree of freedom per function
-  effect <- solve(t(N_bar_a) %*% Dv %*% N_bar_a + K_ast) %*% t(N_bar_a) %*% Dv %*% N_bar_a # pag 57, L4 Local
+  effect <- solve(t(N_bar_a) %*% Dv %*% N_bar_a + K_ast) %*% t(N_bar_a) %*% Dv %*% N_bar_a # pag 57, L4
   n_i <- sapply(N_i, ncol)
   npc_dimension <- cumsum(n_i)
   dfk <- sum(diag(effect)[1:npc_dimension[1]])
@@ -193,15 +204,15 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   }
 
   ######
-  q1 <- t(N_bar_a) %*% Dv %*% N_bar_a # Local
+  q1 <- t(N_bar_a) %*% Dv %*% N_bar_a
   dec <- eigen(q1)
-  q12 <- dec$vectors %*% (diag(dec$values^(1 / 2))) %*% t(dec$vectors) # Local
-  q12m <- dec$vectors %*% (diag(dec$values^(-1 / 2))) %*% t(dec$vectors) # Local
-  auto <- q12m %*% (K_ast) %*% q12m # Local
-  df_alpha <- sum(1 / (1 + eigen(auto)$value)) + p + 1 # Efective degree of freedom Local
+  q12 <- dec$vectors %*% (diag(dec$values^(1 / 2))) %*% t(dec$vectors)
+  q12m <- dec$vectors %*% (diag(dec$values^(-1 / 2))) %*% t(dec$vectors)
+  auto <- q12m %*% (K_ast) %*% q12m
+  df_alpha <- sum(1 / (1 + eigen(auto)$value)) + p + 1 # Efective degree of freedom
 
   II <- diag(nn)
-  H_alpha <- N_bar_a %*% solve((t(N_bar_a) %*% Dv) %*% N_bar_a + K_ast) %*% (t(N_bar_a) %*% Dv) # (4.18) # Local
+  H_alpha <- N_bar_a %*% solve((t(N_bar_a) %*% Dv) %*% N_bar_a + K_ast) %*% (t(N_bar_a) %*% Dv) # (4.18)
   yhat <- H_alpha %*% (A %*% y) - (A - II) %*% y
 
   AIC <- -2 * Lp + 2 * (df_alpha)
