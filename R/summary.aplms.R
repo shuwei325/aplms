@@ -2,9 +2,21 @@
 #' Print method for "aplms" class
 #'
 #' @param object an object with the result of fitting additive partial linear models with symmetric errors.
-#' @param ... Other arguments passed to or from other methods
+#' @param ... Other arguments passed to or from other methods.
+#' @returns Prints the main results of the fitted APLMS model.
 #' @examples
-#' \dontrun{summary(object)}
+#' data(temperature)
+#' datos = data.frame(temperature,time=1:length(temperature))
+#' mod<-aplms::aplms(temperature ~ 1,
+#'                    npc=c("time"), basis=c("cr"),Knot=c(60),
+#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    control = list(tol = 0.001,
+#'                                   algorithm1 = c("P-GAM"),
+#'                                   algorithm2 = c("BFGS"),
+#'                                   Maxiter1 = 20,
+#'                                   Maxiter2 = 25),
+#'                    lam=c(10))
+#' summary(mod)
 #' @export
 summary.aplms<-function(object, ...)
 {
