@@ -75,7 +75,7 @@ generateSummaryTable <- function(model) {
   return(summary_table)
 }
 
-# Generate the Walf F statistic and its table.
+# Generate the Wald F-statistic and its corresponding table.
 #
 # @param npc_dimension cumulative sum of the number of rows of the function matrices
 # @param dfk effective degrees of freedon
@@ -135,7 +135,7 @@ generateSummaryTableRho <- function(p, par1, rho, rdf) {
   return(summary_table_rho)
 }
 
-# Generate the summary table of the rho parameter.
+# Generate the summary table of the rho and phi parameters.
 #
 # @param p autoregressive order of the error
 # @param par1 optimized log-likelihood function

@@ -1,3 +1,5 @@
+# Utility Functions to support the function `influence.aplms`
+
 # Delta computation depending on the perturbation scheme
 #
 # @param model an object with the result of fitting additive partial linear models with symmetric errors.
@@ -95,7 +97,7 @@ influence_DELTA <- function(model,
   return(DELTA)
 }
 
-# Setting columns and rows indexes of a matrix to zero
+# Setting the columns and rows indices of a matrix to zero
 # @param mat squared matrix
 # @param rows Row index
 # @param cols Column Index
@@ -114,9 +116,9 @@ set_zero_matrix <- function(mat, rows = NULL, cols = NULL) {
   return(mat)
 }
 
-# Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion.
+# Setting columns and rows indices of a matrix to zero and compute the Generalized Inversion.
 # @param Lobs The observed information matrix
-# @param index Indices of columns and rows to be set to zero
+# @param Column and row indices to be set to zero.
 # @return The generalized inverse of the matrix \code{Lobs}, with the specified rows and columns set to zero, to support perturbation scheme computations.
 Gp <- function(Lobs, index = NULL){
 

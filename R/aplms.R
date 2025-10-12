@@ -1,9 +1,11 @@
-#' Fitting Additive partial linear models with symmetric errors
-#'
-#' \code{aplms} is used to fit additive partial linear models with symmetric errors.
-#' In this setup, the natural cubic splines or cubic P-splines.
-#'
 #' @title Fitting Additive partial linear models with symmetric errors.
+#' @description
+#' \code{aplms} fits additive partial linear models with autoregressive symmetric errors.
+#' This method is suitable for data sets where the response variable is continuous and symmetric,
+#' with either heavy or light tails, and measured over time.
+#' The model includes a parametric component for a set of covariates, while another set of covariates
+#' can be specified as semi-parametric functions, typically time-related.
+#' In this setup, natural cubic splines or cubic P-splines are used to approximate the nonparametric components.
 #' @param formula A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under ‘Details’.
 #' @param npc A vector of names of non parametric component.
 #' @param basis A vector of names of the basis to be used for each non parametric covariate.
@@ -14,6 +16,39 @@
 #' @param control optimization rutine.
 #' @param init A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.
 #' @param lam smoothing parameter vector.
+#' @return Returns an object of class \dQuote{aplms}, a list with following components.
+#' \item{formula}{the \code{formula} object used.}
+#' \item{family}{the \code{family} object used.}
+#' \item{npc}{the \code{npc} object used.}
+#' \item{Knot}{the \code{Knot} object used.}
+#' \item{lam}{the \code{lam} object used.}
+#' \item{rdf}{Degrees of freedom: \code{n - q - p - 1}.}
+#' \item{VAR_F}{Estimate the asymptotic covariance matrix for the gamma parameters.}
+#' \item{basis}{The \code{basis} to be used for each non parametric covariate.}
+#' \item{WALD_f}{The summary table of the Wald statistics.}
+#' \item{summary_table_phirho}{The summary table of the rho and phi parameters.}
+#' \item{N_i}{Basis functions.}
+#' \item{f}{Estimated gamma parameters.}
+#' \item{Dv}{Dv values for the symmetric error.}
+#' \item{Dm}{Dm values for the symmetric error.}
+#' \item{Dc}{Dc values for the symmetric error.}
+#' \item{Dd}{Dd values for the symmetric error.}
+#' \item{delta}{delta_i for the symmetric error.}
+#' \item{LL_obs}{Observed information matrix of the fitted model.}
+#' \item{loglike}{The estimated loglikelihood function of the fitted model.}
+#' \item{total_df}{The total effective degree of freedom of the model.}
+#' \item{parametric_df}{The degree of freedom of the parametric components.}
+#' \item{npc_df}{The effective degree of freedom of the non parametric components.}
+#' \item{AIC}{Akaike information criterion of the estimated model.}
+#' \item{BIC}{Bayesian information criterion of the estimated model.}
+#' \item{AICC}{Corrected Akaike information criterion of the estimated model.}
+#' \item{GCV}{The generalized cross-validation (GCV).}
+#' \item{yhat}{The fitted response values of the model.}
+#' \item{muhat}{The fitted mean values of the model.}
+#' \item{residuals_y}{The response residuals}
+#' \item{residuals_mu}{Raw (Ordinary) residuals: \eqn{y_t - (\textbf{x}_i^\top\beta + f_1(t_{i1}) + \ldots + f_k(t_{ik}))}}
+#' \item{data}{the \code{data} object used.}
+#' \item{this.call}{the function call used.}
 #' @examples
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
@@ -188,7 +223,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   delta_i <- a^2
 
   # loglik evaluation
-  Lp <- logLik_fim.test(y, f, rho, phi, N_i, family) 
+  Lp <- logLik_fim.test(y, f, rho, phi, N_i, family)
   AN <- lapply(N_i, FUN = function(x) A %*% x)
   N_bar_a <- rlist::list.cbind(AN)
   K_ast <- phi * as.matrix(Matrix::bdiag(mapply("*", c(0, lam), K_i, SIMPLIFY = FALSE)))
@@ -218,8 +253,6 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   AIC <- -2 * Lp + 2 * (df_alpha)
   BIC <- -2 * Lp + log(nn) * (df_alpha)
   AICC <- AIC + 1 +
-    2 * (sum(diag(H_alpha)) + 1) / (nn - 2 - sum(diag(H_alpha)))
-  AICc_alpha <- log((sum((sqrt(Dv) %*% (cbind(y - yhat)))^2)) / nn) + 1 +
     2 * (sum(diag(H_alpha)) + 1) / (nn - 2 - sum(diag(H_alpha)))
 
   muhat1 <- Reduce(`+`, mapply("%*%", N_i, f, SIMPLIFY = FALSE))
@@ -282,7 +315,7 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
     AIC = AIC,
     BIC = BIC,
     AICC = AICC,
-    AICc_alpha = AICc_alpha,
+    #AICc_alpha = AICc_alpha,
     GCV = GCV,
     yhat = yhat,
     muhat = muhat1,

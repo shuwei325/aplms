@@ -1,3 +1,6 @@
+# Utility Functions to support the function `aplms`
+
+
 # Calculate the first aproximation of the gamma parameters.
 #
 # @param k number of non parametric components.
@@ -13,8 +16,7 @@ calculatef_init <- function(k, y, N_i) {
   return(f_init)
 }
 
-# Estimate the variance the asymptotic covariance-variance matrix for the estimated
-# gamma parameters. 
+# Estimate the asymptotic covariance matrix for the gamma parameters.
 #
 # @param family probability distribution function.
 # @param phi vector of the estimated phi parameters.
@@ -116,7 +118,7 @@ calculateLL_Phi <- function(nn, phi, delta_i, Dc, Dv) {
 }
 
 # Calculate the second derivative with respect to the gamma estimations and rho estimations.
-# 
+#
 # @param B B matrix
 # @param N_i function matrices.
 # @param p autoregressive order of the error
@@ -145,7 +147,7 @@ calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
 }
 
 # Calculate the second derivative with respect to the rho estimations.
-# 
+#
 # @param B B matrix
 # @param p autoregressive order of the error
 # @param phi vector of the estimated phi parameters.
@@ -164,7 +166,7 @@ calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
 }
 
 # Calculate the second derivative with respect to the phi estimations and rho estimations.
-# 
+#
 # @param B B matrix
 # @param phi vector of the estimated phi parameters.
 # @param error_hat residual of the model
