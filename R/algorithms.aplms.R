@@ -1,5 +1,7 @@
+# Utility Functions to support optimization of the function `aplms`
+
 # Piece of the backfitting algorithm that creates the new estimation of the gamma parameters.
-# 
+#
 # @param A A matrix
 # @param N_i function matrices
 # @param Dv diagonal of the v1, ..., vn vectors
@@ -33,7 +35,7 @@ backfitting <- function(A, N_i, Dv, k, phi, lam, K_i, f_init, y) {
 }
 
 # Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters.
-# 
+#
 # @param A A matrix
 # @param N_i function matrices
 # @param Dv diagonal of the v1, ..., vn vectors
