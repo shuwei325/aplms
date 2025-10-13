@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #' Piece of the backfitting algorithm that creates the new estimation of the gamma parameters
 #' 
 #' @param A A matrix
@@ -10,6 +11,22 @@
 #' @param f_init previous estimation of the gamma parameters
 #' @param y vector of the observed values of the response variable
 #' @return The estimation of the gamma parameters
+=======
+# Utility Functions to support optimization of the function `aplms`
+
+# Piece of the backfitting algorithm that creates the new estimation of the gamma parameters.
+#
+# @param A A matrix
+# @param N_i function matrices
+# @param Dv diagonal of the v1, ..., vn vectors
+# @param k number of non parametric components
+# @param phi vector of the estimations of the phi parameters
+# @param lam smoothing parameter vector.
+# @param K_i function of matrices
+# @param f_init previous estimation of the gamma parameters
+# @param y vector of the observed values of the response variable
+# @return The estimation of the gamma parameters
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 backfitting <- function(A, N_i, Dv, k, phi, lam, K_i, f_init, y) {
 	S_i <- list()
 	S_i[[1]] <- tcrossprod(
@@ -32,6 +49,7 @@ backfitting <- function(A, N_i, Dv, k, phi, lam, K_i, f_init, y) {
 	return(f)
 }
 
+<<<<<<< HEAD
 #' Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters
 #' 
 #' @param A A matrix
@@ -43,6 +61,19 @@ backfitting <- function(A, N_i, Dv, k, phi, lam, K_i, f_init, y) {
 #' @param f_init previous estimation of the gamma parameters
 #' @param y vector of the observed values of the response variable
 #' @return The estimation of the gamma parameters
+=======
+# Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters.
+#
+# @param A A matrix
+# @param N_i function matrices
+# @param Dv diagonal of the v1, ..., vn vectors
+# @param phi vector of the estimations of the phi parameters
+# @param lam smoothing parameter vector.
+# @param K_i function of matrices
+# @param f_init previous estimation of the gamma parameters
+# @param y vector of the observed values of the response variable
+# @return The estimation of the gamma parameters
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 pgam <- function(A, N_i, Dv, phi, lam, K_i, f_init, y) {
 	AN_i <- lapply(N_i, FUN = function(x) {
 	  A %*% x

@@ -1,3 +1,12 @@
+# Utility Functions to support the likelihood function evaluation of the function `aplms`
+
+
+# Compute the matrix A of autocorrelations parameters of the model.
+#
+# @param rho autoregressive parameters.
+# @param nn dimension of the matrix A.
+# @return the matrix A of autocorrelations.
+
 matrix_A <- function(rho, nn) {
   if (length(rho) == 0) {
     A <- diag(nn)
@@ -14,6 +23,11 @@ matrix_A <- function(rho, nn) {
   return(A)
 }
 
+# Compute the matrix B of autocorrelations parameters of the model.
+#
+# @param P order of autoregressive parameters.
+# @param nn dimension of the matrix B.
+# @return the matrix B of autocorrelations.
 BB <- function(p = 1, nn) {
   if (p == 0) {
     BB <- NULL
@@ -31,9 +45,14 @@ BB <- function(p = 1, nn) {
   return(BB)
 }
 
-epsi <- function(y, eta, N_i) {
-  eps <- y - Reduce(`+`, mapply("%*%", N_i, eta, SIMPLIFY = FALSE))
-}
+# Residuals of the model to support the function aplms.
+#
+# @param resposta observed values of the response variable.
+# @param eta estimated f.
+# @param phi1 estimated scale parameter of the symmetric error.
+# @param rho estimated autoregressive parameters of the model.
+# @param N_i basis function matrices.
+# @return residuals of the model.
 
 res <- function(resposta, eta, phi1, rho, N_i) {
   nn <- length(resposta)
@@ -66,7 +85,17 @@ res <- function(resposta, eta, phi1, rho, N_i) {
 #   return(c(U,t(one)%*%(Dm%*%one-one)/(2*phii1)))
 # }
 
-logLik3.test <- function(par, f, y, N_i, family) { # par[1]==rho;par[2]==phi
+
+# profiled loglikelihood function evaluation to support the function aplms.
+#
+# @param par rhos and phi parameters to be optimized.
+# @param f estimated f.
+# @param y observed values of the response variable.
+# @param N_i basis function matrices.
+# @param family Symmetric error distribution.
+# @return profiled loglikelihood function.
+
+logLik3.test <- function(par, f, y, N_i, family) {
   p <- length(par) - 1
   nn <- length(y)
   phi <- par[1]
@@ -81,6 +110,15 @@ logLik3.test <- function(par, f, y, N_i, family) { # par[1]==rho;par[2]==phi
 }
 
 
+# loglikelihood function evaluation to support the function aplms.
+#
+# @param y observed values of the response variable.
+# @param f estimated f.
+# @param rho estimated autoregressive parameters of the model.
+# @param phi estimated scale parameter of the symmetric error.
+# @param N_i basis function matrices.
+# @param family Symmetric error distribution.
+# @return estimated loglikelihood function.
 
 logLik_fim.test <- function(y, f, rho, phi, N_i, family) {
   nn <- length(y)

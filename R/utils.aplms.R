@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 #' Calculate the first aproximation of the gamma parameters
 #'
 #' @param k number of non parametric components.
 #' @param y observed values of the response variable.
 #' @param N_i function matrices.
 #' @return initial aproximation of the gamma parameters.
+=======
+# Utility Functions to support the function `aplms`
+
+
+# Calculate the first aproximation of the gamma parameters.
+#
+# @param k number of non parametric components.
+# @param y observed values of the response variable.
+# @param N_i function matrices.
+# @return initial aproximation of the gamma parameters.
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 calculatef_init <- function(k, y, N_i) {
   f_init <- vector("list", k + 1)
   f_init[[1]] <- rbind(mean(y), cbind(rep(0, dim(N_i[[1]])[2] - 1)))
@@ -13,6 +25,7 @@ calculatef_init <- function(k, y, N_i) {
   return(f_init)
 }
 
+<<<<<<< HEAD
 #' Estimate the variance the asymptotic covariance-variance matrix for the estimated
 #' gamma parameters
 #'
@@ -22,6 +35,16 @@ calculatef_init <- function(k, y, N_i) {
 #' @param k number of nn parametric components.
 #' @param AN vector of the function matrices multiplied by the matrix A
 #' @return estimation of the variance of f.
+=======
+# Estimate the asymptotic covariance matrix for the gamma parameters.
+#
+# @param family probability distribution function.
+# @param phi vector of the estimated phi parameters.
+# @param const2 constant
+# @param k number of nn parametric components.
+# @param AN vector of the function matrices multiplied by the matrix A
+# @return estimation of the variance of f.
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 estimateVarF <- function(family, phi, const2, k, AN) {
   dg_t <- family$g2(args,
     df = family$df, r = family$r,
@@ -53,15 +76,15 @@ estimateVarF <- function(family, phi, const2, k, AN) {
   return(VAR_F)
 }
 
-#' Calculate the second derivative with respect to the gamma estimations
-#'
-#' @param phi vector of the estimated phi parameters.
-#' @param Dd diagonal of the d1, ..., dn vectors
-#' @param Dv diagonal of the v1, ..., vn vectors
-#' @param AN vector of the function matrices multiplied by the matrix A
-#' @param k number of non parametric components.
-#' @param const2 constant
-#' @return second derivative of the log function with respect to gamma
+# Calculate the second derivative with respect to the gamma estimations
+#
+# @param phi vector of the estimated phi parameters.
+# @param Dd diagonal of the d1, ..., dn vectors
+# @param Dv diagonal of the v1, ..., vn vectors
+# @param AN vector of the function matrices multiplied by the matrix A
+# @param k number of non parametric components.
+# @param const2 constant
+# @return second derivative of the log function with respect to gamma
 calculateLL_FF <- function(phi, Dd, Dv, AN, k, const2) {
   rep_AN <- rep(AN, k + 1)
   seq_AN <- rep(AN, each = k + 1)
@@ -84,6 +107,7 @@ calculateLL_FF <- function(phi, Dd, Dv, AN, k, const2) {
   return(LL_FF)
 }
 
+<<<<<<< HEAD
 #' Calculate the second derivative with respect to the gamma estimations and phi estimations
 #'
 #' @param phi vector of the estimated phi parameters.
@@ -93,6 +117,17 @@ calculateLL_FF <- function(phi, Dd, Dv, AN, k, const2) {
 #' @param A A matrix
 #' @param error_hat residual of the model
 #' @return second derivative of the log function with respect to tha gamma estimations and phi estimations
+=======
+# Calculate the second derivative with respect to the gamma estimations and phi estimations.
+#
+# @param phi vector of the estimated phi parameters.
+# @param AN vector of the function matrices multiplied by the matrix A
+# @param Dd diagonal of the d1, ..., dn vectors
+# @param Dv diagonal of the v1, ..., vn vectors
+# @param A A matrix
+# @param error_hat residual of the model
+# @return second derivative of the log function with respect to tha gamma estimations and phi estimations
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 calculateLL_FF_Phi <- function(phi, AN, Dd, Dv, A, error_hat) {
   LL_FF_phi_block <- lapply(AN, FUN = function(x) {
     (1 / phi^2) * (t(x) %*% (2 * Dd - Dv) %*% (A %*% error_hat))
@@ -101,6 +136,7 @@ calculateLL_FF_Phi <- function(phi, AN, Dd, Dv, A, error_hat) {
   return(LL_FF_phi)
 }
 
+<<<<<<< HEAD
 #' Calculate the second derivative with respect to the phi estimations
 #'
 #' @param nn number of observations.
@@ -109,12 +145,23 @@ calculateLL_FF_Phi <- function(phi, AN, Dd, Dv, A, error_hat) {
 #' @param Dc diagonal of the  c1, ..., cn vectors
 #' @param Dv diagonal of the  v1, ..., vn vectors
 #' @return second derivative of the log function with respect to the phi estimations
+=======
+# Calculate the second derivative with respect to the phi estimations.
+#
+# @param nn number of observations.
+# @param phi vector of the estimated phi parameters.
+# @param delta_i delta_i
+# @param Dc diagonal of the  c1, ..., cn vectors
+# @param Dv diagonal of the  v1, ..., vn vectors
+# @return second derivative of the log function with respect to the phi estimations
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 calculateLL_Phi <- function(nn, phi, delta_i, Dc, Dv) {
   ONE <- cbind(rep(1, nn))
   LL_phi <- (1 / phi^2) * (nn / 2 + t(delta_i) %*% Dc %*% delta_i - t(delta_i) %*% Dv %*% ONE)
   return(LL_phi)
 }
 
+<<<<<<< HEAD
 #' Calculate the second derivative with respect to the gamma estimations and rho estimations
 #' 
 #' @param B B matrix
@@ -127,6 +174,20 @@ calculateLL_Phi <- function(nn, phi, delta_i, Dc, Dv) {
 #' @param Dv diagonal of the  v1, ..., vn vectors
 #' @param error_hat residual of the model
 #' @return second derivative of the log function with respect to the gamma estimations and rho estimations
+=======
+# Calculate the second derivative with respect to the gamma estimations and rho estimations.
+#
+# @param B B matrix
+# @param N_i function matrices.
+# @param p autoregressive order of the error
+# @param k number of non parametric components
+# @param phi vector of the estimated phi parameters.
+# @param A A matrix
+# @param Dd diagonal of the d1, ..., dn vectors
+# @param Dv diagonal of the  v1, ..., vn vectors
+# @param error_hat residual of the model
+# @return second derivative of the log function with respect to the gamma estimations and rho estimations
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
   rep_N_i <- rep(N_i, each = p)
   seq_B <- rep(B, k + 1)
@@ -144,6 +205,7 @@ calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
   return(LL_FF_rho)
 }
 
+<<<<<<< HEAD
 #' Calculate the second derivative with respect to the rho estimations
 #' 
 #' @param B B matrix
@@ -153,6 +215,17 @@ calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
 #' @param Dd diagonal of the d1, ..., dn vectors
 #' @param Dv diagonal of the v1, ..., vn vectors
 #' @return second derivative of the log function with respect to the rho estimations
+=======
+# Calculate the second derivative with respect to the rho estimations.
+#
+# @param B B matrix
+# @param p autoregressive order of the error
+# @param phi vector of the estimated phi parameters.
+# @param error_hat residual of the model
+# @param Dd diagonal of the d1, ..., dn vectors
+# @param Dv diagonal of the v1, ..., vn vectors
+# @return second derivative of the log function with respect to the rho estimations
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
   rep_B <- rep(B, p)
   seq_B <- rep(B, each = p)
@@ -163,6 +236,7 @@ calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
   return(LL_rho)
 }
 
+<<<<<<< HEAD
 #' Calculate the second derivative with respect to the phi estimations and rho estimations
 #' 
 #' @param B B matrix
@@ -172,6 +246,17 @@ calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
 #' @param Dv diagonal of the v1, ..., vn vectors
 #' @param A A matrix
 #' @return second derivative of the log function with respect to the phi and rho estimations
+=======
+# Calculate the second derivative with respect to the phi estimations and rho estimations.
+#
+# @param B B matrix
+# @param phi vector of the estimated phi parameters.
+# @param error_hat residual of the model
+# @param Dd diagonal of the d1, ..., dn vectors
+# @param Dv diagonal of the v1, ..., vn vectors
+# @param A A matrix
+# @return second derivative of the log function with respect to the phi and rho estimations
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 calculateLL_Phi_Rho <- function(B, phi, error_hat, Dv, Dd, A) {
   LL_phi_rho_block <- lapply(B, FUN = function(x) {
     (1 / phi^2) * (t(x %*% error_hat) %*% (Dv - 2 * Dd) %*% (A %*% error_hat))

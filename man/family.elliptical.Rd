@@ -65,7 +65,7 @@ An object of class \dQuote{family} specifying a list with the follows elements:
 \item{k}{shape parameter for power exponential distribution.}
 }
 \description{
-The family object provide an specify details of the model APLMS. The distribution functions are necessary to specify the random component of the regression models with elliptical errors.
+The family object provide an specify details of the model APLMS. The distribution functions are necessary to specify the random component of the regression models with elliptical errors. The code is derived from the archived package \pkg{gwer} (Araujo, Y.A., Cysneiros, F.J.A., and Cysneiros, A.H.M.A., 2022), originally available on CRAN.
 }
 \examples{
 y <- 1

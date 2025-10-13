@@ -1,10 +1,12 @@
-#' Delta computation depending on the perturbation scheme
-#'
-#' @param model an object with the result of fitting additive partial linear models with symmetric errors.
-#' @param perturb_scheme A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
-#' @param r Index of explanatory variable
-#' @param k Index of autocorrelation coefficient
-#' @return A matrix Delta to support the perturbation scheme calculation.
+# Utility Functions to support the function `influence.aplms`
+
+# Delta computation depending on the perturbation scheme
+#
+# @param model an object with the result of fitting additive partial linear models with symmetric errors.
+# @param perturb_scheme A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
+# @param r Index of explanatory variable
+# @param k Index of autocorrelation coefficient
+# @return A matrix Delta to support the perturbation scheme calculation.
 influence_DELTA <- function(model,
                             perturb_scheme = "case-weight",
                             r = 1,
@@ -95,11 +97,11 @@ influence_DELTA <- function(model,
   return(DELTA)
 }
 
-#' Setting columns and rows indexes of a matrix to zero
-#' @param mat squared matrix
-#' @param rows Row index
-#' @param cols Column Index
-#' @return A matrix with the specified rows and columns set to zero.
+# Setting the columns and rows indices of a matrix to zero
+# @param mat squared matrix
+# @param rows Row index
+# @param cols Column Index
+# @return A matrix with the specified rows and columns set to zero.
 set_zero_matrix <- function(mat, rows = NULL, cols = NULL) {
 
   if (!is.matrix(mat)) stop("Input must be a matrix.")
@@ -114,10 +116,17 @@ set_zero_matrix <- function(mat, rows = NULL, cols = NULL) {
   return(mat)
 }
 
+<<<<<<< HEAD
 #' Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion
 #' @param Lobs The observed information matrix
 #' @param index Indices of columns and rows to be set to zero
 #' @return The generalized inverse of the matrix \code{Lobs}, with the specified rows and columns set to zero, to support perturbation scheme computations.
+=======
+# Setting columns and rows indices of a matrix to zero and compute the Generalized Inversion.
+# @param Lobs The observed information matrix
+# @param Column and row indices to be set to zero.
+# @return The generalized inverse of the matrix \code{Lobs}, with the specified rows and columns set to zero, to support perturbation scheme computations.
+>>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 Gp <- function(Lobs, index = NULL){
 
   Lobs <- set_zero_matrix(mat = Lobs,
@@ -128,15 +137,15 @@ Gp <- function(Lobs, index = NULL){
 }
 
 
-#' Conformal normal curvature of local influence
-#'
-#' Computes the conformal normal curvature.
-#'
-#' @param DELTA A numeric matrix, \eqn{\Delta}, that depends on the perturbation scheme.
-#' @param Lobs A square numeric matrix representing the observed information matrix.
-#' @param Lobs.aux An optional numeric matrix of the same dimension as
-#'   \code{Lobs}. Default is \code{0} (no auxiliary adjustment).
-#' @return A vector, results of conformal normal curvature.
+# Conformal normal curvature of local influence
+#
+# Computes the conformal normal curvature.
+#
+# @param DELTA A numeric matrix, \eqn{\Delta}, that depends on the perturbation scheme.
+# @param Lobs A square numeric matrix representing the observed information matrix.
+# @param Lobs.aux An optional numeric matrix of the same dimension as
+#   \code{Lobs}. Default is \code{0} (no auxiliary adjustment).
+# @return A vector, results of conformal normal curvature.
 conf_normal_curvature <- function(DELTA, Lobs, Lobs.aux = 0){
   CC <- t(DELTA)%*%(solve(-Lobs)-Lobs.aux)%*%DELTA
   CC2 <- CC %*% CC
