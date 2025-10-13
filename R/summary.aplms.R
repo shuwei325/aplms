@@ -45,17 +45,9 @@ summary.aplms<-function(object, ...)
   cat(" --------------------------------------------------------------------\n")
 }
 
-
-
-<<<<<<< HEAD
-#' Generate the summary table of the parametric components
-#'
-#' @param model an object with the result of fitting additive partial linear models with symmetric errors.
-=======
 # Generate the summary table of the parametric components.
 #
 # @param model an object with the result of fitting additive partial linear models with symmetric errors.
->>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 generateSummaryTable <- function(model) {
   f0 <- model$f[[1]]
   est_coef <- as.vector(f0)
@@ -81,15 +73,6 @@ generateSummaryTable <- function(model) {
   return(summary_table)
 }
 
-<<<<<<< HEAD
-#' Generate the Walf F statistic and its table
-#'
-#' @param npc_dimension cumulative sum of the number of rows of the function matrices
-#' @param dfk effective degrees of freedon
-#' @param npc vector with the names of non parametric components
-#' @param f estimated gamma parameters
-#' @param VAR_F covariance-variance matrix of the estimated gamma parameters
-=======
 # Generate the Wald F-statistic and its corresponding table.
 #
 # @param npc_dimension cumulative sum of the number of rows of the function matrices
@@ -97,7 +80,6 @@ generateSummaryTable <- function(model) {
 # @param npc vector with the names of non parametric components
 # @param f estimated gamma parameters
 # @param VAR_F covariance-variance matrix of the estimated gamma parameters
->>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 generateWaldF <- function(npc_dimension, dfk, npc, f, VAR_F) {
   WALD <- list()
   for (l in 2:length(npc_dimension)) {
@@ -119,21 +101,12 @@ generateWaldF <- function(npc_dimension, dfk, npc, f, VAR_F) {
   return(WALD_f)
 }
 
-<<<<<<< HEAD
-#' Generate the summary table of the rho parameter
-#'
-#' @param p autoregressive order of the error
-#' @param par1 optimized log-likelihood function
-#' @param rho vector of estimated rho parameters
-#' @param rdf regressive degrees of freedom
-=======
 # Generate the summary table of the rho parameter.
 #
 # @param p autoregressive order of the error
 # @param par1 optimized log-likelihood function
 # @param rho vector of estimated rho parameters
 # @param rdf regressive degrees of freedom
->>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 generateSummaryTableRho <- function(p, par1, rho, rdf) {
   if (p > 0) {
     VAR_rho <- diag(solve(-par1$hessian))[2:(1 + p)]
@@ -160,17 +133,6 @@ generateSummaryTableRho <- function(p, par1, rho, rdf) {
   return(summary_table_rho)
 }
 
-<<<<<<< HEAD
-#' Generate the summary table of the rho parameter
-#'
-#' @param p autoregressive order of the error
-#' @param par1 optimized log-likelihood function
-#' @param rdf regressive degrees of freedom
-#' @param rho vector of estimated rho parameters
-#' @param phi vector of estimated phi parameters
-#' @param nn number of observations.
-#' @param family probability distribution function.
-=======
 # Generate the summary table of the rho and phi parameters.
 #
 # @param p autoregressive order of the error
@@ -180,7 +142,6 @@ generateSummaryTableRho <- function(p, par1, rho, rdf) {
 # @param phi vector of estimated phi parameters
 # @param nn number of observations.
 # @param family probability distribution function.
->>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 generateSummartTablePhiRho <- function(p, par1, rdf, rho, phi, nn, family) {
   summary_table_rho <- generateSummaryTableRho(p, par1, rho, rdf)
   fg_t <- family$g3(args,

@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-#' Fitting Additive partial linear models with symmetric errors
-#'
-#' \code{aplms} is used to fit additive partial linear models with symmetric errors.
-#' In this setup, the natural cubic splines or cubic P-splines.
-#'
 #' @title Fitting Additive partial linear models with symmetric errors
-#' @param formula A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under Details.
-=======
-#' @title Fitting Additive partial linear models with symmetric errors.
 #' @description
 #' \code{aplms} fits additive partial linear models with autoregressive symmetric errors.
 #' This method is suitable for data sets where the response variable is continuous and symmetric,
@@ -16,7 +7,6 @@
 #' can be specified as semi-parametric functions, typically time-related.
 #' In this setup, natural cubic splines or cubic P-splines are used to approximate the nonparametric components.
 #' @param formula A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under ‘Details’.
->>>>>>> 739114f940469374fc6923d843d117bec980ff8f
 #' @param npc A vector of names of non parametric component.
 #' @param basis A vector of names of the basis to be used for each non parametric covariate.
 #' @param Knot A vector of the number of knots in each non-linear component of the model.
@@ -73,6 +63,7 @@
 #'                    lam=c(10))
 #' summary(mod1)
 #' print(mod1)
+#' @encoding UTF-8
 #' @import methods mgcv stats
 #' @export aplms
 aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
