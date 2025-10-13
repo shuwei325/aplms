@@ -2,7 +2,7 @@
 % Please edit documentation in R/influenceplot.aplms.R
 \name{influenceplot.aplms}
 \alias{influenceplot.aplms}
-\title{Local influence plots of the object `aplms()`.}
+\title{Local influence plots of the object `aplms()`}
 \usage{
 influenceplot.aplms(
   model,

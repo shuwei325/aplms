@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.aplms.R
 \name{calculateLL_Phi}
 \alias{calculateLL_Phi}
-\title{Calculate the second derivative with respect to the phi estimations.}
+\title{Calculate the second derivative with respect to the phi estimations}
 \usage{
 calculateLL_Phi(nn, phi, delta_i, Dc, Dv)
 }
@@ -21,5 +21,5 @@ calculateLL_Phi(nn, phi, delta_i, Dc, Dv)
 second derivative of the log function with respect to the phi estimations
 }
 \description{
-Calculate the second derivative with respect to the phi estimations.
+Calculate the second derivative with respect to the phi estimations
 }

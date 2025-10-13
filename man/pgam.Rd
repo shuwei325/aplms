@@ -2,7 +2,7 @@
 % Please edit documentation in R/algorithms.aplms.R
 \name{pgam}
 \alias{pgam}
-\title{Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters.}
+\title{Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters}
 \usage{
 pgam(A, N_i, Dv, phi, lam, K_i, f_init, y)
 }
@@ -27,5 +27,5 @@ pgam(A, N_i, Dv, phi, lam, K_i, f_init, y)
 The estimation of the gamma parameters
 }
 \description{
-Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters.
+Piece of the P-GAM algorithm that creates the new estimation of the gamma parameters
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.aplms.R
 \name{generateSummaryTableRho}
 \alias{generateSummaryTableRho}
-\title{Generate the summary table of the rho parameter.}
+\title{Generate the summary table of the rho parameter}
 \usage{
 generateSummaryTableRho(p, par1, rho, rdf)
 }
@@ -16,5 +16,5 @@ generateSummaryTableRho(p, par1, rho, rdf)
 \item{rdf}{regressive degrees of freedom}
 }
 \description{
-Generate the summary table of the rho parameter.
+Generate the summary table of the rho parameter
 }

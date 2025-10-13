@@ -2,7 +2,7 @@
 % Please edit documentation in R/algorithms.aplms.R
 \name{backfitting}
 \alias{backfitting}
-\title{Piece of the backfitting algorithm that creates the new estimation of the gamma parameters.}
+\title{Piece of the backfitting algorithm that creates the new estimation of the gamma parameters}
 \usage{
 backfitting(A, N_i, Dv, k, phi, lam, K_i, f_init, y)
 }
@@ -29,5 +29,5 @@ backfitting(A, N_i, Dv, k, phi, lam, K_i, f_init, y)
 The estimation of the gamma parameters
 }
 \description{
-Piece of the backfitting algorithm that creates the new estimation of the gamma parameters.
+Piece of the backfitting algorithm that creates the new estimation of the gamma parameters
 }

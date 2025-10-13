@@ -3,7 +3,7 @@
 \name{estimateVarF}
 \alias{estimateVarF}
 \title{Estimate the variance the asymptotic covariance-variance matrix for the estimated
-gamma parameters.}
+gamma parameters}
 \usage{
 estimateVarF(family, phi, const2, k, AN)
 }
@@ -23,5 +23,5 @@ estimation of the variance of f.
 }
 \description{
 Estimate the variance the asymptotic covariance-variance matrix for the estimated
-gamma parameters.
+gamma parameters
 }

@@ -1,4 +1,4 @@
-#' Calculate the first aproximation of the gamma parameters.
+#' Calculate the first aproximation of the gamma parameters
 #'
 #' @param k number of non parametric components.
 #' @param y observed values of the response variable.
@@ -14,7 +14,7 @@ calculatef_init <- function(k, y, N_i) {
 }
 
 #' Estimate the variance the asymptotic covariance-variance matrix for the estimated
-#' gamma parameters. 
+#' gamma parameters
 #'
 #' @param family probability distribution function.
 #' @param phi vector of the estimated phi parameters.
@@ -84,7 +84,7 @@ calculateLL_FF <- function(phi, Dd, Dv, AN, k, const2) {
   return(LL_FF)
 }
 
-#' Calculate the second derivative with respect to the gamma estimations and phi estimations.
+#' Calculate the second derivative with respect to the gamma estimations and phi estimations
 #'
 #' @param phi vector of the estimated phi parameters.
 #' @param AN vector of the function matrices multiplied by the matrix A
@@ -101,7 +101,7 @@ calculateLL_FF_Phi <- function(phi, AN, Dd, Dv, A, error_hat) {
   return(LL_FF_phi)
 }
 
-#' Calculate the second derivative with respect to the phi estimations.
+#' Calculate the second derivative with respect to the phi estimations
 #'
 #' @param nn number of observations.
 #' @param phi vector of the estimated phi parameters.
@@ -115,7 +115,7 @@ calculateLL_Phi <- function(nn, phi, delta_i, Dc, Dv) {
   return(LL_phi)
 }
 
-#' Calculate the second derivative with respect to the gamma estimations and rho estimations.
+#' Calculate the second derivative with respect to the gamma estimations and rho estimations
 #' 
 #' @param B B matrix
 #' @param N_i function matrices.
@@ -144,7 +144,7 @@ calculateLL_FF_Rho <- function(B, N_i, p, k, phi, A, Dv, Dd, error_hat) {
   return(LL_FF_rho)
 }
 
-#' Calculate the second derivative with respect to the rho estimations.
+#' Calculate the second derivative with respect to the rho estimations
 #' 
 #' @param B B matrix
 #' @param p autoregressive order of the error
@@ -163,7 +163,7 @@ calculateLL_Rho <- function(B, p, phi, error_hat, Dd, Dv) {
   return(LL_rho)
 }
 
-#' Calculate the second derivative with respect to the phi estimations and rho estimations.
+#' Calculate the second derivative with respect to the phi estimations and rho estimations
 #' 
 #' @param B B matrix
 #' @param phi vector of the estimated phi parameters.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.aplms.R
 \name{generateWaldF}
 \alias{generateWaldF}
-\title{Generate the Walf F statistic and its table.}
+\title{Generate the Walf F statistic and its table}
 \usage{
 generateWaldF(npc_dimension, dfk, npc, f, VAR_F)
 }
@@ -18,5 +18,5 @@ generateWaldF(npc_dimension, dfk, npc, f, VAR_F)
 \item{VAR_F}{covariance-variance matrix of the estimated gamma parameters}
 }
 \description{
-Generate the Walf F statistic and its table.
+Generate the Walf F statistic and its table
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.aplms.R
 \name{generateSummartTablePhiRho}
 \alias{generateSummartTablePhiRho}
-\title{Generate the summary table of the rho parameter.}
+\title{Generate the summary table of the rho parameter}
 \usage{
 generateSummartTablePhiRho(p, par1, rdf, rho, phi, nn, family)
 }
@@ -22,5 +22,5 @@ generateSummartTablePhiRho(p, par1, rdf, rho, phi, nn, family)
 \item{family}{probability distribution function.}
 }
 \description{
-Generate the summary table of the rho parameter.
+Generate the summary table of the rho parameter
 }

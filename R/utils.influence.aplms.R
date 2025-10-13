@@ -114,7 +114,7 @@ set_zero_matrix <- function(mat, rows = NULL, cols = NULL) {
   return(mat)
 }
 
-#' Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion.
+#' Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion
 #' @param Lobs The observed information matrix
 #' @param index Indices of columns and rows to be set to zero
 #' @return The generalized inverse of the matrix \code{Lobs}, with the specified rows and columns set to zero, to support perturbation scheme computations.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.influence.aplms.R
 \name{Gp}
 \alias{Gp}
-\title{Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion.}
+\title{Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion}
 \usage{
 Gp(Lobs, index = NULL)
 }
@@ -15,5 +15,5 @@ Gp(Lobs, index = NULL)
 The generalized inverse of the matrix \code{Lobs}, with the specified rows and columns set to zero, to support perturbation scheme computations.
 }
 \description{
-Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion.
+Setting columns and rows indexes of a matrix to zero and compute the Generalized Inversion
 }

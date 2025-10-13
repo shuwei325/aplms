@@ -2,7 +2,7 @@
 % Please edit documentation in R/aplms.diag.plot.R
 \name{aplms.diag.plot}
 \alias{aplms.diag.plot}
-\title{Diagnostic Plots for additive partial linear models with symmetric errors.}
+\title{Diagnostic Plots for additive partial linear models with symmetric errors}
 \usage{
 aplms.diag.plot(model, which, labels = NULL, iden = F, ...)
 }
@@ -32,7 +32,7 @@ Return an interactive menu with eleven options to make plots. This menu contains
 11: QQ-plot of conditional quantile residuals.
 }
 \description{
-Diagnostic Plots for additive partial linear models with symmetric errors.
+Diagnostic Plots for additive partial linear models with symmetric errors
 }
 \examples{
 \dontrun{

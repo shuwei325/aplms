@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.aplms.R
 \name{calculateLL_FF_Rho}
 \alias{calculateLL_FF_Rho}
-\title{Calculate the second derivative with respect to the gamma estimations and rho estimations.}
+\title{Calculate the second derivative with respect to the gamma estimations and rho estimations}
 \usage{
 calculateLL_FF_Rho(B, N_i, p, k, phi, A, Dv, Dd, error_hat)
 }
@@ -29,5 +29,5 @@ calculateLL_FF_Rho(B, N_i, p, k, phi, A, Dv, Dd, error_hat)
 second derivative of the log function with respect to the gamma estimations and rho estimations
 }
 \description{
-Calculate the second derivative with respect to the gamma estimations and rho estimations.
+Calculate the second derivative with respect to the gamma estimations and rho estimations
 }

@@ -1,5 +1,5 @@
-#' Extract Residuals for APLMS fits.
-#'
+#' Extract Residuals for APLMS fits
+#' 
 #' @param object an object with the result of fitting additive partial linear models with symmetric errors.
 #' \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.
 #' @param ... other arguments.

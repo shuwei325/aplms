@@ -3,7 +3,7 @@
 \name{aplms}
 \alias{aplms}
 \alias{print.aplms}
-\title{Fitting Additive partial linear models with symmetric errors.}
+\title{Fitting Additive partial linear models with symmetric errors}
 \usage{
 aplms(
   formula,
@@ -22,7 +22,7 @@ aplms(
 \method{print}{aplms}(x, ...)
 }
 \arguments{
-\item{formula}{A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under ‘Details’.}
+\item{formula}{A symbolic description of the parametric component of the model to be fitted. The details of model specification are given under Details.}
 
 \item{npc}{A vector of names of non parametric component.}
 

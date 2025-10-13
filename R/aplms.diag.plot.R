@@ -1,4 +1,4 @@
-#' Diagnostic Plots for additive partial linear models with symmetric errors.
+#' Diagnostic Plots for additive partial linear models with symmetric errors
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 #' @param which an optional numeric value with the number of only plot that must be returned.

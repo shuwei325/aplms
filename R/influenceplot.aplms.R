@@ -1,4 +1,4 @@
-#' Local influence plots of the object `aplms()`.
+#' Local influence plots of the object `aplms()`
 #'
 #' Takes a fitted `aplms` object and outputs diagnostics of the sensitivity analysis by assessing the effects of perturbations in the model and/or data, on the parameter estimates. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
 #'

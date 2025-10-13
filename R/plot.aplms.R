@@ -1,4 +1,4 @@
-#' Default APLMS plotting.
+#' Default APLMS plotting
 #'
 #' Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
 #' @param x an object with the result of fitting additive partial linear models with symmetric errors.

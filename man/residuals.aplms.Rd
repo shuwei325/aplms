@@ -2,7 +2,7 @@
 % Please edit documentation in R/residuals.aplms.R
 \name{residuals.aplms}
 \alias{residuals.aplms}
-\title{Extract Residuals for APLMS fits.}
+\title{Extract Residuals for APLMS fits}
 \usage{
 \method{residuals}{aplms}(object, ...)
 }
@@ -13,7 +13,7 @@
 \item{...}{other arguments.}
 }
 \description{
-Extract Residuals for APLMS fits.
+Extract Residuals for APLMS fits
 }
 \examples{
 \dontrun{residuals(object)}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.aplms.R
 \name{generateSummaryTable}
 \alias{generateSummaryTable}
-\title{Generate the summary table of the parametric components.}
+\title{Generate the summary table of the parametric components}
 \usage{
 generateSummaryTable(model)
 }
@@ -10,5 +10,5 @@ generateSummaryTable(model)
 \item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
 }
 \description{
-Generate the summary table of the parametric components.
+Generate the summary table of the parametric components
 }

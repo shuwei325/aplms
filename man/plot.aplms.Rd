@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.aplms.R
 \name{plot.aplms}
 \alias{plot.aplms}
-\title{Default APLMS plotting.}
+\title{Default APLMS plotting}
 \usage{
 \method{plot}{aplms}(x, len = 100, plot = TRUE, level = 0.95, ...)
 }

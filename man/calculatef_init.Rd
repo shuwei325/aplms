@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.aplms.R
 \name{calculatef_init}
 \alias{calculatef_init}
-\title{Calculate the first aproximation of the gamma parameters.}
+\title{Calculate the first aproximation of the gamma parameters}
 \usage{
 calculatef_init(k, y, N_i)
 }
@@ -17,5 +17,5 @@ calculatef_init(k, y, N_i)
 initial aproximation of the gamma parameters.
 }
 \description{
-Calculate the first aproximation of the gamma parameters.
+Calculate the first aproximation of the gamma parameters
 }

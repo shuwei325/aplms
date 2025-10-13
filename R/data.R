@@ -36,6 +36,7 @@
 #' @examples
 #' data(hospitalization)
 #' head(hospitalization)
+#' @encoding UTF-8
 "hospitalization"
 
 

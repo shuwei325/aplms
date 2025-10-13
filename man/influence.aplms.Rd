@@ -2,7 +2,7 @@
 % Please edit documentation in R/influence.aplms.R
 \name{influence.aplms}
 \alias{influence.aplms}
-\title{local influence analysis of the object `aplms()`.}
+\title{local influence analysis of the object `aplms()`}
 \usage{
 \method{influence}{aplms}(
   model,

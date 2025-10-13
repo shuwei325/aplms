@@ -35,7 +35,7 @@ summary.aplms<-function(object, ...)
 
 
 
-#' Generate the summary table of the parametric components.
+#' Generate the summary table of the parametric components
 #'
 #' @param model an object with the result of fitting additive partial linear models with symmetric errors.
 generateSummaryTable <- function(model) {
@@ -63,7 +63,7 @@ generateSummaryTable <- function(model) {
   return(summary_table)
 }
 
-#' Generate the Walf F statistic and its table.
+#' Generate the Walf F statistic and its table
 #'
 #' @param npc_dimension cumulative sum of the number of rows of the function matrices
 #' @param dfk effective degrees of freedon
@@ -91,7 +91,7 @@ generateWaldF <- function(npc_dimension, dfk, npc, f, VAR_F) {
   return(WALD_f)
 }
 
-#' Generate the summary table of the rho parameter.
+#' Generate the summary table of the rho parameter
 #'
 #' @param p autoregressive order of the error
 #' @param par1 optimized log-likelihood function
@@ -123,7 +123,7 @@ generateSummaryTableRho <- function(p, par1, rho, rdf) {
   return(summary_table_rho)
 }
 
-#' Generate the summary table of the rho parameter.
+#' Generate the summary table of the rho parameter
 #'
 #' @param p autoregressive order of the error
 #' @param par1 optimized log-likelihood function

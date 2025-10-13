@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.aplms.R
 \name{calculateLL_Rho}
 \alias{calculateLL_Rho}
-\title{Calculate the second derivative with respect to the rho estimations.}
+\title{Calculate the second derivative with respect to the rho estimations}
 \usage{
 calculateLL_Rho(B, p, phi, error_hat, Dd, Dv)
 }
@@ -23,5 +23,5 @@ calculateLL_Rho(B, p, phi, error_hat, Dd, Dv)
 second derivative of the log function with respect to the rho estimations
 }
 \description{
-Calculate the second derivative with respect to the rho estimations.
+Calculate the second derivative with respect to the rho estimations
 }
