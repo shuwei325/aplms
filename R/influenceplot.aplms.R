@@ -7,6 +7,7 @@
 #' @param part A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.
 #' @param C The cutoff criterion such that \eqn{C_i > \bar{C_i} + C*sd(C_i)} to detect influential observations.
 #' @param labels label to especify each data point.
+#' @return The conformal normal curvature of the specified perturbations is plotted.
 #' @examples
 #' \dontrun{
 #' data(temperature)

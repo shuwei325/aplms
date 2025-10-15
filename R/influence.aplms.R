@@ -6,7 +6,7 @@
 #' @param perturbation A string vector specifying a perturbation scheme: `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR`.
 #' @param part A logical value to indicate whether the influential analysis is performed for \eqn{\gamma}, \eqn{\phi} and \eqn{\rho}.
 #' @param ... other arguments.
-#' @return A list object of conformal normal curvature of different perturbations.
+#' @return A list object containing the conformal normal curvature of the specified perturbations.
 #' @examples
 #' \dontrun{influence(model)}
 #' @importFrom stats influence
@@ -29,13 +29,7 @@ influence.aplms <- function(model,
 
   list_output <- list()
 
-   p <- nrow(model$summary_table_phirho)-1
-  # nn <- nrow(model$data)
-  # ONE <- cbind(rep(1,nn))
-  # A <- matrix_A(model$summary_table_phirho[2:(p+1),1],nn)
-  # B <- BB(p=p,nn)
-  #
-  # phi <- model$summary_table_phirho[1,1]
+  p <- nrow(model$summary_table_phirho)-1
   N_i <- model$N_i
   Lobs <- model$LL_obs
 

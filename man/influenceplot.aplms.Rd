@@ -23,6 +23,9 @@ influenceplot.aplms(
 
 \item{labels}{label to especify each data point.}
 }
+\value{
+The conformal normal curvature of the specified perturbations is plotted.
+}
 \description{
 Takes a fitted `aplms` object and outputs diagnostics of the sensitivity analysis by assessing the effects of perturbations in the model and/or data, on the parameter estimates. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
 }

@@ -6,8 +6,7 @@
 #' @param plot a logical value to return plots. Default value is \code{TRUE}.
 #' @param level Confidence level.
 #' @param ... other arguments.
-#' @return Return a list of all non parametric component functions with their confidence intervals.
-#'   interactive menu with eleven options to make plots.
+#' @return Return a list of all non parametric component functions with their confidence intervals. If \code{plot=TRUE}, the estimated nonparametric component functions are plotted.
 #' @keywords Additive partial linear xs with symmetric errors
 #' @keywords Residuals
 #' @importFrom graphics plot

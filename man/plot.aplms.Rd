@@ -18,8 +18,7 @@
 \item{...}{other arguments.}
 }
 \value{
-Return a list of all non parametric component functions with their confidence intervals.
-  interactive menu with eleven options to make plots.
+Return a list of all non parametric component functions with their confidence intervals. If \code{plot=TRUE}, the estimated nonparametric component functions are plotted.
 }
 \description{
 Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
