@@ -26,7 +26,8 @@
 #' Symmetric Multivariate and Related Distributions. London: Chapman and Hall.
 #' @keywords Elliptical distributions
 #' @examples
-#' y <- 1
+#' Normal()
+#' Powerexp(k=0.1)
 #' @rdname family.elliptical
 #' @export
 

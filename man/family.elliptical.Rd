@@ -68,7 +68,8 @@ An object of class \dQuote{family} specifying a list with the follows elements:
 The family object provide an specify details of the model APLMS. The distribution functions are necessary to specify the random component of the regression models with elliptical errors. The code is derived from the archived package \pkg{gwer} (Araujo, Y.A., Cysneiros, F.J.A., and Cysneiros, A.H.M.A., 2022), originally available on CRAN.
 }
 \examples{
-y <- 1
+Normal()
+Powerexp(k=0.1)
 }
 \references{
 Fang, K. T., Kotz, S. and NG, K. W. (1990, ISBN:9781315897943).

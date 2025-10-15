@@ -11,7 +11,7 @@
 #' @param basis A vector of names of the basis to be used for each non parametric covariate.
 #' @param Knot A vector of the number of knots in each non-linear component of the model.
 #' @param data A data frame containing the variables in the model
-#' @param family Symmetric error distribution
+#' @param family Symmetric error distribution. The implemented distribution are: \code{Normal()}, \code{LogisI()}, \code{LogisII()}, \code{Student(df)}, \code{Powerexp(k)}, \code{Gstudent(parm=c(s,r))}.
 #' @param p autoregressive order of the error
 #' @param control optimization rutine.
 #' @param init A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.

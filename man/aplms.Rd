@@ -33,7 +33,7 @@ aplms(
 
 \item{data}{A data frame containing the variables in the model}
 
-\item{family}{Symmetric error distribution}
+\item{family}{Symmetric error distribution. The implemented distribution are: \code{Normal()}, \code{LogisI()}, \code{LogisII()}, \code{Student(df)}, \code{Powerexp(k)}, \code{Gstudent(parm=c(s,r))}.}
 
 \item{p}{autoregressive order of the error}
 
