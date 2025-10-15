@@ -105,3 +105,12 @@ mod1<-aplms::aplms(temperature ~ 1,
 summary(mod1)
 print(mod1)
 }
+\references{
+Chou-Chen, S.W., Oliveira, R.A., Raicher, I., Gilberto A. Paula (2024)
+   \emph{Additive partial linear models with autoregressive symmetric errors and its application to the
+   hospitalizations for respiratory diseases} Stat Papers 65, 5145–5166. \doi{10.1007/s00362-024-01590-w}
+
+Oliveira, R.A., Paula, G.A. (2021)
+   \emph{Additive partial linear models with autoregressive symmetric errors and its application to the
+   hospitalizations for respiratory diseases} Comput Stat 36, 2435–2466. \doi{10.1007/s00180-021-01106-2}
+}
