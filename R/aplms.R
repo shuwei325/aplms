@@ -163,12 +163,13 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   conv_geral <- 1
   j <- 1
   while (conv_geral > control$tol && j < control$Maxiter2) {
-    print(paste("While", j))
+    print(paste("Iteration", j ))
     i <- 1
     conv_betaf <- 1
     A <- matrix_A(rho, nn)
 
     while (conv_betaf > control$tol && i < control$Maxiter1) {
+      cat(paste("Iteration", j,"-", i))
       print(i)
       a <- res(y, f_init, phi, rho, N_i)
       posicao <- as.vector(family$g1(a,
