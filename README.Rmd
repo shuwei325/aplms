@@ -13,28 +13,42 @@ knitr::opts_chunk$set(
 
 # aplms
 
-The goal of `aplms` is fitting Additive partial linear models with symmetric errors.
+The goal of `aplms` is fitting Additive partial linear models with symmetric autoregressive errors (APLMS), proposed by [Chou-Chen et al., (2024)](https://doi.org/10.1007/s00362-024-01590-w). This framework models a time series response variable using both linear and nonlinear structures of a set of explanatory variables, with the nonparametric components approximated by natural cubic splines or P-splines. It also accounts for autoregressive error terms with distributions that have lighter or heavier tails than the normal distribution.
+
 
 ## Installation
 
-You can install the development version of aplms from [GitHub](https://github.com/) with:
+You can install the package with:
+
+```r
+install.packages("aplms")
+```
+
+or the development version of aplms from [GitHub](https://github.com/) with:
 
 ```r
 # install.packages("devtools")
 devtools::install_github("shuwei325/aplms")
 ```
 
+## Model
+
+The details of the model and its assumptions are given in [Chou-Chen et al., (2024)](https://doi.org/10.1007/s00362-024-01590-w).
+
+
 ## Example
 
 This package provides two datasets to illustrate the model fitting procedure. To load the package:
 
-```r
+```{r warning=FALSE, message=FALSE}
 library(aplms)
 ```
 
-The first dataset:
+### 1. Global annual mean surface air temperature
 
-```r
+The first dataset `temperature`:
+
+```{r warning=FALSE, message=FALSE, results='hide'}
 data(temperature)
 
 # Create dataframe object to fit the model
@@ -49,15 +63,30 @@ mod1<-aplms::aplms(temperature ~ 1,
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
+```
+
+
+```{r warning=FALSE, message=FALSE}
 summary(mod1)
+```
+
+
+```{r warning=FALSE, message=FALSE, results='hide', fig.height=5, fig.width=5}
 plot(mod1)
+```
+
+To perform diagnostic and influence analyses, execute:
+
+```r
 aplms.diag.plot(mod1)
 influenceplot.aplms(mod1,  perturbation = c("case-weight"))
 ```
 
-The second dataset:
+### 2. Respiratory diseases
 
-```r
+The second dataset `hospitalization`:
+
+```{r warning=FALSE, message=FALSE, results='hide'}
 data(hospitalization)
 
 mod2<-aplms::aplms(formula = y ~ 
@@ -71,11 +100,20 @@ mod2<-aplms::aplms(formula = y ~
                            Maxiter2 = 25),
             lam=c(100,10))
 ```
+            
+```{r warning=FALSE, message=FALSE}
+summary(mod2)
+```
 
+
+```{r warning=FALSE, message=FALSE, results='hide', fig.height=5, fig.width=10}
+plot(mod2)
+```
+
+
+To perform diagnostic and influence analyses, execute:
 
 ```r
-summary(mod2)
-plot(mod2)
 aplms.diag.plot(mod2)
 influenceplot.aplms(mod2,  perturbation = c("case-weight"))
 ```
