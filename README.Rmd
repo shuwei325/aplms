@@ -115,5 +115,10 @@ To perform diagnostic and influence analyses, execute:
 
 ```r
 aplms.diag.plot(mod2)
+```
+
+and 
+
+```{r warning=FALSE, message=FALSE, results='hide', fig.height=10, fig.width=10}
 influenceplot.aplms(mod2,  perturbation = c("case-weight"))
 ```
