@@ -33,7 +33,17 @@ influenceplot.aplms <- function(model,
                             labels = NULL){
 
   perturbation <- match.arg(perturbation)
-  if (is.null(labels)) labels <- seq_along(model$yhat)
+
+  if (!(is.numeric(C) & C>0)) stop("C should be a positive value.")
+
+  if (!is.null(labels)) {
+    if (length(labels) != 2) {
+      stop("labels length should be equal to number of observations.")
+    }
+  } else {
+    labels <- "seq_along(model$yhat)"
+  }
+
 
   output_list <- influence(model,
                     perturbation = perturbation,

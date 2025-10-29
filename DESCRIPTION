@@ -17,7 +17,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
 Depends: 
-    R (>= 2.10), mgcv
+    R (>= 3.5.0), mgcv
 Imports: MASS, Matrix, rlist, stats, methods, psych, rmutil
 Suggests: 
     testthat (>= 3.0.0)
