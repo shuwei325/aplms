@@ -41,7 +41,7 @@ influenceplot.aplms <- function(model,
       stop("labels length should be equal to number of observations.")
     }
   } else {
-    labels <- "seq_along(model$yhat)"
+    labels <- seq_along(model$yhat)
   }
 
 
