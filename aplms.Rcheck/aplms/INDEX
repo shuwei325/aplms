@@ -1,0 +1,18 @@
+AIC.aplms               Akaike information criterion
+BIC.aplms               Bayesian information criterion
+aplms                   Fitting Additive partial linear models with
+                        symmetric errors
+aplms.diag.plot         Diagnostic Plots for additive partial linear
+                        models with symmetric errors
+coef.aplms              Extract the coefficients of the fitted APLMS
+                        model
+family.elliptical       Family Objects for Elliptical Models
+hospitalization         Respiratory diseases hospitalization Dataset
+influence.aplms         local influence analysis of the object
+                        'aplms()'
+influenceplot.aplms     Local influence plots of the object 'aplms()'
+plot.aplms              Default APLMS plotting
+residuals.aplms         Extract Residuals for APLMS fits
+summary.aplms           Print method for "aplms" class
+temperature             Global Annual Mean Surface Air Temperature
+                        Change
