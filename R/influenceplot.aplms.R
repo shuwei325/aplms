@@ -48,6 +48,9 @@ influenceplot.aplms <- function(model,
   output_list <- influence(model,
                     perturbation = perturbation,
                     part = part)
+                    
+  old_par <- par(no.readonly = TRUE)
+  on.exit(par(old_par))
 
   if (perturbation %in% c("case-weight", "dispersion", "response")){
 
@@ -71,9 +74,6 @@ influenceplot.aplms <- function(model,
   if (perturbation %in% c("explanatory", "corAR")){
 
     print(paste0(perturbation," perturbation scheme"))
-
-    old_par <- par(ask = TRUE)
-    on.exit(par(old_par))
 
     if(part){
       par(mfrow=c(2,2), oma = c(0, 0, 3, 0))
