@@ -38,7 +38,7 @@
 #' @export
 aplms.diag.plot <- function(model, which,
                             labels = NULL,
-                            iden = F, ...) {
+                            iden = FALSE, ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {
     stop("not a aplms object")
   }
@@ -169,13 +169,3 @@ aplms.diag.plot <- function(model, which,
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
