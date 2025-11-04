@@ -4,7 +4,7 @@
 \alias{aplms.diag.plot}
 \title{Diagnostic Plots for additive partial linear models with symmetric errors}
 \usage{
-aplms.diag.plot(model, which, labels = NULL, iden = F, ...)
+aplms.diag.plot(model, which, labels = NULL, iden = FALSE, ...)
 }
 \arguments{
 \item{model}{an object with the result of fitting additive partial linear models with symmetric errors.}
@@ -35,7 +35,7 @@ Return an interactive menu with eleven options to make plots. This menu contains
 Diagnostic Plots for additive partial linear models with symmetric errors
 }
 \examples{
-\dontrun{
+\donttest{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,

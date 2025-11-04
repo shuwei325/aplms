@@ -8,7 +8,7 @@
 #' @param ... other arguments.
 #' @return A list object containing the conformal normal curvature of the specified perturbations.
 #' @examples
-#' \dontrun{influence(model)}
+#' \donttest{influence(model)}
 #' @importFrom stats influence
 #' @import psych MASS
 #' @export

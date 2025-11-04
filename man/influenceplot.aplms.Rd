@@ -30,7 +30,7 @@ The conformal normal curvature of the specified perturbations is plotted.
 Takes a fitted `aplms` object and outputs diagnostics of the sensitivity analysis by assessing the effects of perturbations in the model and/or data, on the parameter estimates. The `case-weight`, `dispersion`, `response`, `explanatory`, and `corAR` perturbations are available.
 }
 \examples{
-\dontrun{
+\donttest{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,

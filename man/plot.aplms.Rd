@@ -24,7 +24,7 @@ Return a list of all non parametric component functions with their confidence in
 Compute and plot the estimated mean and confidence intervals of the non-parametric component of a `APLMS` object fited by `aplms()`.
 }
 \examples{
-\dontrun{
+\donttest{
 data(temperature)
 datos = data.frame(temperature,time=1:length(temperature))
 mod1<-aplms::aplms(temperature ~ 1,

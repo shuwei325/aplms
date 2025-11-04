@@ -11,7 +11,7 @@
 #' @keywords Residuals
 #' @importFrom graphics plot
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,

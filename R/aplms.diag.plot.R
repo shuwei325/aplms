@@ -18,7 +18,7 @@
 #' 10: Partial autocorrelation function of conditional quantile residuals.
 #' 11: QQ-plot of conditional quantile residuals.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,

@@ -19,7 +19,7 @@ a dataframe with the residual, the pearson residual and the normal quantile of t
 Extract Residuals for APLMS fits
 }
 \examples{
-\dontrun{residuals(object)}
+\donttest{residuals(object)}
 }
 \keyword{Additive}
 \keyword{Residuals}

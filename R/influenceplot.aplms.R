@@ -9,7 +9,7 @@
 #' @param labels label to especify each data point.
 #' @return The conformal normal curvature of the specified perturbations is plotted.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(temperature)
 #' datos = data.frame(temperature,time=1:length(temperature))
 #' mod1<-aplms::aplms(temperature ~ 1,

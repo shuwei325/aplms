@@ -7,7 +7,7 @@
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @examples
-#' \dontrun{residuals(object)}
+#' \donttest{residuals(object)}
 #' @importFrom stats residuals
 #' @export
 residuals.aplms <- function(object, ...) {
