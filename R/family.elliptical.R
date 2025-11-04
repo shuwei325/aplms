@@ -204,13 +204,11 @@ dlogisI <- function (x, mean = 0, sd = 1)
   ((1.484300029 * exp(-(z^2)))/(sd * (1 + exp(-(z^2)))^2))
 }
 
-
 plogisI <- function (x, mean = 0, sd = 1)
 {
   z <- (x - mean)/sd
   (1.484300029/(sd * (1 + exp(-(z^2)))))
 }
-
 
 rlogisI <- function (n, mean = 0, sd = 1)
 {
@@ -220,7 +218,6 @@ rlogisI <- function (n, mean = 0, sd = 1)
   mean+sd*sqrt(log(u/(1 - u)))
 }
 
-
 # Logistic Type II #
 dlogisII <- function (x, mean = 0, sd = 1)
 {
@@ -228,12 +225,10 @@ dlogisII <- function (x, mean = 0, sd = 1)
   (exp(z)/(sd * (1 + exp(z))^2))
 }
 
-
 plogisII <- function (q)
 {
   punif((exp(q)/(1 + exp(q))), 0, 1)
 }
-
 
 rlogisII <- function (n)
 {
@@ -243,9 +238,6 @@ rlogisII <- function (n)
   log(u/(1 - u))
 }
 
-
-
-
 # Power Exponential #
 dpowerexp <- function (x, k = 0.5, mean = 0, sd = 1)
 {
@@ -254,13 +246,11 @@ dpowerexp <- function (x, k = 0.5, mean = 0, sd = 1)
     exp(-0.5 * (abs(z)^(2/(1 + k))))
 }
 
-
 ppowerexp <- function (q, k = 0.5)
 {
   r <- 2/(1 + k)
   punif(q^r/2, -1, 1) * pgamma(q, (1 + 1/r), 1)
 }
-
 
 rpowerexp <- function (n, k = 0.5)
 {
@@ -272,8 +262,6 @@ rpowerexp <- function (n, k = 0.5)
   (2 * ff)^(1/r) * u
 }
 
-
-
 # Student Generalized #
 dgstudent <- function (x, s = 1, r = 2, mean = 0, sd = 1)
 {
@@ -282,12 +270,10 @@ dgstudent <- function (x, s = 1, r = 2, mean = 0, sd = 1)
                                                 gamma(r/2)) * (s + z^2)^(-0.5 * (r + 1))
 }
 
-
 pgstudent <- function (q, s = 1, r = 2)
 {
   (1 - pinvgamma(1/sqrt(q), s/2, r/2)) * pnorm(q, 0, 1)
 }
-
 
 rgstudent <- function (n, s = 1, r = 2)
 {
@@ -298,7 +284,6 @@ rgstudent <- function (n, s = 1, r = 2)
   v^(-0.5) * z
 }
 
-
 # Inverse Gamma #
 pinvgamma <- function (x, s = 1/2, r = 1)
 {
@@ -308,15 +293,12 @@ pinvgamma <- function (x, s = 1/2, r = 1)
   1 - pgamma((1/x), s, r)
 }
 
-
 rinvgamma <- function (n, s = 1/2, r = 1)
 {
   if (is.na(n))
     return(NA)
   1/(rgamma(n, s, r))
 }
-
-
 
 # Contaminated Normal #
 rcnormal <- function(n, mean = 0, sd1 = 1, sd2, prob)
@@ -325,54 +307,42 @@ rcnormal <- function(n, mean = 0, sd1 = 1, sd2, prob)
   rnorm(n, mean, sd)
 }
 
-
-
-
-
 #' @rdname family.elliptical
+#' @return a famility elliptical object using a Normal distribution.
 #' @export
-
 Normal <- function ()
 {
   make.family.elliptical("Normal")
 }
 
-
-
 #' @rdname family.elliptical
+#' @return a famility elliptical object using a Couchy distribution.
 #' @export
-
 Cauchy <- function ()
 {
   make.family.elliptical("Cauchy")
 }
 
-
-
 #' @rdname family.elliptical
+#' @return a famility elliptical object using a LogisI distribution.
 #' @export
-
 LogisI <- function ()
 {
   make.family.elliptical("LogisI")
 }
 
-
-
 #' @rdname family.elliptical
+#' @return a famility elliptical object using a LogisII distribution.
 #' @export
-
 LogisII <- function ()
 {
   make.family.elliptical("LogisII")
 }
 
-
-
 #' @rdname family.elliptical
 #' @param df degrees of freedom.
+#' @return a famility elliptical object using a Student distribution with a specific degrees of freedom.
 #' @export
-
 Student <- function (df = stop("no df argument"))
 {
   if (df < 0)
@@ -380,13 +350,10 @@ Student <- function (df = stop("no df argument"))
   make.family.elliptical("Student", arg = df)
 }
 
-
-
 #' @rdname family.elliptical
 #' @param k shape parameter.
+#' @return a famility elliptical object using an exponential distribution.
 #' @export
-
-
 Powerexp <- function (k = stop("no k argument"))
 {
   if (abs(k) > 1)
@@ -394,12 +361,10 @@ Powerexp <- function (k = stop("no k argument"))
   make.family.elliptical("Powerexp", arg = k)
 }
 
-
-
 #' @rdname family.elliptical
 #' @param parma parameter vector (alpha, m).
+#' @return a famility elliptical object using a Glogis distribution.
 #' @export
-
 Glogis <- function (parma = stop("no alpha=alpha(m) or m argument"))
 {
   if ((parma[1] <= 0) || (parma[2] <= 0))
@@ -410,8 +375,8 @@ Glogis <- function (parma = stop("no alpha=alpha(m) or m argument"))
 
 #' @rdname family.elliptical
 #' @param parm parameter vector (s, r) for this distribuition.
+#' @return a famility elliptical object using a Gstudent distribution.
 #' @export
-
 Gstudent <- function (parm = stop("no s or r argument"))
 {
   if ((parm[1] <= 0) || (parm[2] <= 0))
@@ -420,11 +385,10 @@ Gstudent <- function (parm = stop("no s or r argument"))
                                                 r = parm[2]))
 }
 
-
 #' @rdname family.elliptical
 #' @param parmt parameters vector (epsi, sigma).
+#' @return a famility elliptical object using a Cnormal distribution
 #' @export
-
 Cnormal <- function (parmt = stop("no epsi or sigma argument"))
 {
   stop(paste("not implement yet"))
@@ -434,20 +398,13 @@ Cnormal <- function (parmt = stop("no epsi or sigma argument"))
                                                sigmap = parmt[2]))
 }
 
-
-
-
 #' @rdname family.elliptical
 #' @param nu degrees of freedom.
+#' @return a famility elliptical object using a Gnormal distribution
 #' @export
-
 GNormal <- function (nu = stop("no nu argument"))
 {
   if (nu < 0)
     stop(paste("allowed values for nu positive"))
   make.family.elliptical("GNormal", arg = nu)
 }
-
-
-
-

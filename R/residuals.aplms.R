@@ -3,6 +3,7 @@
 #' @param object an object with the result of fitting additive partial linear models with symmetric errors.
 #' \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.
 #' @param ... other arguments.
+#' @return a dataframe with the residual, the pearson residual and the normal quantile of the standarized resiudals.
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @examples

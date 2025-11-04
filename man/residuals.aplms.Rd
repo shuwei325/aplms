@@ -12,6 +12,9 @@
 
 \item{...}{other arguments.}
 }
+\value{
+a dataframe with the residual, the pearson residual and the normal quantile of the standarized resiudals.
+}
 \description{
 Extract Residuals for APLMS fits
 }
