@@ -17,6 +17,7 @@
 #' @param init A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.
 #' @param lam smoothing parameter vector.
 #' @return Returns an object of class \dQuote{aplms}, a list with following components.
+#' \describe{
 #' \item{formula}{the \code{formula} object used.}
 #' \item{family}{the \code{family} object used.}
 #' \item{npc}{the \code{npc} object used.}
@@ -49,6 +50,7 @@
 #' \item{residuals_mu}{Raw (Ordinary) residuals: \eqn{y_t - (\textbf{x}_i^\top\beta + f_1(t_{i1}) + \ldots + f_k(t_{ik}))}}
 #' \item{data}{the \code{data} object used.}
 #' \item{this.call}{the function call used.}
+#' }
 #' @examples
 #' data(temperature)
 #' temperature.df = data.frame(temperature,time=1:length(temperature))

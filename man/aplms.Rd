@@ -49,6 +49,7 @@ aplms(
 }
 \value{
 Returns an object of class \dQuote{aplms}, a list with following components.
+\describe{
 \item{formula}{the \code{formula} object used.}
 \item{family}{the \code{family} object used.}
 \item{npc}{the \code{npc} object used.}
@@ -81,6 +82,7 @@ Returns an object of class \dQuote{aplms}, a list with following components.
 \item{residuals_mu}{Raw (Ordinary) residuals: \eqn{y_t - (\textbf{x}_i^\top\beta + f_1(t_{i1}) + \ldots + f_k(t_{ik}))}}
 \item{data}{the \code{data} object used.}
 \item{this.call}{the function call used.}
+}
 }
 \description{
 \code{aplms} fits additive partial linear models with autoregressive symmetric errors.
