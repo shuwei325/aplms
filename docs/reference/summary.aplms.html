@@ -63,38 +63,17 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">temperature</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">datos</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">temperature</span>,time<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">temperature</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">mod</span><span class="op">&lt;-</span><span class="fu">aplms</span><span class="fu">::</span><span class="fu"><a href="aplms.html">aplms</a></span><span class="op">(</span><span class="va">temperature</span> <span class="op">~</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span><span class="va">temperature.df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">temperature</span>,time<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">temperature</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">aplms</span><span class="fu">::</span><span class="fu"><a href="aplms.html">aplms</a></span><span class="op">(</span><span class="va">temperature</span> <span class="op">~</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                   npc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time"</span><span class="op">)</span>, basis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cr"</span><span class="op">)</span>,Knot<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   data<span class="op">=</span><span class="va">datos</span>,family<span class="op">=</span><span class="fu"><a href="family.elliptical.html">Powerexp</a></span><span class="op">(</span>k<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span>,p<span class="op">=</span><span class="fl">1</span>,</span></span>
+<span class="r-in"><span>                   data<span class="op">=</span><span class="va">temperature.df</span>,family<span class="op">=</span><span class="fu"><a href="family.elliptical.html">Powerexp</a></span><span class="op">(</span>k<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span>,p<span class="op">=</span><span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                   control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tol <span class="op">=</span> <span class="fl">0.001</span>,</span></span>
 <span class="r-in"><span>                                  algorithm1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P-GAM"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                  algorithm2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BFGS"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                  Maxiter1 <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>                                  Maxiter2 <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   lam<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 - 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 - 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 - 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 4 - 1 </span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Additive partial linear models with symmetric errors </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------------------------------</span>
@@ -102,9 +81,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>  -------------------------- Model ---------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aplms::aplms(formula = temperature ~ 1, npc = c("time"), basis = c("cr"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Knot = c(60), data = datos, family = Powerexp(k = 0.3), p = 1, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Maxiter1 = 20, Maxiter2 = 25), lam = c(10))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Knot = c(60), data = temperature.df, family = Powerexp(k = 0.3), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p = 1, control = list(tol = 0.001, algorithm1 = c("P-GAM"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         algorithm2 = c("BFGS"), Maxiter1 = 20, Maxiter2 = 25), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lam = c(10))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ------------------- Parametric component -------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

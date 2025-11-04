@@ -65,7 +65,8 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tol <span class="op">=</span> <span class="fl">0.001</span>, algorithm1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P-GAM"</span><span class="op">)</span>, algorithm2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BFGS"</span><span class="op">)</span>, Maxiter1 <span class="op">=</span></span>
 <span>    <span class="fl">20</span>, Maxiter2 <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>,</span>
 <span>  <span class="va">init</span>,</span>
-<span>  <span class="va">lam</span></span>
+<span>  <span class="va">lam</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'aplms'</span></span>
@@ -116,6 +117,10 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 <dd><p>smoothing parameter vector.</p></dd>
 
 
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Logical; if TRUE, prints estimation progress messages. Default is FALSE.</p></dd>
+
+
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>APLMS object.</p></dd>
 
@@ -126,8 +131,7 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns an object of class “aplms”, a list with following components.</p>
-<dl><dt>formula</dt>
+    <p>Returns an object of class “aplms”, a list with following components.</p><dl><dt>formula</dt>
 <dd><p>the <code>formula</code> object used.</p></dd>
 
 <dt>family</dt>
@@ -223,6 +227,7 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 <dt>this.call</dt>
 <dd><p>the function call used.</p></dd>
 
+
 </dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -237,38 +242,122 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">temperature</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">datos</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">temperature</span>,time<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">temperature</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">mod1</span><span class="op">&lt;-</span><span class="fu">aplms</span><span class="fu">::</span><span class="fu">aplms</span><span class="op">(</span><span class="va">temperature</span> <span class="op">~</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span><span class="va">temperature.df</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">temperature</span>,time<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">temperature</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">aplms</span><span class="fu">::</span><span class="fu">aplms</span><span class="op">(</span><span class="va">temperature</span> <span class="op">~</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                   npc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"time"</span><span class="op">)</span>, basis<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cr"</span><span class="op">)</span>,Knot<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                   data<span class="op">=</span><span class="va">datos</span>,family<span class="op">=</span><span class="fu"><a href="family.elliptical.html">Powerexp</a></span><span class="op">(</span>k<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span>,p<span class="op">=</span><span class="fl">1</span>,</span></span>
+<span class="r-in"><span>                   data<span class="op">=</span><span class="va">temperature.df</span>,family<span class="op">=</span><span class="fu"><a href="family.elliptical.html">Powerexp</a></span><span class="op">(</span>k<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span>,p<span class="op">=</span><span class="fl">1</span>,</span></span>
 <span class="r-in"><span>                   control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tol <span class="op">=</span> <span class="fl">0.001</span>,</span></span>
 <span class="r-in"><span>                                  algorithm1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P-GAM"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                  algorithm2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BFGS"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                  Maxiter1 <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>                                  Maxiter2 <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   lam<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 1 - 7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 2 - 6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 - 1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 - 2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 3 - 3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Iteration 4 - 1 </span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="aplms-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cov        fmean    fmean_ls     fmean_li</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     1.000000 -0.213215062 -0.38051702 -0.045913101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     2.424242 -0.157657300 -0.25860288 -0.056711725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     3.848485 -0.212090507 -0.32001771 -0.104163305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     5.272727 -0.357959506 -0.46898184 -0.246937174</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     6.696970 -0.389381087 -0.48749987 -0.291262301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     8.121212 -0.309883662 -0.42979400 -0.189973326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7     9.545455 -0.256507180 -0.35408994 -0.158924423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    10.969697 -0.268972025 -0.38269634 -0.155247707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    12.393939 -0.328028685 -0.43751976 -0.218537614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   13.818182 -0.362119686 -0.46252234 -0.261717030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   15.242424 -0.329739301 -0.44963766 -0.209840943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   16.666667 -0.236456854 -0.33345593 -0.139457776</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   18.090909 -0.187783201 -0.30292439 -0.072642015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   19.515152 -0.226748006 -0.33476704 -0.118728976</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   20.939394 -0.229175092 -0.33080619 -0.127543993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   22.363636 -0.240824195 -0.36025925 -0.121389135</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   23.787879 -0.396329451 -0.49288877 -0.299770132</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   25.212121 -0.472299770 -0.58853860 -0.356060937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   26.636364 -0.346859356 -0.45344989 -0.240268819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   28.060606 -0.352051750 -0.45504127 -0.249062233</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   29.484848 -0.509917727 -0.62863393 -0.391201528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   30.909091 -0.553447782 -0.64976105 -0.457134516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   32.333333 -0.458669461 -0.57595336 -0.341385561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   33.757576 -0.319163400 -0.42430868 -0.214018119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   35.181818 -0.274962044 -0.37937956 -0.170544531</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   36.606061 -0.343014587 -0.46081001 -0.225219168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   38.030303 -0.415401411 -0.51166773 -0.319135092</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   39.454545 -0.397422379 -0.51569997 -0.279144793</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   40.878788 -0.285716394 -0.38941287 -0.182019919</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   42.303030 -0.281039407 -0.38691070 -0.175168109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   43.727273 -0.364210514 -0.48097224 -0.247448788</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   45.151515 -0.295850803 -0.39226072 -0.199440886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   46.575758 -0.202393200 -0.32149651 -0.083289890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   48.000000 -0.258064413 -0.36036400 -0.155764823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   49.424242 -0.294762948 -0.40206745 -0.187458442</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   50.848485 -0.243743271 -0.35944671 -0.128039829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   52.272727 -0.212056003 -0.30881412 -0.115297886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   53.696970 -0.223624912 -0.34332922 -0.103920599</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   55.121212 -0.245821845 -0.34682625 -0.144817439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   56.545455 -0.216226869 -0.32497022 -0.107483516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   57.969697 -0.122563126 -0.23710176 -0.008024492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   59.393939 -0.022064966 -0.11936732  0.075237389</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   60.818182  0.043246936 -0.07680916  0.163303035</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   62.242424  0.058536017 -0.04133763  0.158409663</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   63.666667  0.064177908 -0.04607577  0.174431583</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   65.090909  0.064875182 -0.04834389  0.178094259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   66.515152  0.005296521 -0.09272732  0.103320363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   67.939394 -0.105963819 -0.22614647  0.014218833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   69.363636 -0.206727445 -0.30561597 -0.107838917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   70.787879 -0.189575482 -0.30134938 -0.077801580</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   72.212121 -0.076046167 -0.18782007  0.035727734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   73.636364 -0.079103697 -0.17799222  0.019784831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   75.060606 -0.162040947 -0.28222360 -0.041858296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   76.484848 -0.159214768 -0.25723861 -0.061190926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   77.909091 -0.096978598 -0.21019767  0.016240479</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   79.333333 -0.034892264 -0.14514594  0.075361411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   80.757576 -0.001654978 -0.10152862  0.098218668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   82.181818 -0.016382605 -0.13643870  0.103673494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   83.606061 -0.082110591 -0.17941295  0.015191763</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   85.030303 -0.149307173 -0.26384581 -0.034768540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   86.454545 -0.164889347 -0.27363270 -0.056145994</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   87.878788 -0.103394785 -0.20439919 -0.002390379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   89.303030 -0.035126676 -0.15483099  0.084577636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   90.727273 -0.062581265 -0.15933938  0.034176852</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   92.151515 -0.079086931 -0.19479037  0.036616512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   93.575758 -0.021958536 -0.12926304  0.085345970</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   95.000000 -0.042156899 -0.14445649  0.060142691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   96.424242 -0.106105596 -0.22520891  0.012997714</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   97.848485 -0.041483460 -0.13789338  0.054926457</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   99.272727  0.086897127 -0.02986460  0.203658853</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71  100.696970  0.174316765  0.06844547  0.280188063</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72  102.121212  0.217565731  0.11386926  0.321262206</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73  103.545455  0.202671643  0.08439406  0.320949227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74  104.969697  0.115659933  0.01939361  0.211926256</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75  106.393939  0.087320078 -0.03047534  0.205115498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76  107.818182  0.208210642  0.10379313  0.312628152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77  109.242424  0.335094675  0.22994939  0.440239956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78  110.666667  0.360344269  0.24306036  0.477628175</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79  112.090909  0.268794480  0.17248123  0.365107728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80  113.515152  0.189627094  0.07091091  0.308343273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81  114.939394  0.240639673  0.13765014  0.343629210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82  116.363636  0.346623508  0.24003297  0.453214045</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83  117.787879  0.413779514  0.29754069  0.530018341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84  119.212121  0.384577682  0.28801824  0.481137123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85  120.636364  0.369334466  0.24989923  0.488769704</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86  122.060606  0.473909701  0.37227863  0.575540771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87  123.484848  0.560667717  0.45264868  0.668686751</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88  124.909091  0.568661309  0.45351981  0.683802810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89  126.333333  0.576904017  0.47990550  0.673902532</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90  127.757576  0.592069051  0.47217142  0.711966684</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91  129.181818  0.589034350  0.48862971  0.689438988</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92  130.606061  0.577041729  0.46755078  0.686532679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93  132.030303  0.575296888  0.46156731  0.689026471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94  133.454545  0.606978315  0.50938891  0.704567721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95  134.878788  0.696587825  0.57665900  0.816516648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96  136.303030  0.838493153  0.74033856  0.936647746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97  137.727273  0.917933747  0.80690816  1.028959338</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98  139.151515  0.894514412  0.78638554  1.002643279</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99  140.575758  0.865726591  0.76474733  0.966705850</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 142.000000  0.859592517  0.68831338  1.030871657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Additive partial linear models with symmetric errors </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---------------------------------------------------------------</span>
@@ -276,9 +365,10 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 <span class="r-out co"><span class="r-pr">#&gt;</span>  -------------------------- Model ---------------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aplms::aplms(formula = temperature ~ 1, npc = c("time"), basis = c("cr"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Knot = c(60), data = datos, family = Powerexp(k = 0.3), p = 1, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Maxiter1 = 20, Maxiter2 = 25), lam = c(10))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Knot = c(60), data = temperature.df, family = Powerexp(k = 0.3), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p = 1, control = list(tol = 0.001, algorithm1 = c("P-GAM"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         algorithm2 = c("BFGS"), Maxiter1 = 20, Maxiter2 = 25), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lam = c(10))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ------------------- Parametric component -------------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -306,12 +396,13 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 <span class="r-out co"><span class="r-pr">#&gt;</span>  GCV    :  0.01 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  --------------------------------------------------------------------</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> aplms::aplms(formula = temperature ~ 1, npc = c("time"), basis = c("cr"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Knot = c(60), data = datos, family = Powerexp(k = 0.3), p = 1, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         Maxiter1 = 20, Maxiter2 = 25), lam = c(10))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Knot = c(60), data = temperature.df, family = Powerexp(k = 0.3), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     p = 1, control = list(tol = 0.001, algorithm1 = c("P-GAM"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         algorithm2 = c("BFGS"), Maxiter1 = 20, Maxiter2 = 25), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lam = c(10))</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
