@@ -17,7 +17,8 @@ aplms(
   control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS"), Maxiter1 =
     20, Maxiter2 = 25),
   init,
-  lam
+  lam,
+  verbose = FALSE
 )
 
 \method{print}{aplms}(x, ...)
@@ -42,6 +43,8 @@ aplms(
 \item{init}{A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.}
 
 \item{lam}{smoothing parameter vector.}
+
+\item{verbose}{Logical; if TRUE, prints estimation progress messages. Default is FALSE.}
 
 \item{x}{APLMS object.}
 

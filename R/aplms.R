@@ -16,6 +16,7 @@
 #' @param control optimization rutine.
 #' @param init A list of initial values for the symmetric error scale, phi, and autoregressive coefficients, rhos.
 #' @param lam smoothing parameter vector.
+#' @param verbose Logical; if TRUE, prints estimation progress messages. Default is FALSE.
 #' @return Returns an object of class \dQuote{aplms}, a list with following components.
 #' \describe{
 #' \item{formula}{the \code{formula} object used.}
@@ -84,7 +85,8 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
                     Maxiter2 = 25
                   ),
                   init,
-                  lam) {
+                  lam,
+                  verbose = FALSE) {
   this.call <- match.call()
   if (missingArg(formula)) stop("The formula argument is missing.")
   if (missingArg(npc)) stop("The model needs at least one non-parametric component.")
@@ -172,13 +174,13 @@ aplms <- function(formula, npc, basis, Knot, data, family = Normal(), p = 1,
   conv_geral <- 1
   j <- 1
   while (conv_geral > control$tol && j < control$Maxiter2) {
-    cat(paste("Iteration", j ),"\n")
+    if (verbose) cat(paste("Iteration", j ),"\n")
     i <- 1
     conv_betaf <- 1
     A <- matrix_A(rho, nn)
 
     while (conv_betaf > control$tol && i < control$Maxiter1) {
-      cat(paste("Iteration", j,"-", i),"\n")
+      if (verbose) cat(paste("Iteration", j,"-", i),"\n")
       a <- res(y, f_init, phi, rho, N_i)
       posicao <- as.vector(family$g1(a,
         df = family$df,
