@@ -63,6 +63,26 @@ An object of class \dQuote{family} specifying a list with the follows elements:
 \item{mp}{shape parameter for generalized logistic distribution.}
 \item{epsi,sigmap}{dispersion parameters for contaminated normal distribution.}
 \item{k}{shape parameter for power exponential distribution.}
+
+a famility elliptical object using a Normal distribution.
+
+a famility elliptical object using a Couchy distribution.
+
+a famility elliptical object using a LogisI distribution.
+
+a famility elliptical object using a LogisII distribution.
+
+a famility elliptical object using a Student distribution with a specific degrees of freedom.
+
+a famility elliptical object using an exponential distribution.
+
+a famility elliptical object using a Glogis distribution.
+
+a famility elliptical object using a Gstudent distribution.
+
+a famility elliptical object using a Cnormal distribution
+
+a famility elliptical object using a Gnormal distribution
 }
 \description{
 The family object provide an specify details of the model APLMS. The distribution functions are necessary to specify the random component of the regression models with elliptical errors. The code is derived from the archived package \pkg{gwer} (Araujo, Y.A., Cysneiros, F.J.A., and Cysneiros, A.H.M.A., 2022), originally available on CRAN.

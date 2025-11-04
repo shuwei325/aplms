@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.4)  29 OCT 2025 17:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.4)  4 NOV 2025 15:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**C:/Users/shuwe/AppData/Local/Temp/Rtmpk1Dnyo/Rd2pdf852c3eb61b90/Rd2.tex
-(C:/Users/shuwe/AppData/Local/Temp/Rtmpk1Dnyo/Rd2pdf852c3eb61b90/Rd2.tex
+**C:/Users/shuwe/AppData/Local/Temp/Rtmp2FpI3i/Rd2pdf51142a283239/Rd2.tex
+(C:/Users/shuwe/AppData/Local/Temp/Rtmp2FpI3i/Rd2pdf51142a283239/Rd2.tex
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-09-02>
 
@@ -462,13 +462,13 @@ LaTeX Font Info:    Font shape `T1/zi4/m/n' will be
 
 [2{C:/Users/shuwe/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/inconsolata/i4-
 ts1.enc}]
-Overfull \hbox (26.39984pt too wide) in paragraph at lines 109--109
+Overfull \hbox (26.39984pt too wide) in paragraph at lines 107--107
  []  \T1/zi4/m/n/10 control = list(tol = 0.001, algorithm1 = c("P-GAM"), algori
 thm2 = c("BFGS"), Maxiter1 =[] 
  []
 
 
-Overfull \hbox (2.63095pt too wide) in paragraph at lines 132--133
+Overfull \hbox (2.63095pt too wide) in paragraph at lines 131--132
 []\T1/zi4/m/n/10 LogisI()[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 LogisII()[]\T1/ptm
 /m/n/10 , []\T1/zi4/m/n/10 Student(df)[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 Power
 exp(k)[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 Gstudent(parm=c(s,r))[]\T1/ptm/m/n/10
@@ -490,13 +490,7 @@ exp(k)[]\T1/ptm/m/n/10 , []\T1/zi4/m/n/10 Gstudent(parm=c(s,r))[]\T1/ptm/m/n/10
 [8]
 
 [9]
-Overfull \hbox (11.42029pt too wide) in paragraph at lines 512--512
- []  \T1/zi4/m/n/10 perturbation = c("case-weight", "dispersion", "response", "
-explanatory", "corAR"),[] 
- []
-
-
-Overfull \hbox (11.42029pt too wide) in paragraph at lines 550--550
+Overfull \hbox (11.42029pt too wide) in paragraph at lines 530--530
  []  \T1/zi4/m/n/10 perturbation = c("case-weight", "dispersion", "response", "
 explanatory", "corAR"),[] 
  []
@@ -504,9 +498,15 @@ explanatory", "corAR"),[]
 
 
 [10]
+Overfull \hbox (11.42029pt too wide) in paragraph at lines 579--579
+ []  \T1/zi4/m/n/10 perturbation = c("case-weight", "dispersion", "response", "
+explanatory", "corAR"),[] 
+ []
+
+
 
 [11]
-Overfull \hbox (4.29715pt too wide) in paragraph at lines 632--633
+Overfull \hbox (4.29715pt too wide) in paragraph at lines 657--658
 []\T1/ptm/m/n/10 Return a list of all non para-met-ric com-po-nent func-tions w
 ith their con-fi-dence in-ter-vals. If []\T1/zi4/m/n/10 plot=TRUE[]\T1/ptm/m/n/
 10 ,
@@ -516,9 +516,11 @@ ith their con-fi-dence in-ter-vals. If []\T1/zi4/m/n/10 plot=TRUE[]\T1/ptm/m/n/
 
 [12]
 
-[13] (Rd2.ind
+[13]
 
-[14]
+[14] (Rd2.ind
+
+[15]
 
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
@@ -528,7 +530,7 @@ LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
 (Font)              scaled to size 10.0pt on input line 58.
 
 
-[15
+[16
 
 ]) (Rd2.aux)
  ***********
@@ -543,13 +545,13 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
 (rerunfilecheck)             Checksum: 2549558788C99FC5C84B0DE161E4D56E;1569.
  ) 
 Here is how much of TeX's memory you used:
- 10740 strings out of 468130
- 162811 string characters out of 5430633
+ 10742 strings out of 468130
+ 162829 string characters out of 5430633
  573144 words of memory out of 5000000
  39059 multiletter control sequences out of 15000+600000
  667661 words of font info for 88 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 92i,6n,95p,985b,769s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 92i,6n,95p,985b,767s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/shuwe/AppData/Local/Programs/MiKTeX/fonts/type1/public/inconsolata/
 Inconsolata-zi4r.pfb><C:/Users/shuwe/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/amsfonts/cm/cmmi10.pfb><C:/Users/shuwe/AppData/Local/Programs/MiKTeX/fon
@@ -562,9 +564,9 @@ ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users
 /shuwe/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users
 /shuwe/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users
 /shuwe/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (15 pages, 207401 bytes).
+Output written on Rd2.pdf (16 pages, 209574 bytes).
 PDF statistics:
- 386 PDF objects out of 1000 (max. 8388607)
- 123 named destinations out of 1000 (max. 500000)
+ 391 PDF objects out of 1000 (max. 8388607)
+ 125 named destinations out of 1000 (max. 500000)
  113 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -11,7 +11,7 @@
 * checking extension type ... Package
 * this is package 'aplms' version '0.1.0'
 * package encoding: UTF-8
-* checking CRAN incoming feasibility ... [32s] NOTE
+* checking CRAN incoming feasibility ... [25s] NOTE
 Maintainer: 'Shu Wei Chou-Chen <shuwei.chou@ucr.ac.cr>'
 
 New submission
@@ -44,7 +44,7 @@ New submission
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [15s] OK
+* checking R code for possible problems ... OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -59,10 +59,9 @@ New submission
 * checking LazyData ... OK
 * checking data for ASCII and uncompressed saves ... OK
 * checking examples ... OK
-* checking examples with --run-donttest ... OK
 * checking for unstated dependencies in 'tests' ... OK
-* checking tests ... [23s] OK
-  Running 'testthat.R' [22s]
+* checking tests ... [33s] OK
+  Running 'testthat.R' [32s]
 * checking PDF version of manual ... OK
 * checking HTML version of manual ... OK
 * checking for non-standard things in the check directory ... OK

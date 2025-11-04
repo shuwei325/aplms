@@ -17,7 +17,8 @@ aplms(
   control = list(tol = 0.001, algorithm1 = c("P-GAM"), algorithm2 = c("BFGS"), Maxiter1 =
     20, Maxiter2 = 25),
   init,
-  lam
+  lam,
+  verbose = FALSE
 )
 
 \method{print}{aplms}(x, ...)
@@ -43,12 +44,15 @@ aplms(
 
 \item{lam}{smoothing parameter vector.}
 
+\item{verbose}{Logical; if TRUE, prints estimation progress messages. Default is FALSE.}
+
 \item{x}{APLMS object.}
 
 \item{...}{other arguments}
 }
 \value{
 Returns an object of class \dQuote{aplms}, a list with following components.
+\describe{
 \item{formula}{the \code{formula} object used.}
 \item{family}{the \code{family} object used.}
 \item{npc}{the \code{npc} object used.}
@@ -82,6 +86,7 @@ Returns an object of class \dQuote{aplms}, a list with following components.
 \item{data}{the \code{data} object used.}
 \item{this.call}{the function call used.}
 }
+}
 \description{
 \code{aplms} fits additive partial linear models with autoregressive symmetric errors.
 This method is suitable for data sets where the response variable is continuous and symmetric,
@@ -92,18 +97,19 @@ In this setup, natural cubic splines or cubic P-splines are used to approximate 
 }
 \examples{
 data(temperature)
-datos = data.frame(temperature,time=1:length(temperature))
-mod1<-aplms::aplms(temperature ~ 1,
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
                    npc=c("time"), basis=c("cr"),Knot=c(60),
-                   data=datos,family=Powerexp(k=0.3),p=1,
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
                    control = list(tol = 0.001,
                                   algorithm1 = c("P-GAM"),
                                   algorithm2 = c("BFGS"),
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
-summary(mod1)
-print(mod1)
+plot(model)
+summary(model)
+print(model)
 }
 \references{
 Chou-Chen, S.W., Oliveira, R.A., Raicher, I., Gilberto A. Paula (2024)

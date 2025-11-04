@@ -7,16 +7,34 @@
 \method{residuals}{aplms}(object, ...)
 }
 \arguments{
-\item{object}{an object with the result of fitting additive partial linear models with symmetric errors.
-\code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.}
+\item{object}{an object with the result of fitting additive partial linear models with symmetric errors.}
 
 \item{...}{other arguments.}
+}
+\value{
+Returns a dataframe with the following columns
+\describe{
+\item{res}{the residual,}
+\item{res_pearson}{the Pearson residual, and}
+\item{res_quant}{the normal quantile of the standarized resiudals.}
+}
 }
 \description{
 Extract Residuals for APLMS fits
 }
 \examples{
-\dontrun{residuals(object)}
+data(temperature)
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+residuals(model)
 }
 \keyword{Additive}
 \keyword{Residuals}

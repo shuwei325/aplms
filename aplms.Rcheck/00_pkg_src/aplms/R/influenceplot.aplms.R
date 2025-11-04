@@ -9,21 +9,18 @@
 #' @param labels label to especify each data point.
 #' @return The conformal normal curvature of the specified perturbations is plotted.
 #' @examples
-#' \dontrun{
 #' data(temperature)
-#' datos = data.frame(temperature,time=1:length(temperature))
-#' mod1<-aplms::aplms(temperature ~ 1,
+#' temperature.df = data.frame(temperature,time=1:length(temperature))
+#' model<-aplms::aplms(temperature ~ 1,
 #'                    npc=c("time"), basis=c("cr"),Knot=c(60),
-#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    data=temperature.df,family=Powerexp(k=0.3),p=1,
 #'                    control = list(tol = 0.001,
 #'                                   algorithm1 = c("P-GAM"),
 #'                                   algorithm2 = c("BFGS"),
 #'                                   Maxiter1 = 20,
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
-#' influenceplot.aplms(mod1, perturbation = c("case-weight"))
-#' }
-#'
+#' influenceplot.aplms(model, perturbation = c("case-weight"))
 #' @export
 
 influenceplot.aplms <- function(model,
@@ -49,6 +46,9 @@ influenceplot.aplms <- function(model,
                     perturbation = perturbation,
                     part = part)
 
+  old_par <- par(no.readonly = TRUE)
+  on.exit(par(old_par))
+
   if (perturbation %in% c("case-weight", "dispersion", "response")){
 
     print(paste0(perturbation," perturbation scheme"))
@@ -71,9 +71,6 @@ influenceplot.aplms <- function(model,
   if (perturbation %in% c("explanatory", "corAR")){
 
     print(paste0(perturbation," perturbation scheme"))
-
-    old_par <- par(ask = TRUE)
-    on.exit(par(old_par))
 
     if(part){
       par(mfrow=c(2,2), oma = c(0, 0, 3, 0))

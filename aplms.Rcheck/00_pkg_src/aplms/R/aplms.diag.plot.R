@@ -18,27 +18,25 @@
 #' 10: Partial autocorrelation function of conditional quantile residuals.
 #' 11: QQ-plot of conditional quantile residuals.
 #' @examples
-#' \dontrun{
 #' data(temperature)
-#' datos = data.frame(temperature,time=1:length(temperature))
-#' mod1<-aplms::aplms(temperature ~ 1,
+#' temperature.df = data.frame(temperature,time=1:length(temperature))
+#' model<-aplms::aplms(temperature ~ 1,
 #'                    npc=c("time"), basis=c("cr"),Knot=c(60),
-#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    data=temperature.df,family=Powerexp(k=0.3),p=1,
 #'                    control = list(tol = 0.001,
 #'                                   algorithm1 = c("P-GAM"),
 #'                                   algorithm2 = c("BFGS"),
 #'                                   Maxiter1 = 20,
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
-#' aplms.diag.plot(mod1, perturbation = c("case-weight"))
-#' }
+#' aplms.diag.plot(model, which = 1)
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @import utils graphics
 #' @export
 aplms.diag.plot <- function(model, which,
                             labels = NULL,
-                            iden = F, ...) {
+                            iden = FALSE, ...) {
   if (!inherits(model, what = "aplms", which = FALSE)) {
     stop("not a aplms object")
   }
@@ -52,7 +50,6 @@ aplms.diag.plot <- function(model, which,
                "Histogram of Response residuals",
                "Autocorrelation function of response residuals",
                "Partial autocorrelation function of response residuals",
-               # "QQ-plot of Response residuals",
                "Conditional quantile residuals against fited values",
                "Conditional quantile residuals against time index",
                "Histogram of conditional quantile residuals",
@@ -169,13 +166,3 @@ aplms.diag.plot <- function(model, which,
     }
   }
 }
-
-
-
-
-
-
-
-
-
-

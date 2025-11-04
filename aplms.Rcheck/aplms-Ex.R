@@ -31,20 +31,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## No test: 
 data(temperature)
-datos = data.frame(temperature,time=1:length(temperature))
-mod<-aplms::aplms(temperature ~ 1,
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
                    npc=c("time"), basis=c("cr"),Knot=c(60),
-                   data=datos,family=Powerexp(k=0.3),p=1,
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
                    control = list(tol = 0.001,
                                   algorithm1 = c("P-GAM"),
                                   algorithm2 = c("BFGS"),
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
-AIC(mod)
-## End(No test)
+AIC(model)
 
 
 
@@ -63,20 +61,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## No test: 
 data(temperature)
-datos = data.frame(temperature,time=1:length(temperature))
-mod<-aplms::aplms(temperature ~ 1,
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
                    npc=c("time"), basis=c("cr"),Knot=c(60),
-                   data=datos,family=Powerexp(k=0.3),p=1,
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
                    control = list(tol = 0.001,
                                   algorithm1 = c("P-GAM"),
                                   algorithm2 = c("BFGS"),
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
-BIC(mod)
-## End(No test)
+BIC(model)
 
 
 
@@ -96,18 +92,19 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 data(temperature)
-datos = data.frame(temperature,time=1:length(temperature))
-mod1<-aplms::aplms(temperature ~ 1,
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
                    npc=c("time"), basis=c("cr"),Knot=c(60),
-                   data=datos,family=Powerexp(k=0.3),p=1,
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
                    control = list(tol = 0.001,
                                   algorithm1 = c("P-GAM"),
                                   algorithm2 = c("BFGS"),
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
-summary(mod1)
-print(mod1)
+plot(model)
+summary(model)
+print(model)
 
 
 
@@ -129,20 +126,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: 
-##D data(temperature)
-##D datos = data.frame(temperature,time=1:length(temperature))
-##D mod1<-aplms::aplms(temperature ~ 1,
-##D                    npc=c("time"), basis=c("cr"),Knot=c(60),
-##D                    data=datos,family=Powerexp(k=0.3),p=1,
-##D                    control = list(tol = 0.001,
-##D                                   algorithm1 = c("P-GAM"),
-##D                                   algorithm2 = c("BFGS"),
-##D                                   Maxiter1 = 20,
-##D                                   Maxiter2 = 25),
-##D                    lam=c(10))
-##D aplms.diag.plot(mod1, perturbation = c("case-weight"))
-## End(Not run)
+data(temperature)
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+aplms.diag.plot(model, which = 1)
 
 
 
@@ -161,20 +156,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## No test: 
 data(temperature)
-datos = data.frame(temperature,time=1:length(temperature))
-mod<-aplms::aplms(temperature ~ 1,
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
                    npc=c("time"), basis=c("cr"),Knot=c(60),
-                   data=datos,family=Powerexp(k=0.3),p=1,
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
                    control = list(tol = 0.001,
                                   algorithm1 = c("P-GAM"),
                                   algorithm2 = c("BFGS"),
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
-coef(mod)
-## End(No test)
+coef(model)
 
 
 
@@ -236,7 +229,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: influence(model)
+data(temperature)
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+influence(model, perturbation = c("case-weight"))
 
 
 
@@ -255,21 +259,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: 
-##D data(temperature)
-##D datos = data.frame(temperature,time=1:length(temperature))
-##D mod1<-aplms::aplms(temperature ~ 1,
-##D                    npc=c("time"), basis=c("cr"),Knot=c(60),
-##D                    data=datos,family=Powerexp(k=0.3),p=1,
-##D                    control = list(tol = 0.001,
-##D                                   algorithm1 = c("P-GAM"),
-##D                                   algorithm2 = c("BFGS"),
-##D                                   Maxiter1 = 20,
-##D                                   Maxiter2 = 25),
-##D                    lam=c(10))
-##D influenceplot.aplms(mod1, perturbation = c("case-weight"))
-## End(Not run)
-
+data(temperature)
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+influenceplot.aplms(model, perturbation = c("case-weight"))
 
 
 
@@ -289,20 +290,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: 
-##D data(temperature)
-##D datos = data.frame(temperature,time=1:length(temperature))
-##D mod1<-aplms::aplms(temperature ~ 1,
-##D                    npc=c("time"), basis=c("cr"),Knot=c(60),
-##D                    data=datos,family=Powerexp(k=0.3),p=1,
-##D                    control = list(tol = 0.001,
-##D                                   algorithm1 = c("P-GAM"),
-##D                                   algorithm2 = c("BFGS"),
-##D                                   Maxiter1 = 20,
-##D                                   Maxiter2 = 25),
-##D                    lam=c(10))
-##D plot(mod1)
-## End(Not run)
+data(temperature)
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+plot(model)
 
 
 
@@ -323,7 +322,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 ### ** Examples
 
-## Not run: residuals(object)
+data(temperature)
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
+                   npc=c("time"), basis=c("cr"),Knot=c(60),
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
+                   control = list(tol = 0.001,
+                                  algorithm1 = c("P-GAM"),
+                                  algorithm2 = c("BFGS"),
+                                  Maxiter1 = 20,
+                                  Maxiter2 = 25),
+                   lam=c(10))
+residuals(model)
 
 
 
@@ -343,17 +353,17 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 data(temperature)
-datos = data.frame(temperature,time=1:length(temperature))
-mod<-aplms::aplms(temperature ~ 1,
+temperature.df = data.frame(temperature,time=1:length(temperature))
+model<-aplms::aplms(temperature ~ 1,
                    npc=c("time"), basis=c("cr"),Knot=c(60),
-                   data=datos,family=Powerexp(k=0.3),p=1,
+                   data=temperature.df,family=Powerexp(k=0.3),p=1,
                    control = list(tol = 0.001,
                                   algorithm1 = c("P-GAM"),
                                   algorithm2 = c("BFGS"),
                                   Maxiter1 = 20,
                                   Maxiter2 = 25),
                    lam=c(10))
-summary(mod)
+summary(model)
 
 
 

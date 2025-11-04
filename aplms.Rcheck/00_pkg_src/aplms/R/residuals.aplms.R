@@ -1,12 +1,28 @@
 #' Extract Residuals for APLMS fits
 #'
 #' @param object an object with the result of fitting additive partial linear models with symmetric errors.
-#' \code{response} indicates response residuals, \code{pearson} is Pearson residuals, and \code{quant} is quantile residuals.
 #' @param ... other arguments.
+#' @return Returns a dataframe with the following columns
+#' \describe{
+#' \item{res}{the residual,}
+#' \item{res_pearson}{the Pearson residual, and}
+#' \item{res_quant}{the normal quantile of the standarized resiudals.}
+#' }
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @examples
-#' \dontrun{residuals(object)}
+#' data(temperature)
+#' temperature.df = data.frame(temperature,time=1:length(temperature))
+#' model<-aplms::aplms(temperature ~ 1,
+#'                    npc=c("time"), basis=c("cr"),Knot=c(60),
+#'                    data=temperature.df,family=Powerexp(k=0.3),p=1,
+#'                    control = list(tol = 0.001,
+#'                                   algorithm1 = c("P-GAM"),
+#'                                   algorithm2 = c("BFGS"),
+#'                                   Maxiter1 = 20,
+#'                                   Maxiter2 = 25),
+#'                    lam=c(10))
+#' residuals(model)
 #' @importFrom stats residuals
 #' @export
 residuals.aplms <- function(object, ...) {
@@ -32,10 +48,7 @@ residuals.aplms <- function(object, ...) {
       "LogisII" = plogisII(q),
       "Student" = pt(q, df = family_sym$df),
       "Powerexp" = rmutil::ppowexp(q, m = 0, s = 1, f = 1 / (1 + family_sym$k)),
-      "Gstudent" = pgstudent(q, s = family_sym$s, r = family_sym$r) # ,
-      # 'Cauchy' =
-      # 'Glogis' =
-      # 'Cnormal' =
+      "Gstudent" = pgstudent(q, s = family_sym$s, r = family_sym$r)
     )
   }
 

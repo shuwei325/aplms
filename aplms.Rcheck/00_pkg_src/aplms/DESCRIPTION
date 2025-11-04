@@ -22,7 +22,7 @@ Imports: MASS, Matrix, rlist, stats, methods, psych, rmutil
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-10-29 23:07:44 UTC; shuwe
+Packaged: 2025-11-04 21:37:57 UTC; shuwe
 Author: Shu Wei Chou-Chen [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0001-5495-2486>),
   Rodrigo A. Oliveira [aut] (ORCID:
