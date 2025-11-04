@@ -8,7 +8,18 @@
 #' @param ... other arguments.
 #' @return A list object containing the conformal normal curvature of the specified perturbations.
 #' @examples
-#' \donttest{influence(model)}
+#' data(temperature)
+#' temperature.df = data.frame(temperature,time=1:length(temperature))
+#' model<-aplms::aplms(temperature ~ 1,
+#'                    npc=c("time"), basis=c("cr"),Knot=c(60),
+#'                    data=temperature.df,family=Powerexp(k=0.3),p=1,
+#'                    control = list(tol = 0.001,
+#'                                   algorithm1 = c("P-GAM"),
+#'                                   algorithm2 = c("BFGS"),
+#'                                   Maxiter1 = 20,
+#'                                   Maxiter2 = 25),
+#'                    lam=c(10))
+#' influence(model, perturbation = c("case-weight"))
 #' @importFrom stats influence
 #' @import psych MASS
 #' @export

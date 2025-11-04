@@ -11,20 +11,18 @@
 #' @keywords Residuals
 #' @importFrom graphics plot
 #' @examples
-#' \donttest{
 #' data(temperature)
-#' datos = data.frame(temperature,time=1:length(temperature))
-#' mod1<-aplms::aplms(temperature ~ 1,
+#' temperature.df = data.frame(temperature,time=1:length(temperature))
+#' model<-aplms::aplms(temperature ~ 1,
 #'                    npc=c("time"), basis=c("cr"),Knot=c(60),
-#'                    data=datos,family=Powerexp(k=0.3),p=1,
+#'                    data=temperature.df,family=Powerexp(k=0.3),p=1,
 #'                    control = list(tol = 0.001,
 #'                                   algorithm1 = c("P-GAM"),
 #'                                   algorithm2 = c("BFGS"),
 #'                                   Maxiter1 = 20,
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
-#' plot(mod1)
-#' }
+#' plot(model)
 #' @export
 plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
   if (!inherits(x, what = "aplms", which = FALSE)) {
