@@ -82,7 +82,7 @@ plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
     if (n == 1) {
       grid.arrange(plots_npc[[1]])
     } else {
-      grid.arrange(grobs = plots_npc, ncol = 2)
+      grid.arrange(grobs = plots_npc, nrow = ceiling(n/2), ncol = 2)
     }
   }
 return(npc_predict_list)

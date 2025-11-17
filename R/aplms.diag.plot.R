@@ -33,6 +33,7 @@
 #' @keywords Additive partial linear models with symmetric errors
 #' @keywords Residuals
 #' @import utils graphics
+#' @importFrom ggplot2 geom_histogram geom_segment geom_hline geom_abline
 #' @export
 aplms.diag.plot <- function(model, which,
                             labels = NULL,
@@ -70,80 +71,139 @@ aplms.diag.plot <- function(model, which,
 
   repeat {
     switch(pick,
-           `1` = {
-             y1 <- res_data$res
-             x1 <- model$yhat
-            plot(x1, y1, xlab = "Fitted values", ylab = "Response residual",
-                  ...)
-            grid()
+          `1` = {
+            y1 <- res_data$res
+            x1 <- model$yhat
+            df <- data.frame(x1 = x1, y1 = y1)
+            p <- ggplot(df, aes(x = x1, y = y1)) +
+              geom_point() +
+              labs(x = "Fitted values", y = "Response residual")
+            print(p)
             xx <- list(x1)
             yy <- list(y1)
-           },
-           `2` = {
-             y2 <- res_data$res
-             x2 <- seq_along(y2)
-             plot(x2, y2, xlab = "Index", ylab = "Response residual",
-                  ...)
-             grid()
-             xx <- list(x2)
-             yy <- list(y2)
-           },
-           `3` = {
-             y3 <- res_data$res
-             hist(y3, main="Response residuals")
-             grid()
-           },
-           `4` = {
-             y4 <- res_data$res
-             acf(y4, main="Response residuals")
-           },
-           `5` = {
-             y5 <- res_data$res
-             pacf(y5, main="Response residuals")
-           },
-           `6` = {
-             y6 <- res_data$res_quant
-             x6 <- model$yhat
-             plot(x6, y6, xlab = "Fitted values", ylab = "Conditional quantile residual",
-                  ...)
-             grid()
-             xx <- list(x6)
-             yy <- list(y6)
-           },
-           `7` = {
-             y7 <- res_data$res_quant
-             x7 <- seq_along(y7)
-             plot(x7, y7, xlab = "Index", ylab = "Conditional quantile residual",
-                  ...)
-             grid()
-             xx <- list(x7)
-             yy <- list(y7)
-           },
-           `8` = {
-             y8 <- res_data$res_quant
-             hist(y8, main="Conditional quantile residual")
-             grid()
-           },
-           `9` = {
-             y9 <- res_data$res_quant
-             acf(y9, main="Conditional quantile residual")
-           },
-           `10` = {
-             y10<- res_data$res_quant
-             pacf(y10, main="Conditional quantile residual")
-           },
-           `11` = {
-             y11 <- res_data$res_quant
-             x11 <- qnorm(ppoints(length(y11)))[rank(y11)]
-             .lim <- c(min(x11, y11), max(x11, y11))
-             plot(x11, y11, xlab = paste("Quantiles of standard normal"),
-                  ylab = "Ordered standardized residual", xlim = .lim,
-                  ylim = .lim, ...)
-             grid()
-             abline(0, 1, lty = 2)
-             xx <- list(x11)
-             yy <- list(y11)
-           })
+          },
+          `2` = {
+            y2 <- res_data$res
+            x2 <- seq_along(y2)
+            df <- data.frame(x2 = x2, y2 = y2)
+            p <- ggplot(df, aes(x = x2, y = y2)) +
+              geom_point() +
+              labs(x = "Index", y = "Response residual")
+            print(p)
+            xx <- list(x2)
+            yy <- list(y2)
+          },
+          `3` = {
+            y3 <- res_data$res
+            df <- data.frame(y3 = y3)
+            p <- ggplot(df, aes(x = y3)) + 
+              geom_histogram(fill = "grey", color = "black") +
+              labs(x = "Frequency", title = "Response residual") +
+              theme_minimal()
+            print(p)
+          },
+          `4` = {
+            y4 <- res_data$res
+            acf_data <- acf(y4, plot = FALSE)
+            df <- data.frame(lag = acf_data$lag, acf = acf_data$acf)
+            conf <- qnorm((1 + 0.95) / 2) / sqrt(length(y4))
+            p <- ggplot(df, aes(x = lag, y = acf)) +
+              geom_segment(aes(xend = lag, yend = 0)) +
+              geom_hline(yintercept = c(-conf, conf), 
+                         linetype = "dashed", color = "blue") +
+              geom_hline(yintercept = 0, color = "black") +
+              labs(x = "Lag", y = "ACF", title = "Response residuals") +
+              theme_minimal()
+            print(p)
+          },
+          `5` = {
+            y5 <- res_data$res
+            pacf_data <- pacf(y5, plot = FALSE)
+            df <- data.frame(lag = pacf_data$lag, acf = pacf_data$acf)
+            conf <- qnorm((1 + 0.95) / 2) / sqrt(length(y5))
+            p <- ggplot(df, aes(x = lag, y = acf)) +
+              geom_hline(yintercept = 0, color = "black") +
+              geom_segment(aes(xend = lag, yend = 0)) +
+              geom_hline(yintercept = c(-conf, conf),
+                         linetype = "dashed", color = "blue") +
+              labs(x = "Lag", y = "Partial ACF", title = "Response residuals")
+            print(p)
+          },
+          `6` = {
+            y6 <- res_data$res_quant
+            x6 <- model$yhat
+            df <- data.frame(x6 = x6, y6 = y6)
+            p <- ggplot(df, aes(x = x6, y = y6)) +
+              geom_point() +
+              labs(x = "Fitted values", y = "Conditional quantile residual") +
+              theme_minimal()
+            print(p)
+            xx <- list(x6)
+            yy <- list(y6)
+          },
+          `7` = {
+            y7 <- res_data$res_quant
+            x7 <- seq_along(y7)
+            df <- data.frame(x7 = x7, y7 = y7)
+            p <- ggplot(df, aes(x = x7, y = y7)) +
+              geom_point() +
+              labs(x = "Index", y = "Conditional quantile residual") +
+              theme_minimal()
+            print(p)
+            xx <- list(x7)
+            yy <- list(y7)
+          },
+          `8` = {
+            y8 <- res_data$res_quant
+            df <- data.frame(y8 = y8)
+            p <- ggplot(df, aes(x = y8)) + 
+              geom_histogram(fill = "grey", color = "black") +
+              labs(x = "Frequency", title = "Response residual") +
+              theme_minimal()
+            print(p)
+          },
+          `9` = {
+            y9 <- res_data$res_quant
+            acf_data <- acf(y9, plot = FALSE)
+            df <- data.frame(lag = acf_data$lag, acf = acf_data$acf)
+            conf <- qnorm((1 + 0.95) / 2) / sqrt(length(y9))
+            p <- ggplot(df, aes(x = lag, y = acf)) +
+              geom_segment(aes(xend = lag, yend = 0)) +
+              geom_hline(yintercept = c(-conf, conf), 
+                         linetype = "dashed", color = "blue") +
+              geom_hline(yintercept = 0, color = "black") +
+              labs(x = "Lag", y = "ACF", title = "Conditional quantile residual") +
+              theme_minimal()
+            print(p)       
+          },
+          `10` = {
+            y10<- res_data$res_quant
+            pacf_data <- pacf(y10, plot = FALSE)
+            df <- data.frame(lag = pacf_data$lag, acf = pacf_data$acf)
+            conf <- qnorm((1 + 0.95) / 2) / sqrt(length(y10))
+            p <- ggplot(df, aes(x = lag, y = acf)) +
+              geom_hline(yintercept = 0, color = "black") +
+              geom_segment(aes(xend = lag, yend = 0)) +
+              geom_hline(yintercept = c(-conf, conf),
+                         linetype = "dashed", color = "blue") +
+              labs(x = "Lag", y = "Partial ACF", title = "Conditional quantile residual")
+            print(p)
+          },
+          `11` = {
+            y11 <- res_data$res_quant
+            x11 <- qnorm(ppoints(length(y11)))[rank(y11)]
+            .lim <- c(min(x11, y11), max(x11, y11))
+            df <- data.frame(x11 = x11, y11 = y11)
+            p <- ggplot(df, aes(x = x11, y = y11)) +
+              geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+              geom_point() +
+              labs(x = "Quantile of standard normal", y = "Ordered standarized residual") +
+              coord_cartesian(xlim = .lim, ylim = .lim) +
+              theme_minimal()
+            print(p)
+            xx <- list(x11)
+            yy <- list(y11)
+          })
 
     if (pick == 1 || pick == 2 || pick == 6 || pick == 7 || pick == 11 ) {
       if (is.null(labels))
