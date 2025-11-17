@@ -41,7 +41,6 @@ influenceplot.aplms <- function(model,
     labels <- seq_along(model$yhat)
   }
 
-
   output_list <- influence(model,
                     perturbation = perturbation,
                     part = part)

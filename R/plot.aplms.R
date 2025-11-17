@@ -10,6 +10,8 @@
 #' @keywords Additive partial linear xs with symmetric errors
 #' @keywords Residuals
 #' @importFrom graphics plot
+#' @importFrom gridExtra grid.arrange
+#' @importFrom ggplot2 ggplot geom_line coord_cartesian labs theme_minimal aes
 #' @examples
 #' data(temperature)
 #' temperature.df = data.frame(temperature,time=1:length(temperature))
@@ -63,30 +65,26 @@ plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
   }
 
   if (plot) {
-
-    if (length(x$npc)==1) {
-      split.screen(c(1, 1))
-    } else {
-      split.screen(c(ceiling(length(x$npc)/2), 2))
-    }
+    plots_npc <- vector("list", length(x$npc))
 
     for (k in seq_along(x$npc)) {
-      screen(k)
-      plot(npc_predict_list[[k]]$cov,
-           npc_predict_list[[k]]$fmean,
-           type = "l",
-           ylim = range(c(npc_predict_list[[k]]$fmean_li, npc_predict_list[[k]]$fmean_ls)),
-           xlab = x$npc[k], ylab = parse(text = paste0("f[", k,"](.)")), main = x$npc[k])
-      points(npc_predict_list[[k]]$cov,
-             npc_predict_list[[k]]$fmean_li, type = "l", lty = 2)
-      points(npc_predict_list[[k]]$cov,
-             npc_predict_list[[k]]$fmean_ls, type = "l", lty = 2)
-      grid()
+      df <- npc_predict_list[[k]]
+      plots_npc[[k]] <- ggplot(df, aes(x = cov, y = fmean)) + 
+        geom_line() +
+        geom_line(aes(x = cov, y = fmean_li), linetype = "dashed") +
+        geom_line(aes(x = cov, y = fmean_ls), linetype = "dashed") +
+        coord_cartesian(ylim = range(c(df$fmean_li, df$fmean_ls))) + 
+        labs(x = mod2$npc[k], y = parse(text = paste0("f[", k,"](.)")), title = mod2$npc[k]) +
+        theme_minimal()
     }
-    close.screen(all.screens = TRUE)
-  }
 
+    n <- length(plots_npc)
+    if (n == 1) {
+      grid.arrange(plots_npc[[1]])
+    } else {
+      grid.arrange(grobs = plots_npc, ncol = 2)
+    }
+  }
 return(npc_predict_list)
 }
-
 

@@ -43,7 +43,6 @@ aplms.diag.plot <- function(model, which,
 
   res_data <- residuals(model)
 
-
   choices <- c(
                "Response residuals against fited values",
                "Response residuals against time index",
