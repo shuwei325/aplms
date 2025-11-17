@@ -21,6 +21,8 @@
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
 #' influenceplot.aplms(model, perturbation = c("case-weight"))
+#' @importFrom gridExtra grid.arrange
+#' @importFrom ggplot2 geom_point geom_hline geom_text
 #' @export
 
 influenceplot.aplms <- function(model,
@@ -45,25 +47,26 @@ influenceplot.aplms <- function(model,
                     perturbation = perturbation,
                     part = part)
 
-  old_par <- par(no.readonly = TRUE)
-  on.exit(par(old_par))
 
   if (perturbation %in% c("case-weight", "dispersion", "response")){
 
     print(paste0(perturbation," perturbation scheme"))
 
     if(part){
-      par(mfrow=c(2,2), oma = c(0, 0, 3, 0))
+      nrow <- 2
+      ncol <- 2
     } else {
-      par(mfrow=c(1,1), oma = c(0, 0, 3, 0))
+      nrow <- 1
+      ncol <- 1
     }
 
     invisible(
-      lapply(seq_along(output_list[[1]]),
+      plots <- lapply(seq_along(output_list[[1]]),
            influential_plot1, output = output_list[[1]],
            labels = labels, C=C)
     )
-    mtext(paste0(perturbation," perturbation scheme"), outer = TRUE, cex = 1.5)
+    grid.arrange(grobs = plots, nrow = nrow, ncol = ncol,
+             top = paste0(perturbation," perturbation scheme"), gp = gpar(fontsize = 24, fontface = "bold"))
   }
 
 
@@ -72,19 +75,22 @@ influenceplot.aplms <- function(model,
     print(paste0(perturbation," perturbation scheme"))
 
     if(part){
-      par(mfrow=c(2,2), oma = c(0, 0, 3, 0))
+      nrow <- 2
+      ncol <- 2
     } else {
-      par(mfrow=c(1,1), oma = c(0, 0, 3, 0))
+      nrow <- 1
+      ncol <- 1
     }
 
     for( k in seq_along(output_list[[1]])) {
       invisible(
-        lapply(seq_along(output_list[[1]][[k]]),
+        plots <- lapply(seq_along(output_list[[1]][[k]]),
                influential_plot1, output = output_list[[1]][[k]],
                labels = labels, C=C)
         )
-        mtext(paste0(perturbation," perturbation scheme - ", names(output_list[[1]])[k]),
-              outer = TRUE, cex = 1.5)
+        grid.arrange(grobs = plots, nrow = nrow, ncol = ncol,
+              top = paste0(perturbation," perturbation scheme - ", names(output_list[[1]])[k]),
+              gp = gpar(fontsize = 24, fontface = "bold"))
     }
   }
 }

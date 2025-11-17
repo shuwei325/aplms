@@ -154,15 +154,14 @@ influential_plot1 <- function(k, output, labels = NULL, C = 4,...){
   C_mean <- mean(C_i, na.rm = TRUE)
   C_sd <- sd(C_i, na.rm = TRUE)
   thres <- C_mean + C * C_sd
-  C_i_iden <-which(C_i > thres)
-  plot(labels, C_i, ylim=c(0, max(C_i)+C_sd),
-       xlab = "t",
-       ylab = name,
-       ...)
-  abline(h = thres, col = "red")
-  text(labels[C_i > thres],C_i[C_i > thres], labels = labels[C_i > thres], pos =3)
+  df <- data.frame(labels = labels, C_i = C_i)
+  df$label_text <- ifelse(C_i > thres, labels, NA)
+  p <- ggplot(df, aes(x = labels, y = C_i)) +
+    geom_point() +
+    geom_hline(yintercept = thres, color = "red") +
+    geom_text(aes(label = label_text), vjust = -0.5, na.rm = TRUE) +
+    coord_cartesian(ylim = range(0, max(C_i)+C_sd)) +
+    labs(x = "t", y = name) +
+    theme_minimal()
+  return(p)
 }
-
-
-
-
