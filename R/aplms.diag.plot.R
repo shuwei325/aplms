@@ -77,7 +77,8 @@ aplms.diag.plot <- function(model, which,
             df <- data.frame(x1 = x1, y1 = y1)
             p <- ggplot(df, aes(x = x1, y = y1)) +
               geom_point() +
-              labs(x = "Fitted values", y = "Response residual")
+              labs(x = "Fitted values", y = "Response residual") +
+              theme_minimal()
             print(p)
             xx <- list(x1)
             yy <- list(y1)
@@ -88,7 +89,8 @@ aplms.diag.plot <- function(model, which,
             df <- data.frame(x2 = x2, y2 = y2)
             p <- ggplot(df, aes(x = x2, y = y2)) +
               geom_point() +
-              labs(x = "Index", y = "Response residual")
+              labs(x = "Index", y = "Response residual") +
+              theme_minimal()
             print(p)
             xx <- list(x2)
             yy <- list(y2)
@@ -126,7 +128,8 @@ aplms.diag.plot <- function(model, which,
               geom_segment(aes(xend = lag, yend = 0)) +
               geom_hline(yintercept = c(-conf, conf),
                          linetype = "dashed", color = "blue") +
-              labs(x = "Lag", y = "Partial ACF", title = "Response residuals")
+              labs(x = "Lag", y = "Partial ACF", title = "Response residuals") +
+              theme_minimal()
             print(p)
           },
           `6` = {
@@ -186,7 +189,8 @@ aplms.diag.plot <- function(model, which,
               geom_segment(aes(xend = lag, yend = 0)) +
               geom_hline(yintercept = c(-conf, conf),
                          linetype = "dashed", color = "blue") +
-              labs(x = "Lag", y = "Partial ACF", title = "Conditional quantile residual")
+              labs(x = "Lag", y = "Partial ACF", title = "Conditional quantile residual") +
+              theme_minimal()
             print(p)
           },
           `11` = {
