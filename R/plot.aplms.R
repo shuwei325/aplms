@@ -71,10 +71,10 @@ plot.aplms <- function(x, len = 100, plot = TRUE , level = 0.95, ...) {
       df <- npc_predict_list[[k]]
       plots_npc[[k]] <- ggplot(df, aes(x = cov, y = fmean)) + 
         geom_line() +
-        geom_line(aes(x = cov, y = fmean_li), linetype = "dashed") +
-        geom_line(aes(x = cov, y = fmean_ls), linetype = "dashed") +
+        geom_line(aes(x = cov, y = df$fmean_li), linetype = "dashed") +
+        geom_line(aes(x = cov, y = df$fmean_ls), linetype = "dashed") +
         coord_cartesian(ylim = range(c(df$fmean_li, df$fmean_ls))) + 
-        labs(x = mod2$npc[k], y = parse(text = paste0("f[", k,"](.)")), title = mod2$npc[k]) +
+        labs(x = x$npc[k], y = parse(text = paste0("f[", k,"](.)")), title = x$npc[k]) +
         theme_minimal()
     }
 

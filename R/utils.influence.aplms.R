@@ -159,7 +159,7 @@ influential_plot1 <- function(k, output, labels = NULL, C = 4,...){
   p <- ggplot(df, aes(x = labels, y = C_i)) +
     geom_point() +
     geom_hline(yintercept = thres, color = "red") +
-    geom_text(aes(label = label_text), vjust = -0.5, na.rm = TRUE) +
+    geom_text(aes(label = df$label_text), vjust = -0.5, na.rm = TRUE) +
     coord_cartesian(ylim = range(0, max(C_i)+C_sd)) +
     labs(x = "t", y = name) +
     theme_minimal()

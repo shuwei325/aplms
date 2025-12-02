@@ -21,6 +21,7 @@
 #'                                   Maxiter2 = 25),
 #'                    lam=c(10))
 #' influenceplot.aplms(model, perturbation = c("case-weight"))
+#' @importFrom grid gpar
 #' @importFrom gridExtra grid.arrange
 #' @importFrom ggplot2 geom_point geom_hline geom_text
 #' @export
